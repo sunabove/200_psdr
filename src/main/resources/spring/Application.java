@@ -1,4 +1,4 @@
-package web;
+package spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,23 +15,30 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import lombok.extern.log4j.Log4j;
+
 @SpringBootApplication
 @Configuration
 @ComponentScan(value={"web"})
-@EnableWebMvc
 @EnableAutoConfiguration
+@EnableWebMvc
+@Log4j
 
 public class Application extends SpringBootServletInitializer implements WebMvcConfigurer { 
 	
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
+	public Application() {
+		log.info(this.getClass().getSimpleName());
+	}
+	
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(Application.class);
+	} 
     
     @Override
     public void configureViewResolvers(final ViewResolverRegistry registry) {
         String funName = "configureViewResolvers( ... ) " ; 
-        //log.info( funName );
+        log.info( funName );
  
         //registry.jsp("/htmlviews/", ".jsp");
         registry.jsp("/html", ".html");
