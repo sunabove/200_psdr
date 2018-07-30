@@ -10,6 +10,7 @@
 
 	<h1>Hello World!</h1>
 	<h1><a href="greeting.html" >Greeting</a></h1>
+	<h1><a href="sample/sample_01.html" >sample 01</a></h1>
 
 </body>
 </html>

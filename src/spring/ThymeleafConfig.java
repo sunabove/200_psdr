@@ -1,4 +1,4 @@
-package web;
+package spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ public class ThymeleafConfig {
     	log.info( "templateResolver()" );
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setCacheable(false);
-        templateResolver.setPrefix("classpath:/html/");
+        templateResolver.setPrefix("classpath:/templates/html/");
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
