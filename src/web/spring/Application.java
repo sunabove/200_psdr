@@ -1,4 +1,4 @@
-package spring;
+package web.spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -20,9 +21,10 @@ import lombok.extern.log4j.Log4j;
 
 @SpringBootApplication
 @Configuration
-@ComponentScan(value={"spring, web"})
+@ComponentScan( basePackages = "web" )
 @EnableAutoConfiguration
 @EnableWebMvc
+@EnableJpaRepositories( "web" )
 @Log4j
 
 public class Application extends SpringBootServletInitializer implements WebMvcConfigurer { 
@@ -32,25 +34,22 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 			"classpath:/templates/", "classpath:/public/" };
 	
 	public Application() {
-		log.info(this.getClass().getSimpleName());
+		log.info( "###################################" );
+		log.info( "Application" );
+		log.info( "###################################" );
 	}
 	
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
-	} 
-    
-    @Override
-    public void configureViewResolvers(final ViewResolverRegistry registry) {
-        String funName = "configureViewResolvers( ... ) " ; 
-        log.info( funName );
- 
-        //registry.jsp("/htmlviews/", ".jsp");
-        registry.jsp("/html", ".html");
-    }  
+	}
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    	log.info( "###################################" );
+    	log.info( "addResourceHandlers(ResourceHandlerRegistry registry)" );
+    	log.info( "###################################" );
+    	
     	if (!registry.hasMappingForPattern("/webjars/**")) {
     		registry.addResourceHandler("/webjars/**").addResourceLocations(
     				"classpath:/META-INF/resources/webjars/");
