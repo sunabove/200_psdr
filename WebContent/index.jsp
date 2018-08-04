@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +7,10 @@
 </head>
 <body>
 
-	<h1>Hello World!</h1>
-	<h1><a href="greeting.html" >Greeting</a></h1>
-	<h1><a href="sample/sample_01.html" >sample 01</a></h1>
+	<h1>ProCom Fault Data Download</h1>
+	
+	<h1><a href="main/main.html" > Main </a></h1>
+	<h1><a href="greeting.html" > Greeting </a></h1>
 
 </body>
 </html>

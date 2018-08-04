@@ -30,8 +30,7 @@ import lombok.extern.log4j.Log4j;
 public class Application extends SpringBootServletInitializer implements WebMvcConfigurer { 
 	
 	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-			"classpath:/META-INF/resources/", "classpath:/resources/",
-			"classpath:/templates/", "classpath:/public/" };
+			"classpath:/META-INF/resources/",  "file:/opt/tomcat/template/" };
 	
 	public Application() {
 		log.info( "###################################" );
