@@ -1,4 +1,4 @@
-package web;
+package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class IndexController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping("/index.html")
+	@RequestMapping( value = { "/index.html" , "main.html" } )
 	public String index(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
 			Model model) {
 		
@@ -34,6 +34,13 @@ public class IndexController {
 		model.addAttribute( "user", user );
 		
 		return "110_main.html";
+	} 
+	
+	@RequestMapping("/list.html")
+	public String list(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+			Model model) { 
+		
+		return "000_index.html";
 	} 
 
 }

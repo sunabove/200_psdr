@@ -7,8 +7,9 @@
 </head>
 <body>
 
-	<h1>ProCom Fault Data Download</h1>
+	<h1>(주)프로콤 Fault Data Download</h1>
 	
+	<h1><a href="main/list.html" > List </a></h1>
 	<h1><a href="main/index.html" > Index </a></h1>
 	<h1><a href="greeting.html" > Greeting </a></h1>
 
