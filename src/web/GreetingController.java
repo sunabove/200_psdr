@@ -28,12 +28,12 @@ public class GreetingController {
 		}
         
 		model.addAttribute("name", name);
-		return "greeting";
+		return "greeting.html";
 	}
 
 	@GetMapping("sample/sample_01")
 	public String sample_01() {
-		return "sample_01";
+		return "sample_01.html";
 	}
 
 }

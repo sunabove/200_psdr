@@ -17,8 +17,10 @@ public class ThymeleafConfig {
     	log.info( "templateResolver()" );
         var templateResolver = new FileTemplateResolver();
         templateResolver.setCacheable(false);
-        templateResolver.setPrefix("/opt/tomcat/template/html/");
-        templateResolver.setSuffix(".html");
+        templateResolver.setPrefix( "/opt/tomcat/template/html/" );
+        templateResolver.setSuffix( "" );
+        templateResolver.setCharacterEncoding("UTF-8");
+        
         return templateResolver;
     }
     
@@ -29,6 +31,7 @@ public class ThymeleafConfig {
         templateResolver.setCacheable(false);
         templateResolver.setPrefix("classpath:/template/html/");
         templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
     */
@@ -45,6 +48,8 @@ public class ThymeleafConfig {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setOrder(1);
+        viewResolver.setCharacterEncoding("UTF-8");
+        
         return viewResolver;
     }
 }

@@ -17,10 +17,12 @@ public class IndexController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping("/main")
-	public String main(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+	@RequestMapping("/index.html")
+	public String index(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
 			Model model) {
+		
 		User user = userRepository.findByName("Bob");
+		
 		if( null == user ) { 
 			user = new User("Bob", 38);
 	        //save user, verify has ID value after save
@@ -29,9 +31,9 @@ public class IndexController {
 	        user = userRepository.findByName("Bob");
 		}
         
-		model.addAttribute("name", name);
+		model.addAttribute( "user", user );
 		
-		return "main";
+		return "110_main.html";
 	} 
 
 }

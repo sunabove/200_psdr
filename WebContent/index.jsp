@@ -9,7 +9,7 @@
 
 	<h1>ProCom Fault Data Download</h1>
 	
-	<h1><a href="main/main.html" > Main </a></h1>
+	<h1><a href="main/index.html" > Index </a></h1>
 	<h1><a href="greeting.html" > Greeting </a></h1>
 
 </body>
