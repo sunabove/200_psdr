@@ -34,5 +34,32 @@ public class UserController {
 		
 		return "410_manage_user_role.html";
 	}
+	
+	@RequestMapping( value = { "login.html" } )
+	public String userLogin(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+			Model model) { 
+		
+		model.addAttribute( "name", name );
+		
+		return "312_user_login.html";
+	}
+	
+	@RequestMapping( value = { "find_id.html" } )
+	public String findId(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+			Model model) { 
+		
+		model.addAttribute( "name", name );
+		
+		return "313_user_find_id.html";
+	}
+	
+	@RequestMapping( value = { "info.html" } )
+	public String userInfo(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+			Model model) { 
+		
+		model.addAttribute( "name", name );
+		
+		return "314_user_info.html";
+	}
 
 }

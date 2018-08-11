@@ -25,5 +25,14 @@ public class ArticleController {
 		
 		return "530_article_list.html";
 	}
+	
+	@RequestMapping( value = { "view.html" } )
+	public String articleView(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+			Model model) { 
+		
+		model.addAttribute( "name", name );
+		
+		return "540_article_view.html";
+	}
 
-}
+} 
