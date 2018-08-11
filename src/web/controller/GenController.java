@@ -17,8 +17,15 @@ public class GenController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping( value = { "index.html" , "main.html" , "privacy.html" } )
-	public String index(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+	@RequestMapping( value = { "index.html" , "main.html" , "about.html" } )
+	public String aboute(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+			Model model) { 
+		
+		return "511_about.html";
+	} 
+	
+	@RequestMapping( value = { "privacy.html" } )
+	public String privacy(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
 			Model model) { 
 		
 		return "512_privacy.html";

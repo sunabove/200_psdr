@@ -61,5 +61,14 @@ public class UserController {
 		
 		return "314_user_info.html";
 	}
+	
+	@RequestMapping( value = { "logout.html" } )
+	public String logout(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
+			Model model) { 
+		
+		model.addAttribute( "name", name );
+		
+		return "110_main.html";
+	}
 
 }
