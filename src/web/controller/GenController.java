@@ -12,7 +12,7 @@ import web.model.UserRepository;
 
 @RequestMapping("/gen")
 @Controller
-public class GenController {
+public class GenController  extends ComController {
 
 	@Autowired
 	private UserRepository userRepository;

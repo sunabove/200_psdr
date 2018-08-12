@@ -12,7 +12,7 @@ import web.model.UserRepository;
 
 @RequestMapping("/sys")
 @Controller
-public class SysController {
+public class SysController extends ComController {
 
 	@Autowired
 	private UserRepository userRepository;

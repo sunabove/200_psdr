@@ -12,7 +12,7 @@ import web.model.UserRepository;
 
 @RequestMapping("/main")
 @Controller
-public class IndexController {
+public class IndexController extends ComController {
 
 	@Autowired
 	private UserRepository userRepository;

@@ -12,7 +12,7 @@ import web.model.UserRepository;
 
 @RequestMapping("/data")
 @Controller
-public class FaultDataController {
+public class FaultDataController  extends ComController {
 
 	@Autowired
 	private UserRepository userRepository;

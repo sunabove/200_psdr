@@ -10,7 +10,7 @@ import web.model.User;
 import web.model.UserRepository;
 
 @Controller
-public class GreetingController {
+public class GreetingController extends ComController {
 
 	@Autowired
 	private UserRepository userRepository;
