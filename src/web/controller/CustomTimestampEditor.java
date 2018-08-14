@@ -2,7 +2,7 @@ package web.controller;
 
 import java.beans.PropertyEditorSupport;
 
-import web.controller.gson.DateDeserializer; 
+import web.gson.DateDeserializer; 
 
 public class CustomTimestampEditor extends PropertyEditorSupport {
 

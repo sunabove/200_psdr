@@ -1,4 +1,4 @@
-package web.controller;
+package web;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -341,5 +341,9 @@ public abstract class ComObject implements Serializable {
         return new Formatter().format(format, args).toString();
     }
 	// -- format
+	
+	public String f( String format, Object ... args ) {
+		return this.format( format, args);
+	}
 
 }

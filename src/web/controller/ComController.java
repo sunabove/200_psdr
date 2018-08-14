@@ -1,13 +1,8 @@
 package web.controller;
 
-import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.atomic.*;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.*; 
 
 import org.slf4j.Logger;
@@ -17,15 +12,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import web.controller.gson.DateDeserializer;
-import web.controller.gson.TimestampDeserializer;
+import web.Html;
+import web.WebObject;
+import web.gson.DateDeserializer;
+import web.gson.TimestampDeserializer;
 import web.model.User; 
 
 /**
@@ -46,7 +40,7 @@ public abstract class ComController extends WebObject {
 	
 	@Autowired private HttpServletRequest request ; 
 	
-	// -- services
+	boolean loginRequire = false ;  
 
 	// constructor
 	public ComController() {
@@ -161,8 +155,8 @@ public abstract class ComController extends WebObject {
 		} else { 
 			// if the session is valid
 			User loginUser = (User) httpSession.getAttribute( LOGIN_USER_ATTR_NAME ) ;  
-			return loginUser ;
 			
+			return loginUser ;			
 			// -- if the session is valid
 		}
 		
@@ -186,18 +180,6 @@ public abstract class ComController extends WebObject {
 	public boolean hasUserLoggedIn( ) {
 		return null != this.getSessionLoginUser( );
 	}
-	
-	public void setCommonAttributes( ) {
-		Html html = null ; 
-		
-		this.setCommonAttributes( html );
-	}
-	
-	// has page menu list
-	public boolean hasPageMenuList() {
-		return true ; 
-	}
-	// -- has page menu list
 	
 	// showRequestInfo
 	public boolean showRequestInfo( HttpServletRequest request ) {
@@ -273,10 +255,17 @@ public abstract class ComController extends WebObject {
 	}
 	// -- isFirstRequest
 	
+	
+	public void setCommonAttributes( ) {
+		Html html = null ; 
+		
+		this.setCommonAttributes( html );
+	}
+	
 	// setCommonAttributes
 	public void setCommonAttributes( Html html ) {
 		
-		boolean debug = true ;
+		boolean debug = this.debug && true ;
 		
 		HttpServletRequest request = this.request ;  
 		
@@ -284,26 +273,7 @@ public abstract class ComController extends WebObject {
 		
 		// debug context path
 		debug = debug && this.showRequestInfo( request ); 
-		// -- debug context path
-		
-		// useYn list
-		if( true ) {
-			LinkedHashMap<String, String> useYnList = new LinkedHashMap<>();
-			
-			useYnList.put( "Y" , "Y" );
-			useYnList.put( "N" , "N" ); 
-			
-			request.setAttribute( "useYnList", useYnList );
-			
-			LinkedHashMap<String, String> allUseYnList = new LinkedHashMap<>();
-			
-			allUseYnList.put( ""  , "All" );
-			allUseYnList.put( "Y" , "Y"  );
-			allUseYnList.put( "N" , "N"  ); 
-			
-			request.setAttribute( "allUseYnList", allUseYnList ); 
-		}
-		// -- useYn list
+		// -- debug context path 
 		
 		// user login sid
 		
@@ -419,5 +389,28 @@ public abstract class ComController extends WebObject {
 		}
 	}
 	// -- show binding errors
+	
+	public String processRequest( ) {
+		boolean loginRequire = this.loginRequire ; 
+		return this.processRequest(loginRequire);
+	}
+	
+	public String processRequest( boolean loginRequire ) {
+		
+		boolean debug = this.debug && true ;
+		
+		HttpServletRequest request = this.request ;
+		
+		String forward = null ;
+		
+		if( loginRequire && null == this.getSessionLoginUser() ) {
+			forward = "forward:/user/login.html";
+		}
+		
+		if ( debug ) log.info( this.format( "forward = %s", forward ) );
+		
+		return forward ; 
+		
+	}
 	
 }

@@ -1,4 +1,4 @@
-package web.controller.gson;
+package web.gson;
 
 import java.lang.reflect.Type;
 import java.sql.Timestamp;

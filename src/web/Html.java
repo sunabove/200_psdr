@@ -1,4 +1,4 @@
-package web.controller;
+package web;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ public class Html extends WebObject {
 	@Getter @Setter public String 	title			= null ;
 	@Getter @Setter public String	currUrlPath		= null ;  
 	
-	@Getter @Setter public User loginUser 			= null ; 
+	@Getter @Setter public User 	loginUser 		= null ; 
 	
 	@Getter @Setter public String successMessage 	= null ; 
 	@Getter @Setter public String errorMessage	= null ; 

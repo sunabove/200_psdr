@@ -16,10 +16,20 @@ public class FaultDataController extends ComController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	public FaultDataController() {
+		this.loginRequire = true ;
+	}
 
 	@RequestMapping( value = { "index.html" , "main.html" , "list.html" } )
 	public String dataList(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
 			Model model) { 
+		
+		String forward = this.processRequest() ; 
+		
+		if( null != forward ) {
+			return forward ; 
+		}
 		
 		model.addAttribute( "name", name );
 		
