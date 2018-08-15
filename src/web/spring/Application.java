@@ -61,12 +61,23 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 
 		boolean useWebJar = false ;
 		
-		if ( useWebJar && false == registry.hasMappingForPattern("/webjars/**")) {
+		if ( useWebJar && ! registry.hasMappingForPattern("/webjars/**")) {
 			registry.addResourceHandler("/webjars/**").addResourceLocations( "classpath:/META-INF/resources/webjars/" );
 		}
 		
-		if ( false == registry.hasMappingForPattern( "/rsc/**" ) ) {
+		// resource (css,js,img) resource location
+		if ( ! registry.hasMappingForPattern( "/rsc/**" ) ) {
 			registry.addResourceHandler( "/rsc/**" ).addResourceLocations( "file:/opt/tomcat/template/rsc/" );
+		}
+		
+		// Comtrade resource location
+		if ( ! registry.hasMappingForPattern( "/PSDR-XU/Comtrade/**" ) ) {
+			registry.addResourceHandler( "/PSDR-XU/Comtrade/**" ).addResourceLocations( "file:/home/psdmts/PSDR-XU/Comtrade/" );
+		}
+		
+		// Fault resource location
+		if ( ! registry.hasMappingForPattern( "/PSDR-XU/Fault/**" ) ) {
+			registry.addResourceHandler( "/PSDR-XU/Fault/**" ).addResourceLocations( "file:/home/psdmts/PSDR-XU/Fault/" );
 		}
 		
 		log.info( LINE );
