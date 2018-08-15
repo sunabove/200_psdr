@@ -1,4 +1,4 @@
-package web.controller;
+package web;
 
 import java.beans.PropertyEditorSupport;
 

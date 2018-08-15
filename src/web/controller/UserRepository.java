@@ -1,4 +1,4 @@
-package web.model;
+package web.controller;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 

@@ -7,15 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import web.model.User;
-import web.model.UserRepository;
-
 @RequestMapping("/article")
 @Controller
 public class ArticleController extends ComController {
 
-	@Autowired
-	private UserRepository userRepository;
+	private static final long serialVersionUID = -5704084995590809168L;
 
 	@RequestMapping( value = { "index.html" , "main.html" , "list.html" } )
 	public String articleList(@RequestParam(name = "name", required = false, defaultValue = "World") String name,

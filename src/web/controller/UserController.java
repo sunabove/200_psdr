@@ -7,16 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import web.model.User;
-import web.model.UserRepository;
-
 @RequestMapping("/user")
 @Controller
 public class UserController extends ComController {
 
-	@Autowired
-	private UserRepository userRepository;
-
+	private static final long serialVersionUID = 1096136683760111201L;
+	
 	@RequestMapping( value = { "index.html" , "main.html" , "regi.html" } )
 	public String userRegi(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
 			Model model) { 

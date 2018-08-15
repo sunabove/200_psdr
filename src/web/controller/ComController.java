@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import web.CustomTimestampEditor;
 import web.Html;
 import web.WebObject;
 import web.gson.DateDeserializer;
-import web.gson.TimestampDeserializer;
-import web.model.User; 
+import web.gson.TimestampDeserializer; 
 
 /**
  * Common controller of user web module
@@ -38,9 +38,13 @@ public abstract class ComController extends WebObject {
 
 	private static final String LOGIN_USER_ATTR_NAME = "loginUser" ; 
 	
+	boolean loginRequire = false ;  
+	
 	@Autowired private HttpServletRequest request ; 
 	
-	boolean loginRequire = false ;  
+	@Autowired public UserService userService ;
+	@Autowired private UserRepository userRepository;
+	
 
 	// constructor
 	public ComController() {

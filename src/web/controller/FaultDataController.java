@@ -7,16 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import web.model.User;
-import web.model.UserRepository;
-
 @RequestMapping("/data")
 @Controller
 public class FaultDataController extends ComController {
 
-	@Autowired
-	private UserRepository userRepository;
-	
+	private static final long serialVersionUID = 3131679599458841886L;
+
 	public FaultDataController() {
 		this.loginRequire = true ;
 	}
