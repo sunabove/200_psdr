@@ -42,9 +42,7 @@ public abstract class ComController extends WebObject {
 	
 	@Autowired private HttpServletRequest request ; 
 	
-	@Autowired public UserService userService ;
-	@Autowired private UserRepository userRepository;
-	
+	@Autowired public UserService userService ; 
 
 	// constructor
 	public ComController() {
