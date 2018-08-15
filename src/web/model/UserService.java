@@ -32,6 +32,8 @@ public class UserService extends WebObject {
 			
 			if (null == rootUser) {
 				User newUser = new User( "procom", "12345678" ); 
+				newUser.email = "procom@procom.co.kr";
+				
 				this.userRepository.save( newUser );
 	
 				rootUser = userRepository.findByUserId( "procom" );
@@ -55,8 +57,16 @@ public class UserService extends WebObject {
 			if( null == loginUser ) {
 				loginUser = userRepository.findByEmailAndPasswd(id, passwd);
 				
+				if( null == loginUser ) {
+					request.setAttribute( "login_error_msg", "로그인 정보가 없습니다." );
+				}
+				
 				if( debug ) log.info( "loginUser by email and passwd = " + loginUser );
 			}
+		}
+		
+		if( null != loginUser ) {
+			request.setAttribute( "loginUser", loginUser );
 		}
 		
 		return loginUser ;

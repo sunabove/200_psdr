@@ -13,6 +13,10 @@ public class UserController extends ComController {
 
 	private static final long serialVersionUID = 1096136683760111201L;
 	
+	public UserController() {
+		this.loginRequire = true ; 
+	}
+	
 	@RequestMapping( value = { "index.html" , "main.html" , "regi.html" } )
 	public String userRegi(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
 			Model model) { 
@@ -50,19 +54,23 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "info.html" } )
-	public String userInfo(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) { 
+	public String userInfo( ) {
 		
-		model.addAttribute( "name", name );
+		var loginRequire = this.loginRequire ;
+		
+		String forward = this.processRequest( loginRequire ) ; 
+		
+		if( null != forward ) {
+			return forward ; 
+		}
 		
 		return "314_user_info.html";
 	}
 	
 	@RequestMapping( value = { "logout.html" } )
-	public String logout(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) { 
+	public String logout( ) { 
 		
-		model.addAttribute( "name", name );
+		this.setSessionLoginUser( null );
 		
 		return "110_main.html";
 	}

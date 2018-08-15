@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import lombok.Getter;
 import lombok.Setter;
 import web.JsonObject;

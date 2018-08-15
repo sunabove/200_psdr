@@ -409,8 +409,9 @@ public abstract class ComController extends WebObject {
 		
 		String forward = null ;
 		
-		if( loginRequire ) {
-			User loginUser = this.getSessionLoginUser();
+		User loginUser = this.getSessionLoginUser();
+		
+		if( loginRequire ) { 
 			
 			if( null == loginUser ) {
 				loginUser = userService.getLoginUser( request );
@@ -424,6 +425,12 @@ public abstract class ComController extends WebObject {
 				forward = "forward:/user/login.html";
 			}
 		}
+		
+		if( null != loginUser ) {
+			request.setAttribute( "loginUser", loginUser );
+			request.setAttribute( "loginUser_id", loginUser.userId );
+		}
+		
 		
 		if ( debug ) log.info( this.format( "forward = %s", forward ) );
 		
