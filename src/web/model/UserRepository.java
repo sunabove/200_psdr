@@ -1,15 +1,13 @@
 package web.model;
 
-import java.util.Optional;
-
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
+public interface UserRepository extends PagingAndSortingRepository<User, String> {
 	
-	User findByName(String name); 
+	User findByUserId(String userId); 
+	
+	User findByUserIdAndPasswd(String userId, String passwd);
 
-	//User findByIdAndPasswd(String id, String passwd);
-
-	//User findByEmailAndPasswd(String email, String passwd);
+	User findByEmailAndPasswd(String email, String passwd); 
 	
 }

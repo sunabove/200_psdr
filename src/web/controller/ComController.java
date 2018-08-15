@@ -22,7 +22,8 @@ import web.WebObject;
 import web.gson.DateDeserializer;
 import web.gson.TimestampDeserializer;
 import web.model.User;
-import web.model.UserRepository; 
+import web.model.UserRepository;
+import web.model.UserService; 
 
 /**
  * Common controller of user web module
@@ -44,9 +45,7 @@ public abstract class ComController extends WebObject {
 	
 	@Autowired private HttpServletRequest request ; 
 	
-	//@Autowired public UserService userService ; 
-	
-	@Autowired public UserRepository userRepository;
+	@Autowired public UserService userService ;
 
 	// constructor
 	public ComController() {
@@ -398,6 +397,7 @@ public abstract class ComController extends WebObject {
 	
 	public String processRequest( ) {
 		boolean loginRequire = this.loginRequire ; 
+		
 		return this.processRequest(loginRequire);
 	}
 	
@@ -409,8 +409,20 @@ public abstract class ComController extends WebObject {
 		
 		String forward = null ;
 		
-		if( loginRequire && null == this.getSessionLoginUser() ) {
-			forward = "forward:/user/login.html";
+		if( loginRequire ) {
+			User loginUser = this.getSessionLoginUser();
+			
+			if( null == loginUser ) {
+				loginUser = userService.getLoginUser( request );
+				
+				if( null != loginUser ) {
+					this.setSessionLoginUser( loginUser );
+				}
+			}
+			
+			if( null == loginUser ) { 
+				forward = "forward:/user/login.html";
+			}
 		}
 		
 		if ( debug ) log.info( this.format( "forward = %s", forward ) );

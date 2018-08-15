@@ -1,7 +1,5 @@
 package web.model;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.log4j.Log4j;
 import web.WebObject;
-import web.spring.Application;
 
-//@Service
-//@Transactional
+@Service
+@Transactional
 @Log4j
 
 public class UserService extends WebObject {
@@ -30,16 +27,14 @@ public class UserService extends WebObject {
 		
 		var debug = true ; 
 		
-		/*
-		
 		if( true ) { 
-			User rootUser = userRepository.findById( "procom" );
+			User rootUser = userRepository.findByUserId( "procom" );
 			
 			if (null == rootUser) {
-				User newUser = new User( 1, "12345678" );
+				User newUser = new User( "procom", "12345678" ); 
 				this.userRepository.save( newUser );
 	
-				rootUser = userRepository.findById( "procom" );
+				rootUser = userRepository.findByUserId( "procom" );
 			}
 		}
 		
@@ -53,7 +48,7 @@ public class UserService extends WebObject {
 		} else if( this.isEmpty( passwd ) ) {
 			if( debug ) log.info( "loginUse password is empty." );
 		} else if( this.isValid( id ) && this.isValid( passwd ) ) { 
-			loginUser = userRepository.findByIdAndPasswd(id, passwd) ;
+			loginUser = userRepository.findByUserIdAndPasswd(id, passwd) ;
 			
 			if( debug ) log.info( "loginUser by id and passwd = " + loginUser );
 			
@@ -64,11 +59,7 @@ public class UserService extends WebObject {
 			}
 		}
 		
-		return loginUser ; 
-		
-		*/
-		
-		return null;
+		return loginUser ;
 	}
 
 }
