@@ -30,11 +30,12 @@ import lombok.extern.log4j.Log4j;
 
 @SpringBootApplication
 @Configuration
-@EntityScan( "web.controller.*" )
 @ComponentScan( basePackages = "web" )
 @EnableAutoConfiguration
 @EnableWebMvc
 @EnableJpaRepositories( "web" )
+//@EntityScan( "web.controller" )
+
 @Log4j
 
 public class Application extends SpringBootServletInitializer implements WebMvcConfigurer {

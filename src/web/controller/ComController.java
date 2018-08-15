@@ -20,7 +20,9 @@ import web.CustomTimestampEditor;
 import web.Html;
 import web.WebObject;
 import web.gson.DateDeserializer;
-import web.gson.TimestampDeserializer; 
+import web.gson.TimestampDeserializer;
+import web.model.User;
+import web.model.UserRepository; 
 
 /**
  * Common controller of user web module
@@ -42,7 +44,9 @@ public abstract class ComController extends WebObject {
 	
 	@Autowired private HttpServletRequest request ; 
 	
-	@Autowired public UserService userService ; 
+	//@Autowired public UserService userService ; 
+	
+	@Autowired public UserRepository userRepository;
 
 	// constructor
 	public ComController() {

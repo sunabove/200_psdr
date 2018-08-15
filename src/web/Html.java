@@ -2,7 +2,7 @@ package web;
 
 import lombok.Getter;
 import lombok.Setter;
-import web.controller.User;
+import web.model.User;
 
 public class Html extends WebObject {
 
