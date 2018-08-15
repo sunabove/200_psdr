@@ -13,8 +13,8 @@ public class Html extends WebObject {
 	
 	@Getter @Setter public User 	loginUser 		= null ; 
 	
-	@Getter @Setter public String successMessage 	= null ; 
-	@Getter @Setter public String errorMessage	= null ; 
+	@Getter @Setter public String 	successMessage 	= null ; 
+	@Getter @Setter public String 	errorMessage	= null ; 
 	@Getter @Setter public String	crud			= null ; 
 	
 	@Getter @Setter public boolean editable		= false ; 

@@ -36,14 +36,15 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 
 public class Application extends SpringBootServletInitializer implements WebMvcConfigurer {
-
-	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
-			"file:/opt/tomcat/template/" };
+	
+	public static final String LINE = "#####################################################################################################################";
+	
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/" , "file:/opt/tomcat/template/" };
 
 	public Application() {
-		log.info("###################################");
+		log.info( LINE );
 		log.info("Application");
-		log.info("###################################");
+		log.info( LINE );
 	}
 
 	@Override
@@ -53,16 +54,24 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		log.info("###################################");
-		log.info("addResourceHandlers(ResourceHandlerRegistry registry)");
-		log.info("###################################");
+		String funName = "addResourceHandlers(ResourceHandlerRegistry registry)" ; 
+		log.info( LINE );
+		log.info( funName );
+		log.info( LINE );
 
-		if (!registry.hasMappingForPattern("/webjars/**")) {
-			registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+		boolean useWebJar = false ;
+		
+		if ( useWebJar && false == registry.hasMappingForPattern("/webjars/**")) {
+			registry.addResourceHandler("/webjars/**").addResourceLocations( "classpath:/META-INF/resources/webjars/" );
 		}
-		if (!registry.hasMappingForPattern("/**")) {
-			registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+		
+		if ( false == registry.hasMappingForPattern( "/rsc/**" ) ) {
+			registry.addResourceHandler( "/rsc/**" ).addResourceLocations( "file:/opt/tomcat/template/rsc/" );
 		}
+		
+		log.info( LINE );
+		log.info( "Done. " + funName );
+		log.info( LINE );
 	}
 
 	@Bean

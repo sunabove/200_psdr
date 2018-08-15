@@ -286,11 +286,8 @@ public abstract class ComObject implements Serializable {
 			return sqlDate;
 			
 		} catch (ParseException e) {
-			
 			e.printStackTrace();
-			
 			return null;
-			
 		}
 		
 	}
@@ -310,7 +307,6 @@ public abstract class ComObject implements Serializable {
 			java.sql.Timestamp timeStamp = new Timestamp( sqlDate.getTime() );
 			
 			return timeStamp ; 
-			
 		}
 		
 	}

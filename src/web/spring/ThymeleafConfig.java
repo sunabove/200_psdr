@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import lombok.extern.log4j.Log4j;
@@ -20,6 +21,8 @@ public class ThymeleafConfig {
         templateResolver.setPrefix( "/opt/tomcat/template/html/" );
         templateResolver.setSuffix( "" );
         templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setTemplateMode( TemplateMode.HTML );
+        templateResolver.setOrder( 0 );
         
         return templateResolver;
     }
@@ -46,8 +49,8 @@ public class ThymeleafConfig {
     @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setOrder(1);
+        viewResolver.setTemplateEngine( this.templateEngine() );
+        viewResolver.setOrder(0);
         viewResolver.setCharacterEncoding("UTF-8");
         
         return viewResolver;
