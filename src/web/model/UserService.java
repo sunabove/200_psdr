@@ -22,6 +22,31 @@ public class UserService extends WebObject {
 	public UserService() {
 
 	}
+	
+	public User saveUserInfo( HttpServletRequest request , User user ) {
+		String email 	= request.getParameter( "user_email" );
+		String passwd 	= request.getParameter( "user_pass" );
+		
+		boolean updated = false ;
+		
+		if( this.isValid( email ) && ! email.equals( user.email ) ) {
+			user.email = email ; 
+			
+			updated = true ; 
+		}
+		
+		if( this.isValid( passwd ) ) {
+			user.passwd = passwd ; 
+			
+			updated = true ; 
+		}
+		
+		if( updated ) {
+			user = this.userRepository.save( user );
+		}
+		
+		return user ;
+	}
 
 	public User getLoginUser( HttpServletRequest request ) {
 		

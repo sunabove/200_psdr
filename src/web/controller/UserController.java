@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import web.model.User;
+
 @RequestMapping("/user")
 @Controller
 public class UserController extends ComController {
@@ -62,6 +64,10 @@ public class UserController extends ComController {
 		
 		if( null != forward ) {
 			return forward ; 
+		} else {
+			User loginUser = this.getLoginUser();
+			
+			userService.saveUserInfo( request , loginUser );
 		}
 		
 		return "314_user_info.html";
@@ -70,7 +76,7 @@ public class UserController extends ComController {
 	@RequestMapping( value = { "logout.html" } )
 	public String logout( ) { 
 		
-		this.setSessionLoginUser( null );
+		this.setLoginUser( null );
 		
 		return "110_main.html";
 	}

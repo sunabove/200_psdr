@@ -43,9 +43,9 @@ public abstract class ComController extends WebObject {
 	
 	boolean loginRequire = false ;  
 	
-	@Autowired private HttpServletRequest request ; 
+	@Autowired protected HttpServletRequest request ; 
 	
-	@Autowired public UserService userService ;
+	@Autowired protected UserService userService ;
 
 	// constructor
 	public ComController() {
@@ -145,7 +145,7 @@ public abstract class ComController extends WebObject {
 	 * @param request
 	 * @return
 	 */
-	public User getSessionLoginUser( ) {
+	public User getLoginUser( ) {
 		
 		HttpSession httpSession = this.getSession( );
 
@@ -172,7 +172,7 @@ public abstract class ComController extends WebObject {
 	 * set a user which has been logged in.
 	 * @param user
 	 */
-	public void setSessionLoginUser( User user ) {
+	public void setLoginUser( User user ) {
 		 this.getSession().setAttribute( LOGIN_USER_ATTR_NAME, user );
 	}
 
@@ -183,7 +183,7 @@ public abstract class ComController extends WebObject {
 	 * @return
 	 */
 	public boolean hasUserLoggedIn( ) {
-		return null != this.getSessionLoginUser( );
+		return null != this.getLoginUser( );
 	}
 	
 	// showRequestInfo
@@ -282,7 +282,7 @@ public abstract class ComController extends WebObject {
 		
 		// user login sid
 		
-		final User sessionLoginUser = this.getSessionLoginUser() ;
+		final User sessionLoginUser = this.getLoginUser() ;
 		
 		// -- user login sid 
 		
@@ -409,7 +409,7 @@ public abstract class ComController extends WebObject {
 		
 		String forward = null ;
 		
-		User loginUser = this.getSessionLoginUser();
+		User loginUser = this.getLoginUser();
 		
 		if( loginRequire ) { 
 			
@@ -417,7 +417,7 @@ public abstract class ComController extends WebObject {
 				loginUser = userService.getLoginUser( request );
 				
 				if( null != loginUser ) {
-					this.setSessionLoginUser( loginUser );
+					this.setLoginUser( loginUser );
 				}
 			}
 			
