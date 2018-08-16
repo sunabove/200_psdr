@@ -83,7 +83,7 @@ public class UserService extends WebObject {
 				loginUser = userRepository.findByEmailAndPasswd(id, passwd);
 				
 				if( null == loginUser ) {
-					request.setAttribute( "login_error_msg", "로그인 정보가 없습니다." );
+					request.setAttribute( "login_error_msg", "사용자 정보가 잘못되었습니다." );
 				}
 				
 				if( debug ) log.info( "loginUser by email and passwd = " + loginUser );
