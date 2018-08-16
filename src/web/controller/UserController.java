@@ -1,5 +1,7 @@
 package web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,16 +58,16 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "info.html" } )
-	public String userInfo( ) {
+	public String userInfo( HttpServletRequest request ) {
 		
 		var loginRequire = this.loginRequire ;
 		
-		String forward = this.processRequest( loginRequire ) ; 
+		String forward = this.processRequest( request, loginRequire ) ; 
 		
 		if( null != forward ) {
 			return forward ; 
 		} else {
-			User loginUser = this.getLoginUser();
+			User loginUser = this.getLoginUser( request );
 			
 			userService.saveUserInfo( request , loginUser );
 		}
@@ -74,9 +76,9 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "logout.html" } )
-	public String logout( ) { 
+	public String logout( HttpServletRequest request ) { 
 		
-		this.setLoginUser( null );
+		this.setLoginUser( request, null );
 		
 		return "110_main.html";
 	}

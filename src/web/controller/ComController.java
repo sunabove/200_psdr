@@ -43,7 +43,7 @@ public abstract class ComController extends WebObject {
 	
 	boolean loginRequire = false ;  
 	
-	@Autowired protected HttpServletRequest request ; 
+	//@Autowired protected HttpServletRequest request ; 
 	
 	@Autowired protected UserService userService ;
 
@@ -109,16 +109,16 @@ public abstract class ComController extends WebObject {
 	 * @return whether if the request is get type.
 	 * 
 	 */
-	public boolean isGetRequest() { 
-		return this.getRequest().getMethod().equalsIgnoreCase("GET"); 
+	public boolean isGetRequest( HttpServletRequest request ) { 
+		return request.getMethod().equalsIgnoreCase("GET"); 
 	}
 	
 	/**
     *
     * @return whether if the request is post type.
     */
-    public boolean isPostRequest() { 
-       return this.getRequest().getMethod().equalsIgnoreCase("POST"); 
+    public boolean isPostRequest( HttpServletRequest request ) { 
+       return request.getMethod().equalsIgnoreCase("POST"); 
     }
 
 	/**
@@ -126,28 +126,22 @@ public abstract class ComController extends WebObject {
 	 * @return session associated with current request
 	 * 
 	 */
-	protected HttpSession getSession() { 
-		return this.getRequest().getSession(); 
+	protected HttpSession getSession( HttpServletRequest request ) { 
+		if( null == request ) {
+			return null ; 
+		}
+		return request.getSession(); 
 	}
 	
-	/**
-	 * 
-	 * @return request associated with current context
-	 * 
-	 */
-	protected HttpServletRequest getRequest() { 
-		return this.request ; 
-	}
-
 	/**
 	 * return the user which has logged in on the current session
 	 * 
 	 * @param request
 	 * @return
 	 */
-	public User getLoginUser( ) {
+	public User getLoginUser( HttpServletRequest request ) {
 		
-		HttpSession httpSession = this.getSession( );
+		HttpSession httpSession = this.getSession( request );
 
 		if ( null == httpSession ) {
 			// if the session has been expired
@@ -172,8 +166,8 @@ public abstract class ComController extends WebObject {
 	 * set a user which has been logged in.
 	 * @param user
 	 */
-	public void setLoginUser( User user ) {
-		 this.getSession().setAttribute( LOGIN_USER_ATTR_NAME, user );
+	public void setLoginUser( HttpServletRequest request, User user ) {
+		 this.getSession( request ).setAttribute( LOGIN_USER_ATTR_NAME, user );
 	}
 
 	/**
@@ -182,8 +176,8 @@ public abstract class ComController extends WebObject {
 	 * @param request
 	 * @return
 	 */
-	public boolean hasUserLoggedIn( ) {
-		return null != this.getLoginUser( );
+	public boolean hasUserLoggedIn( HttpServletRequest request ) {
+		return null != this.getLoginUser( request );
 	}
 	
 	// showRequestInfo
@@ -261,18 +255,16 @@ public abstract class ComController extends WebObject {
 	// -- isFirstRequest
 	
 	
-	public void setCommonAttributes( ) {
+	public void setCommonAttributes( HttpServletRequest request ) {
 		Html html = null ; 
 		
-		this.setCommonAttributes( html );
+		this.setCommonAttributes( request, html );
 	}
 	
 	// setCommonAttributes
-	public void setCommonAttributes( Html html ) {
+	public void setCommonAttributes( HttpServletRequest request, Html html ) {
 		
-		boolean debug = this.debug && true ;
-		
-		HttpServletRequest request = this.request ;  
+		boolean debug = this.debug && true ;  
 		
 		html = null == html ? new Html() : html ; 
 		
@@ -282,7 +274,7 @@ public abstract class ComController extends WebObject {
 		
 		// user login sid
 		
-		final User sessionLoginUser = this.getLoginUser() ;
+		final User sessionLoginUser = this.getLoginUser( request ) ;
 		
 		// -- user login sid 
 		
@@ -395,21 +387,19 @@ public abstract class ComController extends WebObject {
 	}
 	// -- show binding errors
 	
-	public String processRequest( ) {
+	public String processRequest( HttpServletRequest request ) {
 		boolean loginRequire = this.loginRequire ; 
 		
-		return this.processRequest(loginRequire);
+		return this.processRequest( request, loginRequire);
 	}
 	
-	public String processRequest( boolean loginRequire ) {
+	public String processRequest( HttpServletRequest request, boolean loginRequire ) {
 		
-		boolean debug = this.debug && true ;
-		
-		HttpServletRequest request = this.request ;
+		boolean debug = this.debug && true ; 
 		
 		String forward = null ;
 		
-		User loginUser = this.getLoginUser();
+		User loginUser = this.getLoginUser( request );
 		
 		if( loginRequire ) { 
 			
@@ -417,7 +407,7 @@ public abstract class ComController extends WebObject {
 				loginUser = userService.getLoginUser( request );
 				
 				if( null != loginUser ) {
-					this.setLoginUser( loginUser );
+					this.setLoginUser( request, loginUser );
 				}
 			}
 			

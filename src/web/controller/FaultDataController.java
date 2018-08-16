@@ -1,5 +1,7 @@
 package web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +20,13 @@ public class FaultDataController extends ComController {
 	}
 
 	@RequestMapping( value = { "index.html" , "main.html" , "list.html" } )
-	public String dataList(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) { 
+	public String dataList( HttpServletRequest request) { 
 		
-		String forward = this.processRequest() ; 
+		String forward = this.processRequest( request ) ; 
 		
 		if( null != forward ) {
 			return forward ; 
-		}
-		
-		model.addAttribute( "name", name );
+		} 
 		
 		return "210_data_list.html";
 	}
