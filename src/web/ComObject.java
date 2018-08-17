@@ -37,7 +37,7 @@ public abstract class ComObject implements Serializable {
 		
 	}
 	
-	public final Timestamp getDateNow() {
+	public final Timestamp getNow() {
 		
 		return new Timestamp( System.currentTimeMillis() );
 		
@@ -45,7 +45,7 @@ public abstract class ComObject implements Serializable {
 	
 	public final Timestamp getDateAfterDays( Integer years, Integer months, Integer days ) {
 		
-		return getDateAfterDays( this.getDateNow() , years, months, days );
+		return getDateAfterDays( this.getNow() , years, months, days );
 		
 	}
 	

@@ -11,7 +11,7 @@ import web.JsonObject;
 @Entity
 @Table(name = "user_tbl")
 
-public class User extends JsonObject { 
+public class User extends CommonEntity { 
 	
 	private static final long serialVersionUID = -6023492649132057963L;
 
