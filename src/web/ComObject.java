@@ -125,7 +125,7 @@ public abstract class ComObject implements Serializable {
 			int h = 0; 
 			
 			if( hms != null && hms.length > 0 ) {
-				h = WebObject.parseInt( hms[0] , 0 );
+				h = this.parseInt( hms[0] , 0 );
 			}
 			
 			int mon = h/(24*30); 
@@ -210,41 +210,31 @@ public abstract class ComObject implements Serializable {
 		return ! this.isValid( list ); 
 	} 
 	
-	public final static Double parseDouble( String text ) {
-		
+	public final Double parseDouble( String text ) {
 		return parseDouble( text, null );
-		
 	}
 	
 	// parse double
-	public final static Double parseDouble( String text, Double def ) {
+	public final Double parseDouble( String text, Double def ) {
 		
 		try {
-			
 			return Double.parseDouble( text.trim() );
-			
 		} catch ( Exception e) {
-			
 			return def ; 
-			
 		}
 		
 	}
 	// -- parse double
 	
 	// parseInt
-	public final static Integer parseInt( String text, Integer def ) {
+	public final Integer parseInt( String text, Integer def ) {
 		
 		Double d = parseDouble( text );
 		
 		if( d != null ) {
-			
-			return d.intValue() ; 
-			
+			return d.intValue() ;
 		} else {
-			
-			return def ; 
-			
+			return def ;
 		} 
 		
 	}

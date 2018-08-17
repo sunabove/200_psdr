@@ -13,11 +13,9 @@ import web.WebObject;
 @Transactional
 @Log4j
 
-public class UserService extends WebObject {
+public class UserService extends CommonService {
 
-	private static final long serialVersionUID = 2420319221881431764L;
-	
-	@Autowired public UserRepository userRepository;
+	private static final long serialVersionUID = 2420319221881431764L; 
 
 	public UserService() {
 
@@ -56,7 +54,10 @@ public class UserService extends WebObject {
 			User rootUser = userRepository.findByUserId( "procom" );
 			
 			if (null == rootUser) {
-				User newUser = new User( "procom", "12345678" ); 
+				Code userRoleAdmin  = this.getCode( "USER-ROLE-ADMIN", "관리자" , 0 );
+				Code userRoleNormal = this.getCode( "USER-ROLE-NORMAL", "사용자", 1 );
+				
+				User newUser = new User( "procom", "12345678" , userRoleAdmin ); 
 				newUser.email = "procom@procom.co.kr";
 				
 				this.userRepository.save( newUser );

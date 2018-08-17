@@ -60,15 +60,15 @@ public abstract class WebObject extends JsonObject {
 			int s = 0;
 			
 			if( hms != null && hms.length > 0 ) {
-				h = WebObject.parseInt( hms[0] , 0 );
+				h = this.parseInt( hms[0] , 0 );
 			}
 			
 			if( hms != null && hms.length > 1 ) {
-				m = WebObject.parseInt( hms[1], 0 );
+				m = this.parseInt( hms[1], 0 );
 			}
 			
 			if( hms != null && hms.length > 2 ) {
-				s = WebObject.parseInt( hms[2], 0 );
+				s = this.parseInt( hms[2], 0 );
 			}
 			
 			int d = h/24;

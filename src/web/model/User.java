@@ -24,7 +24,7 @@ public class User extends CommonEntity {
 	
 	@OneToOne
 	@JoinColumn(name = "roleCode")
-	@Getter @Setter public Code roleCode;
+	@Getter @Setter public Code role ;
 	
 	@Getter @Setter public String name;
 	
@@ -34,9 +34,10 @@ public class User extends CommonEntity {
 	public User() {
 	}
 
-	public User(String userId, String passwd) {
-		this.userId = userId; 
+	public User( String userId, String passwd , Code role ) {
+		this.userId = userId ; 
 		this.passwd = passwd ;
-	}  
+		this.role = role ; 
+	}
 	
 }

@@ -78,9 +78,22 @@ public class UserController extends ComController {
 	@RequestMapping( value = { "logout.html" } )
 	public String logout( HttpServletRequest request ) { 
 		
-		this.setLoginUser( request, null );
+		String id 		= request.getParameter( "user_id" );
+		String passwd 	= request.getParameter( "user_pass" ); 
 		
-		return "110_main.html";
+		if( this.isValid( id ) && this.isValid( passwd ) ) {
+			var loginRequire = true ; 
+			this.processRequest(request, loginRequire );
+		} else {
+			this.setLoginUser( request, null );
+			
+			var loginRequire = false ;
+			this.processRequest(request, loginRequire );
+		}
+
+		User loginUser = this.getLoginUser( request ) ;
+		
+		return "redirect:/main/main.html";
 	}
 
 }

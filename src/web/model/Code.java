@@ -11,16 +11,30 @@ public class Code extends CommonEntity {
 	private static final long serialVersionUID = -5392925777521538251L;
 
 	@Id
-	@Getter @Setter public String code ;  
-	
-	@Getter @Setter public String textValue ;	
-	@Getter @Setter public String numValue ; 
+	@Getter @Setter public String codeId ;  
 	
 	@ManyToOne
-    @JoinColumn(name="p_code")
-    public Code pCode;
+    @JoinColumn( name="grp_code_id" ) 
+    public Code grpCode ;
+	
+	@Getter @Setter public String textValue ;	
+	@Getter @Setter public Number numValue ; 
+	@Getter @Setter public Integer ord ; 
 	
 	public Code() {
 	}
+	
+	@PreUpdate
+    @PrePersist
+    protected void onUpdate() {
+		super.onUpdate();
+		
+		if( null != this.textValue ) {
+			this.numValue = this.parseDouble( this.textValue );
+		} else if ( null != this.numValue ) {
+			this.textValue = "" + this.numValue ;
+		}
+	} 
+
 	
 }
