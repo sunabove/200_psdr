@@ -5,8 +5,7 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 
 import lombok.Getter;
-import lombok.Setter;
-import web.JsonObject;
+import lombok.Setter; 
 
 @Entity
 @Table(name = "user_tbl")
@@ -20,7 +19,13 @@ public class User extends CommonEntity {
 	
 	@Getter @Setter public String passwd;	
 	@Getter @Setter public String email;	
-	@Getter @Setter public String roleCode ;	
+	
+	//@Getter @Setter public String roleCode = "USER-ROLE-NORMAL" ;
+	
+	@OneToOne
+	@JoinColumn(name = "roleCode")
+	@Getter @Setter public Code roleCode;
+	
 	@Getter @Setter public String name;
 	
 	@Getter @Setter public Timestamp lastLoginDt ;

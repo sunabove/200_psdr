@@ -34,7 +34,6 @@ import lombok.extern.log4j.Log4j;
 @EnableAutoConfiguration
 @EnableWebMvc
 @EnableJpaRepositories( "web" )
-//@EntityScan( "web.controller" )
 
 @Log4j
 

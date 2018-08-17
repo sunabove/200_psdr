@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -16,19 +17,18 @@ import web.JsonObject;
 @MappedSuperclass
 public abstract class CommonEntity extends JsonObject {
 	
-	@Getter @Setter public String    updUserId ;
+	@Getter @Setter public String    upUserId ;
 	
 	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
 	@Getter @Setter public Timestamp upDt ;
 	
 	public CommonEntity() {
-		
 	}
 	
-	@PrePersist
-	protected void onCreate() {
-	    if ( this.upDt == null) { upDt = this.getNow() ; }
-	}
+	@PreUpdate
+    @PrePersist
+    protected void onUpdate() {
+		if ( this.upDt == null) { upDt = this.getNow() ; }
+	} 
 
 }
