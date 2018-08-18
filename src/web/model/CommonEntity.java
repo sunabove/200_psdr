@@ -22,6 +22,8 @@ public abstract class CommonEntity extends JsonObject {
 	@UpdateTimestamp
 	@Getter @Setter public Timestamp upDt ;
 	
+	@Getter @Setter public Boolean deleted = false ;
+	
 	public CommonEntity() {
 	}
 	
