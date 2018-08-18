@@ -42,9 +42,15 @@ public abstract class ComController extends WebObject {
 	
 	boolean loginRequire = false ; 
 
-	@Autowired protected UserService userService ;
-	@Autowired protected PropService propService ;
-	@Autowired protected DbFileService dbFileService ;
+	@Autowired public UserService userService ;
+	@Autowired public PropService propService ;
+	@Autowired public CodeService codeService ; 
+	@Autowired public DbFileService dbFileService ;
+	
+	@Autowired public UserRepository userRepository;
+	@Autowired public CodeRepository codeRepository;
+	@Autowired public PropRepository propRepository;
+	@Autowired public DbFileRepository dbFileRepository;
 
 	// constructor
 	public ComController() {

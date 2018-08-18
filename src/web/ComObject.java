@@ -306,12 +306,12 @@ public abstract class ComObject implements Serializable {
 	}
 	// -- parseTimestamp
 	
-	public String getCreatedGuid() { 
-		return this.createGuid(); 
+	public String getCreatedUuid() { 
+		return this.createUuid(); 
 	}
 	
 	// create guid
-	public String createGuid() {
+	public String createUuid() {
 		String uuid = UUID.randomUUID().toString();
 
 		if (null == uuid) {

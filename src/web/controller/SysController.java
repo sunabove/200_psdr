@@ -2,12 +2,13 @@ package web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller; 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import web.model.Prop;
+import web.model.*;
 
 @RequestMapping("/sys")
 @Controller
@@ -44,15 +45,33 @@ public class SysController extends ComController {
 
 		return "430_user_sys_stat.html";
 	}
+	
+	@PostMapping("setting.html")
+	public String settingByPost(HttpServletRequest request,
+			@RequestParam( "sys_bg_img_01" ) MultipartFile sys_bg_img_01_file ,
+			@RequestParam( "sys_bg_img_02" ) MultipartFile sys_bg_img_02_file 
+			) {
+		return this.setting(request, sys_bg_img_01_file, sys_bg_img_02_file);
+	}
 
 	@RequestMapping("setting.html")
-	public String setting(HttpServletRequest request) {
+	public String settingByGet(HttpServletRequest request ) {
+		return this.setting(request, null, null);
+	}
+	
+	public String setting( HttpServletRequest request ,
+			 MultipartFile sys_bg_img_01_file ,
+			 MultipartFile sys_bg_img_02_file ) {
 		var loginRequire = this.loginRequire;
 
 		String forward = this.processRequest(request, loginRequire);
 
 		if (null != forward) {
 			return forward;
+		}
+		
+		if( null != sys_bg_img_01_file ) {
+			DbFile dbFile = this.dbFileService.getSystemDbFileByFileId( "SYS_BG_IMG_01", this, request); 
 		}
 
 		// system name properties
