@@ -420,6 +420,22 @@ public abstract class ComController extends WebObject {
 		return totDownNo ; 
 	}
 	
+	public DbFile getSysBgImg_01( HttpServletRequest request )  {
+		String fileId = "SYS_BG_IMG_01" ; 
+		
+		DbFile dbFile = this.dbFileService.getSystemDbFileByFileId( fileId, this, request);
+		
+		return dbFile ; 
+	}
+	
+	public DbFile getSysBgImg_02( HttpServletRequest request )  {
+		String fileId = "SYS_BG_IMG_02" ; 
+		
+		DbFile dbFile = this.dbFileService.getSystemDbFileByFileId( fileId, this, request);
+		
+		return dbFile ; 
+	}
+	
 	public String processRequest( HttpServletRequest request ) {
 		boolean loginRequire = this.loginRequire ; 
 		

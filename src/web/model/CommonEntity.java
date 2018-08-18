@@ -2,7 +2,9 @@ package web.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -17,7 +19,9 @@ import web.JsonObject;
 @MappedSuperclass
 public abstract class CommonEntity extends JsonObject {
 	
-	@Getter @Setter public String    upUserId ;
+	@OneToOne
+	@JoinColumn( name = "UP_USER_ID" )
+	@Getter @Setter public User upUser ;
 	
 	@UpdateTimestamp
 	@Getter @Setter public Timestamp upDt ;

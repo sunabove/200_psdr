@@ -28,11 +28,12 @@ public class DbFileService extends CommonService {
 		if( null == dbFile ) {
 			dbFile = new DbFile() ;
 			dbFile.fileId = fileId ; 
+			dbFile.upUser = loginUser ;
+			dbFile.gubunCode = "SYS-FILE" ;
+			dbFile = this.dbFileRepository.save( dbFile );
 		}
 		
-		if( null != dbFile ) {
-			//dbFile.u
-		}
+		dbFile.upUser = loginUser ;
 		
 		return dbFile;
 	}

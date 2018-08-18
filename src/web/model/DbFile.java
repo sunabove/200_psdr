@@ -22,7 +22,7 @@ public class DbFile extends CommonEntity {
 
 	@Getter @Setter public String gubunCode ;
 
-	@Getter @Setter public String name;
+	@Getter @Setter public String fileName;
 
 	@Lob
 	//@Column( length = 1_000_000_000 )

@@ -71,7 +71,33 @@ public class SysController extends ComController {
 		}
 		
 		if( null != sys_bg_img_01_file ) {
-			DbFile dbFile = this.dbFileService.getSystemDbFileByFileId( "SYS_BG_IMG_01", this, request); 
+			DbFile dbFile = this.getSysBgImg_01(request);
+			
+			MultipartFile file =  sys_bg_img_01_file ;
+			
+			dbFile.fileName = file.getName();
+			try { 
+				dbFile.content = file.getBytes();
+			} catch( Exception e ) {
+				dbFile.content = null ; 
+			}
+			
+			this.dbFileService.saveDbFile( dbFile );
+		}
+		
+		if( null != sys_bg_img_02_file ) {
+			DbFile dbFile = this.getSysBgImg_02(request);
+			
+			MultipartFile file =  sys_bg_img_02_file ;
+			
+			dbFile.fileName = file.getName();
+			try { 
+				dbFile.content = file.getBytes();
+			} catch( Exception e ) {
+				dbFile.content = null ; 
+			}
+			
+			this.dbFileService.saveDbFile( dbFile );
 		}
 
 		// system name properties
