@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -100,6 +101,14 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 		characterEncodingFilter.setForceEncoding(true);
 		return characterEncodingFilter;
 	} 
+	
+	@Bean(name = "filterMultipartResolver")
+	public CommonsMultipartResolver multipartResolver() {
+	    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+	    resolver.setDefaultEncoding("utf-8");
+	    resolver.setMaxUploadSize( 1_000_000_000 );
+	    return resolver;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

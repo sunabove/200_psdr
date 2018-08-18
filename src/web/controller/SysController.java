@@ -1,5 +1,6 @@
 package web.controller;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller; 
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import web.model.*;
 
+@MultipartConfig
 @RequestMapping("/sys")
 @Controller
 public class SysController extends ComController {
@@ -48,8 +50,8 @@ public class SysController extends ComController {
 	
 	@PostMapping("setting.html")
 	public String settingByPost(HttpServletRequest request,
-			@RequestParam( "sys_bg_img_01" ) MultipartFile sys_bg_img_01_file ,
-			@RequestParam( "sys_bg_img_02" ) MultipartFile sys_bg_img_02_file 
+			@RequestParam( "sys_bg_img_01_file" ) MultipartFile sys_bg_img_01_file ,
+			@RequestParam( "sys_bg_img_02_file" ) MultipartFile sys_bg_img_02_file 
 			) {
 		return this.setting(request, sys_bg_img_01_file, sys_bg_img_02_file);
 	}
