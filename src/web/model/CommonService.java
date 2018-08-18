@@ -20,6 +20,20 @@ public abstract class CommonService extends WebObject {
 	public CommonService() {
 	}
 	
+	public Prop getProp( String key , String def ) {
+		Prop prop = this.propRepository.findByKey( key );
+		
+		if( null == prop && key != null ) {
+			prop = new Prop();
+			prop.key = key;
+			prop.value = def ;
+			
+			prop = propRepository.save( prop );
+		}
+		
+		return prop;
+	}
+	
 	public Code getCode( String codeId , String def , Integer ord ) {
 		Code code = codeRepository.findByCodeId( codeId ) ;
 		

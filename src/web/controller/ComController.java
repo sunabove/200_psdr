@@ -21,6 +21,8 @@ import web.Html;
 import web.WebObject;
 import web.gson.DateDeserializer;
 import web.gson.TimestampDeserializer;
+import web.model.Prop;
+import web.model.PropService;
 import web.model.User;
 import web.model.UserRepository;
 import web.model.UserService; 
@@ -46,6 +48,7 @@ public abstract class ComController extends WebObject {
 	//@Autowired protected HttpServletRequest request ; 
 	
 	@Autowired protected UserService userService ;
+	@Autowired protected PropService propService ;
 
 	// constructor
 	public ComController() {
@@ -399,6 +402,10 @@ public abstract class ComController extends WebObject {
 		
 		String forward = null ;
 		
+		Prop sysName_01 = propService.getProp( "SYS_NAME_01", "경기 지역 본부" );
+		Prop sysName_02 = propService.getProp( "SYS_NAME_02", "성남 전력 지사" );
+		Prop sysName_03 = propService.getProp( "SYS_NAME_03", "154KV 중원변전소" );
+		
 		User loginUser = this.getLoginUser( request );
 		
 		if( loginRequire ) { 
@@ -421,6 +428,9 @@ public abstract class ComController extends WebObject {
 			request.setAttribute( "loginUser_id", loginUser.userId );
 		}
 		
+		request.setAttribute( "sysName_01", sysName_01 );
+		request.setAttribute( "sysName_02", sysName_02 );
+		request.setAttribute( "sysName_03", sysName_03 );
 		
 		if ( debug ) log.info( this.format( "forward = %s", forward ) );
 		
