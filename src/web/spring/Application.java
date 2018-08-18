@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,7 +16,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -25,6 +28,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.annotation.MultipartConfig;
+
 import java.nio.charset.Charset;
 
 import lombok.extern.log4j.Log4j;
@@ -35,6 +41,7 @@ import lombok.extern.log4j.Log4j;
 @EnableAutoConfiguration
 @EnableWebMvc
 @EnableJpaRepositories( "web" )
+@MultipartConfig
 
 @Log4j
 
@@ -100,15 +107,33 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
 		return characterEncodingFilter;
-	} 
+	}
 	
+	@Bean
+	public MultipartConfigElement multipartConfigElement() {
+	    MultipartConfigFactory factory = new MultipartConfigFactory();
+
+	    int maxUploadFileSize = 1_000_000_000 ; 
+	    
+	    factory.setMaxFileSize( maxUploadFileSize );
+	    factory.setMaxRequestSize( maxUploadFileSize );
+
+	    return factory.createMultipartConfig();
+	}
+	
+	@Bean 
+	public MultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver(); 
+	}
+	
+	/*
 	@Bean(name = "filterMultipartResolver")
-	public CommonsMultipartResolver multipartResolver() {
+	public CommonsMultipartResolver multipartResolver() { 
 	    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 	    resolver.setDefaultEncoding("utf-8");
 	    resolver.setMaxUploadSize( 1_000_000_000 );
 	    return resolver;
-	}
+	}*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

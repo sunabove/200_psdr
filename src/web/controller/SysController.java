@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lombok.extern.log4j.Log4j;
 import web.model.*;
 
-@MultipartConfig
 @RequestMapping("/sys")
 @Controller
+@Log4j
 public class SysController extends ComController {
 
 	private static final long serialVersionUID = 7435308736508795619L;
@@ -50,20 +52,15 @@ public class SysController extends ComController {
 	
 	@PostMapping("setting.html")
 	public String settingByPost(HttpServletRequest request,
-			@RequestParam( "sys_bg_img_01_file" ) MultipartFile sys_bg_img_01_file ,
-			@RequestParam( "sys_bg_img_02_file" ) MultipartFile sys_bg_img_02_file 
-			) {
-		return this.setting(request, sys_bg_img_01_file, sys_bg_img_02_file);
-	}
-
-	@RequestMapping("setting.html")
-	public String settingByGet(HttpServletRequest request ) {
-		return this.setting(request, null, null);
-	}
-	
-	public String setting( HttpServletRequest request ,
-			 MultipartFile sys_bg_img_01_file ,
-			 MultipartFile sys_bg_img_02_file ) {
+			@RequestParam( value="sys_bg_img_01_file", required=false ) MultipartFile sys_bg_img_01_file,
+			@RequestParam( value="sys_bg_img_02_file", required=false ) MultipartFile sys_bg_img_02_file,
+			RedirectAttributes redirectAttributes ) {
+		var debug = true ;
+		if( debug ) {
+			log.info( "LINE" );
+			log.info( "settingByPost(...)" );
+			log.info( "LINE" );
+		}
 		var loginRequire = this.loginRequire;
 
 		String forward = this.processRequest(request, loginRequire);
@@ -100,6 +97,20 @@ public class SysController extends ComController {
 			}
 			
 			this.dbFileService.saveDbFile( dbFile );
+		}
+		
+		return "redirect:/sys/setting.html";
+	}
+
+	@RequestMapping("setting.html")
+	public String settingByGet(HttpServletRequest request ) {
+		
+		var loginRequire = this.loginRequire;
+
+		String forward = this.processRequest(request, loginRequire);
+
+		if (null != forward) {
+			return forward;
 		}
 
 		// system name properties

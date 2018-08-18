@@ -1,12 +1,6 @@
 package web.model;
 
-import java.io.InputStream;
-import java.sql.Blob;
-
 import javax.persistence.*;
-
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Getter;
 import lombok.Setter;
