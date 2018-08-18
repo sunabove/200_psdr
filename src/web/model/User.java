@@ -18,9 +18,7 @@ public class User extends CommonEntity {
 	@Getter @Setter public String userId ;  
 	
 	@Getter @Setter public String passwd;	
-	@Getter @Setter public String email;	
-	
-	//@Getter @Setter public String roleCode = "USER-ROLE-NORMAL" ;
+	@Getter @Setter public String email; 
 	
 	@OneToOne
 	@JoinColumn(name = "roleCode")

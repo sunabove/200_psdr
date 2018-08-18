@@ -6,6 +6,7 @@ import java.sql.Blob;
 import javax.persistence.*;
 
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +21,11 @@ public class DbFile extends CommonEntity {
 	@Id
 	@Getter
 	@Setter
-	public Long fileId;
+	public String fileId ;
 
 	@Getter
 	@Setter
-	public String gubunCode;
+	public String gubunCode ;
 
 	@Getter
 	@Setter
