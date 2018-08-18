@@ -11,7 +11,7 @@ public class IndexController extends ComController {
 
 	private static final long serialVersionUID = -1215549637589312065L;
 
-	@RequestMapping( value = { "/index.html" , "main.html" } )
+	@RequestMapping( value = { "index.html" , "main.html" } )
 	public String index( HttpServletRequest request ) {
 		
 		var loginRequire = true ;
@@ -31,7 +31,7 @@ public class IndexController extends ComController {
 		}
 	} 
 	
-	@RequestMapping("/list.html")
+	@RequestMapping( "list.html" )
 	public String list( HttpServletRequest request ) { 
 		
 		var loginRequire = true ;

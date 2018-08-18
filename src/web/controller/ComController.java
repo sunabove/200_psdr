@@ -66,11 +66,6 @@ public abstract class ComController extends WebObject {
 	// -- init binder
 	
 	// getQueryParams
-	/**
-	 * getQueryParams
-	 * @param request
-	 * @return
-	 */
 	public String getQueryParams( HttpServletRequest request ) {
 		String params = "";
 		
@@ -109,28 +104,14 @@ public abstract class ComController extends WebObject {
 	}
 	// -- getQueryParams
 	
-	/** 
-	 * 
-	 * @return whether if the request is get type.
-	 * 
-	 */
 	public boolean isGetRequest( HttpServletRequest request ) { 
 		return request.getMethod().equalsIgnoreCase("GET"); 
 	}
 	
-	/**
-    *
-    * @return whether if the request is post type.
-    */
-    public boolean isPostRequest( HttpServletRequest request ) { 
+	public boolean isPostRequest( HttpServletRequest request ) { 
        return request.getMethod().equalsIgnoreCase("POST"); 
     }
 
-	/**
-	 * 
-	 * @return session associated with current request
-	 * 
-	 */
 	protected HttpSession getSession( HttpServletRequest request ) { 
 		if( null == request ) {
 			return null ; 
@@ -138,12 +119,6 @@ public abstract class ComController extends WebObject {
 		return request.getSession(); 
 	}
 	
-	/**
-	 * return the user which has logged in on the current session
-	 * 
-	 * @param request
-	 * @return
-	 */
 	public User getLoginUser( HttpServletRequest request ) {
 		
 		HttpSession httpSession = this.getSession( request );
@@ -167,22 +142,17 @@ public abstract class ComController extends WebObject {
 	}
 	// getSessionLoginUser
 	
-	/**
-	 * set a user which has been logged in.
-	 * @param user
-	 */
 	public void setLoginUser( HttpServletRequest request, User user ) {
 		 this.getSession( request ).setAttribute( LOGIN_USER_ATTR_NAME, user );
 	}
 
-	/**
-	 * returns whether if the current user has logged in correctly.
-	 * 
-	 * @param request
-	 * @return
-	 */
 	public boolean hasUserLoggedIn( HttpServletRequest request ) {
 		return null != this.getLoginUser( request );
+	}
+	
+	public String getCurrUrlPath( HttpServletRequest request ) {
+		String currUrlPath 	= request.getRequestURI().substring(request.getContextPath().length());
+		return currUrlPath;
 	}
 	
 	// showRequestInfo
@@ -258,7 +228,6 @@ public abstract class ComController extends WebObject {
 		}
 	}
 	// -- isFirstRequest
-	
 	
 	public void setCommonAttributes( HttpServletRequest request ) {
 		Html html = null ; 
@@ -446,6 +415,10 @@ public abstract class ComController extends WebObject {
 		
 		boolean debug = this.debug && true ; 
 		
+		if( debug ) {
+			this.showRequestInfo( request );
+		}
+		
 		String forward = null ;
 		
 		// system name properties
@@ -492,12 +465,13 @@ public abstract class ComController extends WebObject {
 						
 						this.propService.saveProp( connUserNo );
 					}
+					
+					forward = "redirect:" + this.getCurrUrlPath(request);
+				} else if( null == loginUser ) { 
+					forward = "forward:/user/login.html";
 				}
 			}
 			
-			if( null == loginUser ) { 
-				forward = "forward:/user/login.html";
-			}
 		}
 		
 		if( null != loginUser ) {
