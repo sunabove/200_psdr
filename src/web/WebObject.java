@@ -22,7 +22,7 @@ public abstract class WebObject extends JsonObject {
 		
 	}
 	
-	public final static String urlEncode( String text ) { 
+	public String urlEncode( String text ) { 
 		try {
 			return URLEncoder.encode(text, enc );
 		} catch ( Exception e) {
@@ -32,7 +32,7 @@ public abstract class WebObject extends JsonObject {
 		}
 	}
 	
-	public final static String urlDecode( String text ) { 
+	public String urlDecode( String text ) { 
 		try {
 			return URLDecoder.decode(text, enc );
 		} catch ( Exception e) {
@@ -42,7 +42,7 @@ public abstract class WebObject extends JsonObject {
 		}
 	}
 	
-	protected final String getDateDiffFormat( String dateDiff ) {
+	protected String getDateDiffFormat( String dateDiff ) {
 		
 		String format = "";
 		
@@ -144,17 +144,9 @@ public abstract class WebObject extends JsonObject {
 		return format;
 	}
 	
-	// --  getDateDiffFormat
+	// --  getDateDiffFormat 
 	
-	/**
-	 * format integer with unit
-	 * @param number
-	 * @param unit
-	 * @param unitDesc
-	 * @param minSize
-	 * @return
-	 */
-	public final String formatInteger( Integer number , int unit , String unitDesc , int minSize ) {
+	public String formatInteger( Integer number , int unit , String unitDesc , int minSize ) {
 		
 		if( number == null ) {
 			number = 0 ; 

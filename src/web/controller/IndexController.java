@@ -18,15 +18,13 @@ public class IndexController extends ComController {
 		
 		String forward = this.processRequest( request, loginRequire ) ; 
 		
-		if( null != forward ) {
+		String user_id = request.getParameter( "user_id" );
+		
+		if( this.isValid( user_id ) ) {
+			return "redirect:/data/index.html" ; 
+		} else if( null != forward ) {
 			return "110_main.html";
 		} else {
-			String user_id = request.getParameter( "user_id" );
-			
-			if( this.isValid( user_id ) ) {
-				return "redirect:/data/index.html" ; 
-			}
-			
 			return "forward:/data/index.html" ; 
 		}
 	} 
