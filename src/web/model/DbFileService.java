@@ -20,7 +20,11 @@ public class DbFileService extends CommonService {
 	} 
 	
 	public DbFile saveDbFile( DbFile dbFile ) {
-		return null ; 
+		if( null != dbFile ) {
+			dbFile = this.dbFileRepository.save( dbFile );
+		}
+		
+		return dbFile ; 
 	}
 
 }

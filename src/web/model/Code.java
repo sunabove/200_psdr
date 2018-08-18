@@ -16,7 +16,7 @@ public class Code extends CommonEntity {
 	
 	@ManyToOne
     @JoinColumn( name="grp_code_id" ) 
-    public Code grpCode ;
+	@Getter @Setter public Code grpCode ;
 	
 	@Getter @Setter public String textValue ;	
 	@Getter @Setter public Number numValue ; 

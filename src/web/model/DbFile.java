@@ -14,25 +14,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "db_file_tbl")
 
-public class DbFile extends CommonEntity {
-
-	private static final long serialVersionUID = 3607116099821873949L;
+public class DbFile extends CommonEntity { 
+	private static final long serialVersionUID = -8745797345335307150L;
 
 	@Id
-	@Getter
-	@Setter
-	public String fileId ;
+	@Getter @Setter public String fileId ;
 
-	@Getter
-	@Setter
-	public String gubunCode ;
+	@Getter @Setter public String gubunCode ;
 
-	@Getter
-	@Setter
-	public String name;
+	@Getter @Setter public String name;
 
 	@Lob
-	@Column( length = 1_000_000_000 )
+	//@Column( length = 1_000_000_000 )
 	@Getter
 	@Setter
 	public byte [] content;

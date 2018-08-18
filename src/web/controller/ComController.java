@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.context.ApplicationContext;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,11 +21,8 @@ import web.Html;
 import web.WebObject;
 import web.gson.DateDeserializer;
 import web.gson.TimestampDeserializer;
-import web.model.Prop;
-import web.model.PropService;
-import web.model.User;
-import web.model.UserRepository;
-import web.model.UserService; 
+
+import web.model.*; 
 
 /**
  * Common controller of user web module
@@ -48,6 +44,7 @@ public abstract class ComController extends WebObject {
 
 	@Autowired protected UserService userService ;
 	@Autowired protected PropService propService ;
+	@Autowired protected DbFileService dbFileService ;
 
 	// constructor
 	public ComController() {
