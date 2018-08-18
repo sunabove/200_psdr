@@ -3,8 +3,6 @@ package web.model;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.log4j.Log4j;
 import web.WebObject;
@@ -13,22 +11,22 @@ import web.WebObject;
 
 public abstract class CommonService extends WebObject { 
 	
-	@Autowired protected UserRepository userRepository;
-	@Autowired protected CodeRepository codeRepository;
-	@Autowired protected PropRepository propRepository;
+	@Autowired public UserRepository userRepository;
+	@Autowired public CodeRepository codeRepository;
+	@Autowired public PropRepository propRepository;
 
 	public CommonService() {
 	}
 	
-	public Prop getProp( String key , String def ) {
-		Prop prop = this.propRepository.findByKey( key );
+	public Prop getProp( String propId , String def ) {
+		Prop prop = this.propRepository.findByPropId( propId );
 		
-		if( null == prop && key != null ) {
+		if( null == prop && propId != null ) {
 			prop = new Prop();
-			prop.key = key;
+			prop.propId = propId;
 			prop.value = def ;
 			
-			prop = propRepository.save( prop );
+			propRepository.save( prop );
 		}
 		
 		return prop;

@@ -7,7 +7,8 @@ import javax.servlet.http.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.*; 
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.ApplicationContext;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -43,10 +44,8 @@ public abstract class ComController extends WebObject {
 
 	private static final String LOGIN_USER_ATTR_NAME = "loginUser" ; 
 	
-	boolean loginRequire = false ;  
-	
-	//@Autowired protected HttpServletRequest request ; 
-	
+	boolean loginRequire = false ; 
+
 	@Autowired protected UserService userService ;
 	@Autowired protected PropService propService ;
 
@@ -390,6 +389,34 @@ public abstract class ComController extends WebObject {
 	}
 	// -- show binding errors
 	
+	public Prop getConnUserNo() {
+		return this.getConnUserNo( false );
+	}
+	
+	public Prop getConnUserNo(boolean newConn) {
+		Prop connUserNo = propService.getProp( "CONN_USER_NO", "1" );
+		
+		if( null != connUserNo && newConn ) {
+			connUserNo.increaseBy( 1 );
+		}
+		
+		return connUserNo ; 
+	}
+	
+	public Prop getTotDownNo( ) {
+		return this.getTotDownNo( false );
+	}
+	
+	public Prop getTotDownNo(boolean newDown) {
+		Prop totDownNo = propService.getProp( "TOT_DOWN_NO", "0" );
+		
+		if( null != totDownNo && newDown ) {
+			totDownNo.increaseBy( 1 );
+		}
+		
+		return totDownNo ; 
+	}
+	
 	public String processRequest( HttpServletRequest request ) {
 		boolean loginRequire = this.loginRequire ; 
 		
@@ -402,9 +429,34 @@ public abstract class ComController extends WebObject {
 		
 		String forward = null ;
 		
+		// system name properties
 		Prop sysName_01 = propService.getProp( "SYS_NAME_01", "경기 지역 본부" );
 		Prop sysName_02 = propService.getProp( "SYS_NAME_02", "성남 전력 지사" );
 		Prop sysName_03 = propService.getProp( "SYS_NAME_03", "154KV 중원변전소" );
+		
+		Prop connUserNo = this.getConnUserNo();
+		Prop totDownNo = this.getTotDownNo() ; 
+		
+		request.setAttribute( "sysName_01", sysName_01 );
+		request.setAttribute( "sysName_02", sysName_02 );
+		request.setAttribute( "sysName_03", sysName_03 );
+		
+		HttpSession session = request.getSession( true );
+		
+		if( null != session ) {
+			session.setAttribute( "sysName_01", sysName_01 );
+			session.setAttribute( "sysName_02", sysName_02 );
+			session.setAttribute( "sysName_03", sysName_03 );
+		}
+		
+		var application = request.getServletContext() ;
+		
+		if( null != application ) {
+			application.setAttribute( "connUserNo", connUserNo );
+			application.setAttribute( "totDownNo", totDownNo );
+		}
+		
+		// system name properties
 		
 		User loginUser = this.getLoginUser( request );
 		
@@ -415,6 +467,12 @@ public abstract class ComController extends WebObject {
 				
 				if( null != loginUser ) {
 					this.setLoginUser( request, loginUser );
+					
+					if( null != connUserNo ) {
+						connUserNo.increaseBy( 1 );
+						
+						this.propService.saveSysProp( connUserNo );
+					}
 				}
 			}
 			
@@ -427,10 +485,6 @@ public abstract class ComController extends WebObject {
 			request.setAttribute( "loginUser", loginUser );
 			request.setAttribute( "loginUser_id", loginUser.userId );
 		}
-		
-		request.setAttribute( "sysName_01", sysName_01 );
-		request.setAttribute( "sysName_02", sysName_02 );
-		request.setAttribute( "sysName_03", sysName_03 );
 		
 		if ( debug ) log.info( this.format( "forward = %s", forward ) );
 		

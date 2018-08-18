@@ -227,6 +227,10 @@ public abstract class ComObject implements Serializable {
 	// -- parse double
 	
 	// parseInt
+	public final Integer parseInt( String text ) {
+		return this.parseInt( text, null );
+	}
+	
 	public final Integer parseInt( String text, Integer def ) {
 		
 		Double d = parseDouble( text );

@@ -19,9 +19,9 @@ public class PropService extends CommonService {
 
 	} 
 	
-	public Prop saveSysProp( String key, String value ) {
+	public Prop saveSysProp( String propId, String value ) {
 		 
-		Prop prop = propRepository.findByKey( key );
+		Prop prop = propRepository.findByPropId( propId );
 		
 		if( null != prop ) {
 			prop.value = value ;
@@ -31,5 +31,10 @@ public class PropService extends CommonService {
 		
 		return prop ; 
 	} 
+	
+	public Prop saveSysProp( Prop prop ) {
+		prop = propRepository.save( prop );
+		return prop;
+	}
 
 }
