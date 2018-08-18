@@ -14,6 +14,7 @@ public abstract class CommonService extends WebObject {
 	@Autowired public UserRepository userRepository;
 	@Autowired public CodeRepository codeRepository;
 	@Autowired public PropRepository propRepository;
+	@Autowired public DbFileRepository dbFileRepository;
 
 	public CommonService() {
 	}
