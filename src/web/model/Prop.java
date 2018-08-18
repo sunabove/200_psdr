@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Entity 
 
-public class SysProp extends CommonEntity {
+public class Prop extends CommonEntity {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -15,7 +15,7 @@ public class SysProp extends CommonEntity {
 	
 	@Getter @Setter public String value ;	
 	
-	public SysProp() {
+	public Prop() {
 	}
 	
 }
