@@ -22,37 +22,44 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "index.html" , "main.html" , "regi.html" } )
-	public String userRegi(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) { 
+	public String userRegi( HttpServletRequest request ) { 
 		
-		model.addAttribute( "name", name );
+		String userId 	= request.getParameter( "user_id" );
+		String email 	= request.getParameter( "user_email" );
+		String passwd 	= request.getParameter( "user_pass" );
+		
+		String error = null ; 
+		
+		if( this.isValid( userId ) && this.isValid( email ) && this.isValid( passwd ) ) { 
+			User user = userService.createUser( request );
+			
+			if( null != user ) {
+				return "redirect:/main/index.html" ;
+			}
+		} else {
+			error = "잘못된 사용자 정보입니다." ;
+		}
+		
+		request.setAttribute( "login_error_msg", error );
+		request.setAttribute( "error_msg", error );
 		
 		return "311_user_regi.html";
 	}
 	
 	@RequestMapping( value = { "manage_role.html" } )
-	public String manageRole(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) { 
-		
-		model.addAttribute( "name", name );
+	public String manageRole( HttpServletRequest request ) {  
 		
 		return "410_manage_user_role.html";
 	}
 	
 	@RequestMapping( value = { "login.html" } )
-	public String userLogin(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) { 
-		
-		model.addAttribute( "name", name );
+	public String userLogin( HttpServletRequest request ) {  
 		
 		return "312_user_login.html";
 	}
 	
 	@RequestMapping( value = { "find_id.html" } )
-	public String findId(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) { 
-		
-		model.addAttribute( "name", name );
+	public String findId( HttpServletRequest request) {  
 		
 		return "313_user_find_id.html";
 	}
@@ -76,8 +83,7 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "logout.html" } )
-	public String logout( HttpServletRequest request ) { 
-		
+	public String logout( HttpServletRequest request ) {		
 		String id 		= request.getParameter( "user_id" );
 		String passwd 	= request.getParameter( "user_pass" ); 
 		

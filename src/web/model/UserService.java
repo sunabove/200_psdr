@@ -21,6 +21,31 @@ public class UserService extends CommonService {
 
 	}
 	
+	public User createUser( HttpServletRequest request ) {
+		String userId 	= request.getParameter( "user_id" );
+		String email 	= request.getParameter( "user_email" );
+		String passwd 	= request.getParameter( "user_pass" );
+		
+		User user = null ; 
+		
+		if( this.isValid( userId ) && this.isValid( email ) && this.isValid( passwd ) ) { 
+			user = userRepository.findByUserId( userId ) ;
+			
+			if( null != user ) {
+				return null ; 
+			} else if( null == user ) { 
+				Code userRoleNormal = this.getCode( "USER-ROLE-NORMAL", "사용자", 1 );
+				
+				user = new User( userId, passwd , userRoleNormal ); 
+				user.email = email ;
+				
+				user = this.userRepository.save( user );
+			}
+		}
+		
+		return user ; 
+	}
+	
 	public User saveUserInfo( HttpServletRequest request , User user ) {
 		String email 	= request.getParameter( "user_email" );
 		String passwd 	= request.getParameter( "user_pass" );
