@@ -19,7 +19,7 @@ public class PropService extends CommonService {
 
 	} 
 	
-	public Prop saveSysProp( String propId, String value ) {
+	public Prop saveProp( String propId, String value ) {
 		 
 		Prop prop = propRepository.findByPropId( propId );
 		
@@ -32,7 +32,7 @@ public class PropService extends CommonService {
 		return prop ; 
 	} 
 	
-	public Prop saveSysProp( Prop prop ) {
+	public Prop saveProp( Prop prop ) {
 		prop = propRepository.save( prop );
 		return prop;
 	}

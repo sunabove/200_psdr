@@ -471,7 +471,7 @@ public abstract class ComController extends WebObject {
 					if( null != connUserNo ) {
 						connUserNo.increaseBy( 1 );
 						
-						this.propService.saveSysProp( connUserNo );
+						this.propService.saveProp( connUserNo );
 					}
 				}
 			}

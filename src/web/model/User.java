@@ -40,4 +40,8 @@ public class User extends CommonEntity {
 		this.role = role ; 
 	}
 	
+	public boolean isAdmin() {
+		return null != role && "USER-ROLE-ADMIN".equalsIgnoreCase( role.codeId );
+	}
+	
 }
