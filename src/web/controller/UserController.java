@@ -69,6 +69,27 @@ public class UserController extends ComController {
 			return forward ; 
 		}
 		
+		String user_id 		= request.getParameter( "user_id" );
+		String user_role 	= request.getParameter( "user_role" );
+		String user_delete 	= request.getParameter( "user_delete" );
+		
+		if( isValid( user_id ) && ( isValid( user_role) || isValid( user_delete ) ) ) {
+			User user = this.userRepository.findByUserId( user_id );
+			
+			if( null != user ) {
+				if( isValid( user_role ) ) {
+					var code = this.codeRepository.findByCodeId( user_role ); ; 
+					user.role = null != code ? code : user.role ;
+				}
+				
+				if( isValid( user_delete ) ) {
+					user.deleted = "1".equalsIgnoreCase( user_delete );
+				}
+				
+				user = this.userService.saveUserInfo( user, request );
+			}
+		}
+		
 		String user_id_search = request.getParameter( "user_id_search" );
 		
 		UserList users = null;
@@ -117,7 +138,7 @@ public class UserController extends ComController {
 		} else {
 			User loginUser = this.getLoginUser( request );
 			
-			userService.saveUserInfo( request , loginUser );
+			userService.saveUserInfo( loginUser, request );
 		}
 		
 		return "314_user_info.html";

@@ -44,7 +44,7 @@ public class UserService extends CommonService {
 		return user ; 
 	}
 	
-	public User saveUserInfo( HttpServletRequest request , User user ) {
+	public User saveUserInfo( User user, HttpServletRequest request ) {
 		String email 	= request.getParameter( "user_email" );
 		String passwd 	= request.getParameter( "user_pass" );
 		
