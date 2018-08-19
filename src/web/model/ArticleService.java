@@ -68,6 +68,8 @@ public class ArticleService extends CommonService {
 		if( null == article ) {
 			article = new Article();
 			
+			article.articleId = this.createUuid();
+			article.notice = true ; 
 			article.board = this.getBoardCreateIfNotExist( "1", request );
 			article.title = "PSDR FDW 홈페이지에 오신 것을 환영합니다." ;  
 			article.content = "PSDR FDW 홈페이지에 오신 것을 진심으로 환영합니다."; 
