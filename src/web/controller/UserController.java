@@ -47,7 +47,10 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "manage_role.html" } )
-	public String manageRole( HttpServletRequest request ) {  
+	public String manageRole( HttpServletRequest request ) { 
+		var loginRequire = true ;
+		
+		String forward = this.processRequest( request , loginRequire ) ; 
 		
 		return "410_manage_user_role.html";
 	}
@@ -59,7 +62,11 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "find_id.html" } )
-	public String findId( HttpServletRequest request) {  
+	public String findId( HttpServletRequest request) { 
+		
+		var loginRequire = true ;
+		
+		String forward = this.processRequest( request , loginRequire ) ; 
 		
 		return "313_user_find_id.html";
 	}

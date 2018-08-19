@@ -19,7 +19,7 @@ public class FaultDataController extends ComController {
 		this.loginRequire = true ;
 	}
 
-	@RequestMapping( value = { "index.html" , "main.html" , "list.html" } )
+	@RequestMapping( value = { "index.html" , "main.html" , "down.html", "list.html" } )
 	public String dataList( HttpServletRequest request) { 
 		
 		var loginRequire = true ;
