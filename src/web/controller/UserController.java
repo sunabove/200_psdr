@@ -3,6 +3,7 @@ package web.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +57,7 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "manage_role.html", "manage.html" } )
-	public String manage( HttpServletRequest request ) { 
+	public String manage( HttpServletRequest request, Pageable pageable ) { 
 		var debug = this.debug;
 		
 		var loginRequire = true ;
@@ -72,9 +73,9 @@ public class UserController extends ComController {
 		UserList users = null;
 		
 		if( isEmpty( user_id_search ) ) { 
-			users = this.userRepository.findAllByOrderByUserIdAsc(); 
+			users = this.userRepository.findAllByOrderByUserIdAsc( pageable ); 
 		} else {
-			users = this.userRepository.findAllByUserIdContainingOrderByUserIdAsc( user_id_search );
+			users = this.userRepository.findAllByUserIdContainingOrderByUserIdAsc( user_id_search, pageable );
 		}
 		
 		request.setAttribute( "users", users );
