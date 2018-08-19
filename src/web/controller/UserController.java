@@ -33,10 +33,15 @@ public class UserController extends ComController {
 		String error = null ; 
 		
 		if( this.isValid( userId ) && this.isValid( email ) && this.isValid( passwd ) ) { 
-			User user = userService.createUser( request );
-			
+			User user = userRepository.findByUserId( userId ) ;
 			if( null != user ) {
-				return "redirect:/main/index.html" ;
+				error = "이미 존재하는 아이디 입니다.";
+			} else { 
+				user = userService.createUser( request );
+				
+				if( null != user ) {
+					return "redirect:/main/index.html" ;
+				}
 			}
 		} else {
 			error = "잘못된 사용자 정보입니다." ;
@@ -44,6 +49,7 @@ public class UserController extends ComController {
 		
 		request.setAttribute( "login_error_msg", error );
 		request.setAttribute( "error_msg", error );
+		request.setAttribute( "error", error );
 		
 		return "311_user_regi.html";
 	}
