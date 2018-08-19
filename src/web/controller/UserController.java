@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import web.model.User;
+import web.model.UserList;
 
 @RequestMapping("/user")
 @Controller
@@ -66,9 +67,18 @@ public class UserController extends ComController {
 			return forward ; 
 		}
 		
-		var users = this.userRepository.findAllByOrderByUserIdAsc(); 
+		String user_id_search = request.getParameter( "user_id_search" );
+		
+		UserList users = null;
+		
+		if( isEmpty( user_id_search ) ) { 
+			users = this.userRepository.findAllByOrderByUserIdAsc(); 
+		} else {
+			users = this.userRepository.findAllByUserIdContainingOrderByUserIdAsc( user_id_search );
+		}
 		
 		request.setAttribute( "users", users );
+		request.setAttribute( "user_id_search", user_id_search );
 		
 		return "410_manage_user_role.html";
 	}

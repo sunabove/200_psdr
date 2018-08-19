@@ -12,4 +12,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 	
 	UserList findAllByOrderByUserIdAsc();
 	
+	UserList findAllByUserIdContainingOrderByUserIdAsc(String userId);
+	
 }

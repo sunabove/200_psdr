@@ -128,23 +128,23 @@ public class UserService extends CommonService {
 	}
 	
 	public void createTestData( HttpServletRequest request ) {
-		var users = this.userRepository.findAll().iterator();
+		log.info( "createTestData" );
 		
-		int count = 0 ;
+		var count = this.userRepository.count();
 		
-		while( users.hasNext() ) {
-			count ++ ; 
-		}
+		log.info( "count = " + count );
 		
 		if( 200 > count ) {
 			Code userRoleNormal = this.getCode( "USER-ROLE-NORMAL", "사용자", 1 );
 			
-			for( int i = 0 , iLen = 200 - count ; i < iLen ; i ++ ) {
+			for( long i = 0 , iLen = 200 - count ; i < iLen ; i ++ ) {
 				User user = new User(); 
 				user.userId = "test_" + ( i < 10 ? "0" : "" ) + i ;
 				user.email = "test_" + ( i < 10 ? "0" : "" )  + i + "@test.com" ;
 				user.passwd = "test_"  + ( i < 10 ? "0" : "" ) + i ;
 				user.role = userRoleNormal ; 
+				
+				log.info( "save user = " + user );
 				
 				this.userRepository.save( user );
 			}

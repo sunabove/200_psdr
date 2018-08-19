@@ -38,5 +38,20 @@ public class ArrayList<T> extends java.util.ArrayList<T>{
 		
 		return super.get( index );
 	}
-
+	
+	public int [] getPageEmptyRowSequence( ) {
+		int size = this.size() ; 
+		
+		size = 10 - size ; 
+		
+		size = size < 0 ? 0 : size ; 
+		
+		int [] seq = new int[ size ] ;
+		
+		for( int i = 0, iLen = size ; i < iLen ; i ++ ) {
+			seq[ i ] = i ;
+		}
+		
+		return seq;
+	}
 }
