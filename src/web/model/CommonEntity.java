@@ -9,12 +9,14 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Getter;
 import lombok.Setter;
 import web.JsonObject;
+import web.controller.ComController;
 
 @MappedSuperclass
 public abstract class CommonEntity extends JsonObject {
@@ -38,5 +40,9 @@ public abstract class CommonEntity extends JsonObject {
     protected void onUpdate() {
 		if ( this.upDt == null) { upDt = this.getNow() ; }
 	} 
+	
+	public void updateUpUser( HttpServletRequest request ) { 
+		this.upUser = ComController.getLoginUser( request );
+	}
 
 }

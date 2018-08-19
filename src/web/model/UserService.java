@@ -69,7 +69,7 @@ public class UserService extends CommonService {
 		return user ;
 	}
 
-	public User getLoginUser( HttpServletRequest request ) {
+	public User getLoginUserCreateIfNotExist( HttpServletRequest request ) {
 		
 		var debug = true ; 
 		

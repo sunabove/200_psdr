@@ -47,6 +47,7 @@ public abstract class ComController extends WebObject {
 	@Autowired public PropService propService;
 	@Autowired public CodeService codeService;
 	@Autowired public DbFileService dbFileService;
+	@Autowired public ArticleService articleService;
 
 	@Autowired public UserRepository userRepository;
 	@Autowired public CodeRepository codeRepository;
@@ -115,16 +116,20 @@ public abstract class ComController extends WebObject {
 		return request.getMethod().equalsIgnoreCase("POST");
 	}
 
-	protected HttpSession getSession(HttpServletRequest request) {
+	protected static HttpSession getSession(HttpServletRequest request) {
 		if (null == request) {
 			return null;
 		}
 		return request.getSession();
 	}
 
-	public User getLoginUser(HttpServletRequest request) {
+	public static User getLoginUser(HttpServletRequest request) {
+		
+		if( null == request ) {
+			return null ; 
+		}
 
-		HttpSession httpSession = this.getSession(request);
+		HttpSession httpSession = getSession(request);
 
 		if (null == httpSession) {
 			// if the session has been expired
@@ -472,12 +477,12 @@ public abstract class ComController extends WebObject {
 
 		// system name properties
 
-		User loginUser = this.getLoginUser(request);
+		User loginUser = ComController.getLoginUser(request);
 
 		if (loginRequire) {
 
 			if (null == loginUser) {
-				loginUser = userService.getLoginUser(request);
+				loginUser = userService.getLoginUserCreateIfNotExist(request);
 
 				if (null != loginUser) {
 					this.setLoginUser(request, loginUser);
@@ -524,6 +529,8 @@ public abstract class ComController extends WebObject {
 		}
 		
 		this.userService.createTestData( request );
+		
+		this.articleService.createTestData( request );
 	}
 
 }

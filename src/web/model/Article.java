@@ -18,14 +18,16 @@ public class Article extends CommonEntity {
     @JoinColumn( name="board_id" ) 
 	@Getter @Setter public Board board ;
 	
-	@Getter @Setter public Boolean isNotice ;
+	@Column(name = "is_notice")
+	@Getter @Setter public Boolean notice ;
 	
 	@Getter @Setter public String title ;
 	
 	@Lob
 	@Getter @Setter public String content ; 
 	
-	@Getter @Setter public String contentType = "TXT" ;  
+	@Column(name = "content_type")
+	@Getter @Setter public String type = "TXT" ;  
 	
 	public Article() {
 	}

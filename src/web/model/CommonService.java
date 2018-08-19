@@ -15,6 +15,9 @@ public abstract class CommonService extends WebObject {
 	@Autowired public CodeRepository codeRepository;
 	@Autowired public PropRepository propRepository;
 	@Autowired public DbFileRepository dbFileRepository;
+	
+	@Autowired public BoardRepository   boardRepository;
+	@Autowired public ArticleRepository articleRepository;
 
 	public CommonService() {
 	}
@@ -60,6 +63,6 @@ public abstract class CommonService extends WebObject {
 		}
 		
 		return code;
-	}  
+	} 
 
 }
