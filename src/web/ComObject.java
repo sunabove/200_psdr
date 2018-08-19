@@ -29,7 +29,7 @@ public abstract class ComObject implements Serializable {
 		return false ; 
 	} 
 	
-	public final int getCurrYear() {
+	public int getCurrYear() {
 		
 		int currYear = 1900 + new java.util.Date().getYear() ; 
 		
@@ -37,19 +37,19 @@ public abstract class ComObject implements Serializable {
 		
 	}
 	
-	public final Timestamp getNow() {
+	public Timestamp getNow() {
 		
 		return new Timestamp( System.currentTimeMillis() );
 		
 	}
 	
-	public final Timestamp getDateAfterDays( Integer years, Integer months, Integer days ) {
+	public Timestamp getDateAfterDays( Integer years, Integer months, Integer days ) {
 		
 		return getDateAfterDays( this.getNow() , years, months, days );
 		
 	}
 	
-	public final Timestamp getDateAfterDays( Timestamp date, Integer years, Integer months, Integer days  ) {
+	public Timestamp getDateAfterDays( Timestamp date, Integer years, Integer months, Integer days  ) {
 		
 		if( date == null ) {
 			return null;
@@ -76,7 +76,7 @@ public abstract class ComObject implements Serializable {
 		
 	}
 	
-	public final boolean equals( Number i, Number k ) {
+	public boolean equals( Number i, Number k ) {
 		
 		return i != null && k != null && i.equals( k );
 		
@@ -94,13 +94,13 @@ public abstract class ComObject implements Serializable {
 		
 	} 
 	
-	public final boolean isAlphanumeric( String text ) {
+	public boolean isAlphanumeric( String text ) {
 		
 		return StringUtils.isAsciiPrintable( text );
 		
 	}
 	
-	public final String removeSqlWildcardCharacters( String text ) {
+	public String removeSqlWildcardCharacters( String text ) {
 		
 		text = text.replaceAll( "%", "" );  
 		text = text.replaceAll( "\\?", "" );
@@ -109,7 +109,7 @@ public abstract class ComObject implements Serializable {
 		
 	}
 	
-	public final boolean isDateDiffLessMonth( String dateDiff , final int month ) {
+	public boolean isDateDiffLessMonth( String dateDiff , final int month ) {
 		
 		boolean isDiff = true ; 
 		
@@ -137,13 +137,7 @@ public abstract class ComObject implements Serializable {
 		
 	}
 	
-	/**
-	 * checks the object's emptiness
-	 * @param obj
-	 * @return
-	 */
-	
-	public final boolean isValid( Object obj ) {
+	public boolean isValid( Object obj ) {
 		if( null == obj ) {
 			return false ; 
 		} 
@@ -165,7 +159,7 @@ public abstract class ComObject implements Serializable {
 		return text != null && text.trim().length() > 0 ;
 	}
 	
-	public final boolean isOrValid( Object ... objs ) {
+	public boolean isOrValid( Object ... objs ) {
 		if( null == objs ) {
 			return false ; 
 		}
@@ -179,11 +173,11 @@ public abstract class ComObject implements Serializable {
 		 return false ;
 	} 
 	
-	public final boolean isValid( Object ... objs ) {
+	public boolean isValid( Object ... objs ) {
 		return this.isAndValid( objs );
 	}
 	
-	public final boolean isAndValid( Object ... objs ) {
+	public boolean isAndValid( Object ... objs ) {
 		if( null == objs ) {
 			return false ; 
 		}
@@ -197,60 +191,49 @@ public abstract class ComObject implements Serializable {
 		 return true ;
 	} 
 	
-	public final boolean isValid( ArrayList<?> list ) {
+	public boolean isValid( ArrayList<?> list ) {
 		
 		return null != list && 0 < list.size() ; 
 	}
 	
-	public final boolean isEmpty( Object obj ) {
+	public boolean isEmpty( Object obj ) {
 		return ! this.isValid( obj ); 
 	}
 	
-	public final boolean isEmpty( ArrayList<?> list ) {
+	public boolean isEmpty( ArrayList<?> list ) {
 		return ! this.isValid( list ); 
 	} 
 	
-	public final Double parseDouble( String text ) {
+	public Double parseDouble( String text ) {
 		return parseDouble( text, null );
 	}
 	
-	// parse double
-	public final Double parseDouble( String text, Double def ) {
-		
+	public Double parseDouble( String text, Double def ) {
 		try {
 			return Double.parseDouble( text.trim() );
 		} catch ( Exception e) {
 			return def ; 
 		}
-		
 	}
-	// -- parse double
 	
-	// parseInt
-	public final Integer parseInt( String text ) {
+	public Integer parseInt( String text ) {
 		return this.parseInt( text, null );
 	}
 	
-	public final Integer parseInt( String text, Integer def ) {
-		
+	public Integer parseInt( String text, Integer def ) {
 		Double d = parseDouble( text );
 		
 		if( d != null ) {
 			return d.intValue() ;
 		} else {
 			return def ;
-		} 
-		
+		}
 	}
-	// -- parseInt
 	
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 	
-	// parse date
-	public static java.sql.Date parseDate(String dateText) {
-		
+	public java.sql.Date parseDate(String dateText) {
 		try {
-			
 			dateText = null == dateText ? "" : dateText.trim() ; 
 			
 			if( 1 > dateText.length() ) {
@@ -284,13 +267,11 @@ public abstract class ComObject implements Serializable {
 			return null;
 		}
 		
-	}
-	// -- parse date
+	} 
 	
-	// parseTimestamp
-	public static Timestamp parseTimestamp( String dateText ) {
+	public Timestamp parseTimestamp( String dateText ) {
 		
-		java.sql.Date sqlDate = parseDate( dateText ) ;
+		java.sql.Date sqlDate = this.parseDate( dateText ) ;
 		
 		if( null == sqlDate ) {
 			
@@ -304,13 +285,11 @@ public abstract class ComObject implements Serializable {
 		}
 		
 	}
-	// -- parseTimestamp
 	
 	public String getCreatedUuid() { 
 		return this.createUuid(); 
 	}
 	
-	// create guid
 	public String createUuid() {
 		String uuid = UUID.randomUUID().toString();
 
@@ -324,13 +303,12 @@ public abstract class ComObject implements Serializable {
 			return uuid;
 		}
 	}
-	// -- create guid
 	
-	// format
+	private static final Formatter formatter = new Formatter();
+	
 	public String format(String format, Object... args) {
-        return new Formatter().format(format, args).toString();
+        return formatter.format(format, args).toString();
     }
-	// -- format
 	
 	public String f( String format, Object ... args ) {
 		return this.format( format, args);

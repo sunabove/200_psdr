@@ -19,7 +19,6 @@ public abstract class WebObject extends JsonObject {
 	private static final Logger log = LoggerFactory.getLogger( WebObject.class );
 	
 	public WebObject () {
-		
 	}
 	
 	public String urlEncode( String text ) { 
@@ -196,7 +195,7 @@ public abstract class WebObject extends JsonObject {
 				if( null == obj ) {
 					log.info( String.format( "[ %s ]:[%,4d] = %s", "" , rowNo , "null" ) );
 				} else if( null != obj ) { 
-					log.info( String.format( "[ %s ]:[%,4d] = %s" , obj.getClass().getSimpleName() , rowNo, JsonObject.toJsonObject( obj )) );
+					log.info( String.format( "[ %s ]:[%,4d] = %s" , obj.getClass().getSimpleName() , rowNo, this.toJsonObject( obj )) );
 				}
 				rowNo++;
 			}
