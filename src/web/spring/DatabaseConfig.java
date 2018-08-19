@@ -19,12 +19,8 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-public class DatabaseConfig {
-
-    // ------------------------
-    // PUBLIC METHODS
-    // ------------------------
-
+public class DatabaseConfig { 
+	
     @Autowired
     private Environment env;
     @Autowired
@@ -32,10 +28,6 @@ public class DatabaseConfig {
     @Autowired
     private LocalContainerEntityManagerFactoryBean entityManagerFactory;
 
-    /**
-     * DataSource definition for database connection. Settings are read from
-     * the application.properties file (using the env object).
-     */
     @Bean
     public DataSource dataSource() {
         final HikariDataSource ds = new HikariDataSource();
@@ -47,9 +39,6 @@ public class DatabaseConfig {
         return ds;
     }
     
-    /**
-     * Declare the JPA entity manager factory.
-     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactory =
@@ -69,14 +58,12 @@ public class DatabaseConfig {
         additionalProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         additionalProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         additionalProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        
         entityManagerFactory.setJpaProperties(additionalProperties);
 
         return entityManagerFactory;
     }
 
-    /**
-     * Declare the transaction manager.
-     */
     @Bean
     public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -84,13 +71,6 @@ public class DatabaseConfig {
         return transactionManager;
     }
 
-    /**
-     * PersistenceExceptionTranslationPostProcessor is a bean post processor
-     * which adds an advisor to any bean annotated with Repository so that any
-     * platform-specific exceptions are caught and then rethrown as one
-     * Spring's unchecked data access exceptions (i.e. a subclass of
-     * DataAccessException).
-     */
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
