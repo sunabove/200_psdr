@@ -9,6 +9,6 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
 	
 	Article findByNoticeAndDeletedOrderByUpDtDesc( Boolean notice , Boolean deleted );
 	
-	ArticleList findAllByTitleOrderByUpDtDesc(String title, Pageable pageable); 
+	ArticleList findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDesc(String title, Boolean deleted, Pageable pageable); 
 	
 }

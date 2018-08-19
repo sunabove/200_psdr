@@ -27,7 +27,9 @@ public class Article extends CommonEntity {
 	@Getter @Setter public String content ; 
 	
 	@Column(name = "content_type")
-	@Getter @Setter public String type = "TXT" ;  
+	@Getter @Setter public String type = "TXT" ;
+	
+	@Getter @Setter public Integer viewCount = 0 ;
 	
 	public Article() {
 	}

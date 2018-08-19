@@ -18,7 +18,15 @@ public class ArticleService extends CommonService {
 	public ArticleService() {
 	} 
 	
-	public Article saveArticle( Article article, HttpServletRequest request ) {
+	public Article saveArticleOnly( Article article ) {
+		if( null != article ) { 
+			article = this.articleRepository.save( article );
+		}
+		
+		return article;
+	}
+	
+	public Article saveArticleCreateIfNotExist( Article article, HttpServletRequest request ) {
 		String article_id 		= request.getParameter( "article_id" );
 		String article_notice 	= request.getParameter( "article_notice" );
 		String article_title 	= request.getParameter( "article_title" );
@@ -51,11 +59,30 @@ public class ArticleService extends CommonService {
 		
 		article.type = isEmpty( article_type ) ? "TXT" : article_type ;
 		article.content = article_content ;
-		article.notice = "1".equalsIgnoreCase( article_notice );
+		if( isValid( article_notice ) ) { 
+			article.notice = "1".equalsIgnoreCase( article_notice );
+		}
 		
 		article.updateUpUser(request);
 		
 		article = this.articleRepository.save( article );
+		
+		return article ;
+	} 
+	
+	public Article deleteArticle( Article article, HttpServletRequest request ) {
+		String article_id 		= request.getParameter( "article_id" ); 
+		
+		if( null == article && isValid( article_id ) ) {
+			article = this.articleRepository.findByArticleId( article_id ); 
+		}      
+		
+		if( null != article ) { 
+			article.deleted = true ; 
+			article.updateUpUser(request);
+			
+			article = this.articleRepository.save( article );
+		}
 		
 		return article ;
 	} 
@@ -114,6 +141,8 @@ public class ArticleService extends CommonService {
 			
 			for( long i = 1 , iLen = 200 - count ; i < iLen ; i ++ ) {
 				Article article = new Article();
+				
+				article.articleId = this.createUuid();
 				
 				article.notice = 0 == i ; 
 				if( 1 > i ) {

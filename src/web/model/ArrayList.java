@@ -51,8 +51,8 @@ public class ArrayList<T extends CommonEntity> extends java.util.ArrayList<T>{
 		} 
 	}
 	
-	public void setRowNumbers( HttpServletRequest reqeust ) {
-		Integer page = this.parseInt( reqeust.getParameter( "page"), 0 );
+	public void setRowNumbers( HttpServletRequest request ) {
+		Integer page = this.parseInt( request.getParameter( "page"), 0 );
 		
 		int index = 1 ; 
 		for( CommonEntity entity : this ) {

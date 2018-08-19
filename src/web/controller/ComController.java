@@ -24,13 +24,6 @@ import web.gson.TimestampDeserializer;
 
 import web.model.*;
 
-/**
- * Common controller of user web module
- * 
- * @author sunabove
- *
- */
-
 public abstract class ComController extends WebObject {
 
 	private static final long serialVersionUID = -2104510560222014738L;
@@ -55,6 +48,7 @@ public abstract class ComController extends WebObject {
 	@Autowired public DbFileRepository dbFileRepository;
 	
 	@Autowired public BoardRepository boardRepository; 
+	@Autowired public ArticleRepository articleRepository; 
 
 	// constructor
 	public ComController() {
@@ -538,7 +532,7 @@ public abstract class ComController extends WebObject {
 		
 		this.userService.createTestData( request );
 		
-		//this.articleService.createTestData( request );
+		this.articleService.createTestData( request );
 	}
 
 }
