@@ -511,6 +511,14 @@ public abstract class ComController extends WebObject {
 		}
 		
 		request.setAttribute( "req", request );
+		
+		// notice article
+		Article noticeArticle = this.articleService.getNoticeArticleCreateIfNotExist(request);
+		
+		request.setAttribute( "noticeArticle", noticeArticle );
+		session.setAttribute( "noticeArticle", noticeArticle );
+		application.setAttribute( "noticeArticle", noticeArticle );
+		// -- notice article
 
 		if (debug) {
 			log.info( LINE );
@@ -530,7 +538,7 @@ public abstract class ComController extends WebObject {
 		
 		this.userService.createTestData( request );
 		
-		this.articleService.createTestData( request );
+		//this.articleService.createTestData( request );
 	}
 
 }

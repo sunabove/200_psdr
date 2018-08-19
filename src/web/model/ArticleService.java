@@ -60,6 +60,28 @@ public class ArticleService extends CommonService {
 		return article ;
 	} 
 	
+	public Article getNoticeArticleCreateIfNotExist( HttpServletRequest request ) {
+		var notice = true ;
+		var deleted = false ; 
+		Article article = this.articleRepository.findByNoticeAndDeletedOrderByUpDtDesc( notice, deleted );
+		
+		if( null == article ) {
+			article = new Article();
+			
+			article.board = this.getBoardCreateIfNotExist( "1", request );
+			article.title = "PSDR FDW 홈페이지에 오신 것을 환영합니다." ;  
+			article.content = "PSDR FDW 홈페이지에 오신 것을 진심으로 환영합니다."; 
+			
+			article.updateUpUser(request);
+			
+			article = this.articleRepository.save( article );
+			
+			log.info( "save article = " + article );
+		}
+		
+		return article;
+	}
+	
 	public Board getBoardCreateIfNotExist( String boardId , HttpServletRequest request ) {
 		if( isEmpty( boardId ) ) {
 			boardId = "0";
@@ -88,7 +110,7 @@ public class ArticleService extends CommonService {
 		if( 200 > count ) {
 			Board board = this.getBoardCreateIfNotExist( "0" , request );
 			
-			for( long i = 0 , iLen = 200 - count ; i < iLen ; i ++ ) {
+			for( long i = 1 , iLen = 200 - count ; i < iLen ; i ++ ) {
 				Article article = new Article();
 				
 				article.notice = 0 == i ; 
