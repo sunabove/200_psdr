@@ -22,9 +22,13 @@ public class FaultDataController extends ComController {
 	@RequestMapping( value = { "index.html" , "main.html" , "list.html" } )
 	public String dataList( HttpServletRequest request) { 
 		
-		String forward = this.processRequest( request ) ; 
+		var loginRequire = true ;
 		
-		if( null != forward ) {
+		String forward = this.processRequest( request , loginRequire ) ; 
+		
+		String user_id = request.getParameter( "user_id" );
+		
+		if( isValid( user_id ) && this.isValid( forward ) ) {
 			return forward ; 
 		} 
 		

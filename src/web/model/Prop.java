@@ -19,7 +19,7 @@ public class Prop extends CommonEntity {
 	public Prop() {
 	}
 	
-	public String getValueFormat() {
+	public final String getValueFormat() {
 		Integer i = this.parseInt( this.value ) ;
 		
 		if( null != i ) {

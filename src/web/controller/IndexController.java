@@ -20,12 +20,16 @@ public class IndexController extends ComController {
 		
 		String user_id = request.getParameter( "user_id" );
 		
+		var loginUser = this.getLoginUser( request );
+		
 		if( this.isValid( user_id ) ) {
 			return "redirect:/data/index.html" ; 
 		} else if( null != forward ) {
-			return "110_main.html";
+			return "110_main.html" ;  
+		} else if( null != loginUser ) {
+			return "redirect:/data/index.html" ; 
 		} else {
-			return "forward:/data/index.html" ; 
+			return "110_main.html" ;  
 		}
 	} 
 	
