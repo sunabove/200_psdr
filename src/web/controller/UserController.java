@@ -78,6 +78,10 @@ public class UserController extends ComController {
 			users = this.userRepository.findAllByUserIdContainingOrderByUserIdAsc( user_id_search, pageable );
 		}
 		
+		if( null != users ) {
+			users.setRowNumbers( request );
+		}
+		
 		request.setAttribute( "users", users );
 		request.setAttribute( "user_id_search", user_id_search );
 		

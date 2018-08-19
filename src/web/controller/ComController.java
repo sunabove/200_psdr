@@ -510,6 +510,8 @@ public abstract class ComController extends WebObject {
 			request.setAttribute("loginUser", loginUser);
 			request.setAttribute("loginUser_id", loginUser.userId);
 		}
+		
+		request.setAttribute( "req", request );
 
 		if (debug) {
 			log.info( LINE );

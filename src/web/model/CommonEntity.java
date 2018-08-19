@@ -28,6 +28,8 @@ public abstract class CommonEntity extends JsonObject {
 	
 	@Getter @Setter public Boolean deleted = false ;
 	
+	@Getter @Setter public transient int rowNumer = 0 ; 
+	
 	public CommonEntity() {
 	}
 	
