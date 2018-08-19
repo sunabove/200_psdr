@@ -106,11 +106,17 @@ public class UserService extends CommonService {
 			if( null == loginUser ) {
 				loginUser = userRepository.findByEmailAndPasswd(id, passwd);
 				
-				if( null == loginUser ) {
-					request.setAttribute( "login_error_msg", "사용자 정보가 잘못되었습니다." );
+				if( debug ) log.info( "loginUser by email and passwd = " + loginUser );
+				
+				if( null != loginUser && loginUser.deleted ) {
+					loginUser = null ;
+					
+					if( debug ) log.info( "The loginUser is deleted." );
 				}
 				
-				if( debug ) log.info( "loginUser by email and passwd = " + loginUser );
+				if( null == loginUser ) {
+					request.setAttribute( "login_error_msg", "사용자 정보가 잘못되었습니다." );
+				} 
 			}
 		}
 		

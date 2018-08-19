@@ -15,7 +15,7 @@ public class FaultDataController extends ComController {
 
 	private static final long serialVersionUID = 3131679599458841886L;
 
-	public FaultDataController() {
+	public FaultDataController() { 
 		this.loginRequire = true ;
 	}
 
@@ -28,7 +28,7 @@ public class FaultDataController extends ComController {
 		
 		String user_id = request.getParameter( "user_id" );
 		
-		if( isValid( user_id ) && this.isValid( forward ) ) {
+		if( isValid( user_id ) || this.isValid( forward ) ) {
 			return forward ; 
 		} 
 		

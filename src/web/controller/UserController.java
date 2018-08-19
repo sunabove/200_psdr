@@ -17,6 +17,8 @@ public class UserController extends ComController {
 
 	private static final long serialVersionUID = 1096136683760111201L;
 	
+	boolean debug = true ;
+	
 	public UserController() {
 		this.loginRequire = true ; 
 	}
@@ -46,11 +48,21 @@ public class UserController extends ComController {
 		return "311_user_regi.html";
 	}
 	
-	@RequestMapping( value = { "manage_role.html" } )
-	public String manageRole( HttpServletRequest request ) { 
+	@RequestMapping( value = { "manage_role.html", "manage.html" } )
+	public String manage( HttpServletRequest request ) { 
+		var debug = this.debug;
+		
 		var loginRequire = true ;
 		
-		String forward = this.processRequest( request , loginRequire ) ; 
+		String forward = this.processRequest( request , loginRequire ) ;  
+		
+		if( this.isValid( forward ) ) {
+			return forward ; 
+		}
+		
+		var users = this.userRepository.findAllByOrderByUserIdAsc(); 
+		
+		request.setAttribute( "users", users );
 		
 		return "410_manage_user_role.html";
 	}

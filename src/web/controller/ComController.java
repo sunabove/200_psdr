@@ -413,13 +413,7 @@ public abstract class ComController extends WebObject {
 		DbFile dbFile = this.dbFileService.getSystemDbFileByFileId(fileId, this, request);
 
 		return dbFile;
-	}
-
-	public String processRequest(HttpServletRequest request) {
-		boolean loginRequire = this.loginRequire;
-
-		return this.processRequest(request, loginRequire);
-	}
+	} 
 
 	public String processRequest(HttpServletRequest request, boolean loginRequire) {
 
@@ -507,6 +501,7 @@ public abstract class ComController extends WebObject {
 
 		if (loginRequire && null == loginUser) {
 			forward = "312_user_login.html";
+			forward = "forward:/user/login.html";
 		}
 
 		if (null != loginUser) {
@@ -514,8 +509,11 @@ public abstract class ComController extends WebObject {
 			request.setAttribute("loginUser_id", loginUser.userId);
 		}
 
-		if (debug)
-			log.info(this.format("forward = [%s]", forward));
+		if (debug) {
+			log.info( LINE );
+			log.info( "forward = " + forward );
+			log.info( LINE );
+		}
 
 		return forward;
 

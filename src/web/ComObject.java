@@ -304,10 +304,8 @@ public abstract class ComObject implements Serializable {
 		}
 	}
 	
-	private static final Formatter formatter = new Formatter();
-	
 	public String format(String format, Object... args) {
-        return formatter.format(format, args).toString();
+        return String.format(format, args) ;
     }
 	
 	public String f( String format, Object ... args ) {
