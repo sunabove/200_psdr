@@ -21,9 +21,7 @@ public class FileController extends ComController {
 	}
 
 	@RequestMapping( value = "sys/{file_id}", produces = MediaType.IMAGE_PNG_VALUE )
-	public ResponseEntity<byte[]> getImage( 
-			@PathVariable("file_id") String file_id 
-		) {
+	public ResponseEntity<byte[]> getImage( @PathVariable("file_id") String file_id ) {
 
 		byte[] contents = null ;
 		
