@@ -79,9 +79,20 @@ public class ArrayList<T extends CommonEntity> extends java.util.ArrayList<T>{
 	}
 	
 	public int [] getPageEmptyRowSequence( ) {
+		return this.getPageEmptyRowSequence( 10 );
+	}
+	public int [] getPageEmptyRowSequence( String minSizeText ) {
+		Integer minSize = this.parseInt( minSizeText, 10 );
+		
+		return this.getPageEmptyRowSequence( minSize );
+	}
+	
+	public int [] getPageEmptyRowSequence( int minSize ) {
+		minSize = 1 > minSize ? 10 : minSize ;
+		
 		int size = this.size() ; 
 		
-		size = 10 - size ; 
+		size = minSize - size ; 
 		
 		size = size < 0 ? 0 : size ; 
 		

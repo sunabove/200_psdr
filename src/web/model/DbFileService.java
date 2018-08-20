@@ -1,5 +1,12 @@
 package web.model;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +26,92 @@ public class DbFileService extends CommonService {
 	public DbFileService() {
 
 	} 
+	
+	public void checkPsDrFileList( HttpServletRequest request ) {
+		this.checkPsDrFileList( "Comtrade" , request);
+		this.checkPsDrFileList( "Fault" , request);
+	}
+	
+	private void checkPsDrFileList( String gubunCode, HttpServletRequest request ) { 
+		
+		File [] filesNotChecked = this.getFileListNotChecked(gubunCode);
+		
+		for( File file : filesNotChecked ) {
+			String fileId = null;
+			String filePath = null ; 
+			
+			try {
+				fileId = file.getCanonicalPath() ;
+				filePath = file.getCanonicalPath() ;
+			} catch (IOException e) {  
+			}
+			
+			if( null != fileId ) {
+				DbFile dbFile = this.dbFileRepository.findByFileId( fileId );
+				
+				if( null == dbFile ) {
+					dbFile = new DbFile();
+					dbFile.fileId = fileId ; 
+				}
+				
+				dbFile.gubunCode = gubunCode ; 
+				dbFile.fileName = file.getName();
+				dbFile.filePath = filePath ; 
+				
+				dbFile.updateUpUser( request );
+				dbFile.upDt = new Timestamp( file.lastModified() );
+				
+				dbFile = this.dbFileRepository.save( dbFile );
+			}
+			
+		} 
+	}
+	
+	private File [] getFileListNotChecked( String gubunCode ) {
+		
+		Date upDtLatest = null ; 
+		DbFile dbFileLatest = this.dbFileRepository.findFirstByGubunCodeOrderByUpDtDesc( gubunCode );
+		if( null != dbFileLatest ) {
+			upDtLatest = dbFileLatest.upDt ; 
+		}
+		
+		File f = new File( "/home/psdmts/PSDR-XU/" + gubunCode );
+
+		File [] files = f.listFiles();
+		
+		if( null != upDtLatest ) {
+			long lastModified = upDtLatest.getTime() ;
+			
+			java.util.ArrayList<File> filter = new java.util.ArrayList<>() ;
+			
+			for( File file : files ) {
+				if( lastModified < file.lastModified() ) {
+					filter.add( file );
+				}
+			}
+			
+			files = new File[ filter.size() ] ;
+			
+			filter.toArray( files );
+		}
+
+		Arrays.sort( files, new Comparator<File>()
+		{
+		    public int compare(File o1, File o2) {
+
+		        if ( o1.lastModified() > o2.lastModified()) {
+		            return -1;
+		        } else if (o1.lastModified() < o2.lastModified()) {
+		            return +1;
+		        } else {
+		            return 0;
+		        }
+		    }
+
+		});
+		
+		return files ; 
+	}
 	
 	public DbFile getSystemDbFileByFileId( String fileId , ComController controller , HttpServletRequest request ) {
 		DbFile dbFile = this.dbFileRepository.findByFileId( fileId ) ; 

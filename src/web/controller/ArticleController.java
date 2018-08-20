@@ -56,6 +56,10 @@ public class ArticleController extends ComController {
 		
 		String article_id = request.getParameter( "article_id" );
 		
+		if( isEmpty( article_id ) ) {
+			article_id = request.getParameter( "id" );
+		}
+		
 		if( isValid( article_id ) ) {
 			article = this.articleRepository.findByArticleId( article_id );
 		}
