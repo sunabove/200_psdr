@@ -24,8 +24,30 @@ public class DbFileService extends CommonService {
 	private static final long serialVersionUID = -1229350067174850078L;
 
 	public DbFileService() {
-
 	} 
+	
+	public int deleteIfNotExist( HttpServletRequest request , DbFileList dbFileList ) {
+		var debug = true ; 
+		if( debug ) { 
+			log.info( "deleteIfNotExist" );
+		}
+		
+		int count = 0 ; 
+		
+		for( DbFile dbFile : dbFileList ) {
+			if( ! dbFile.isFileExist() ) {
+				dbFile.deleted = true ; 
+				
+				dbFile.updateUpUser( request ); 
+				
+				dbFile = this.dbFileRepository.save( dbFile );
+				
+				count ++ ; 
+			}
+		}
+		
+		return count; 
+	}
 	
 	public void checkPsDrFileList( HttpServletRequest request ) {
 		this.checkPsDrFileList( "Comtrade" , request);
@@ -60,7 +82,7 @@ public class DbFileService extends CommonService {
 				dbFile.filePath = filePath ; 
 				
 				dbFile.updateUpUser( request );
-				dbFile.upDt = new Timestamp( file.lastModified() );
+				dbFile.fileModDt = new Timestamp( file.lastModified() );
 				
 				dbFile = this.dbFileRepository.save( dbFile );
 			}

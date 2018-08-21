@@ -60,12 +60,39 @@ public class FaultDataController extends ComController {
 
 		if (isEmpty(gubun_code)) {
 			gubun_code = "Fault";
+		} 
+		
+		DbFileList dbFileList = this.searchDbFileList(request, search_date, pageable);
+		
+		int deleteCount = this.dbFileService.deleteIfNotExist(request, dbFileList);
+		
+		if( 0 < deleteCount ) {
+			dbFileList = this.searchDbFileList(request, search_date, pageable);
+		}
+		
+		if (null != dbFileList) {
+			dbFileList.setRowNumbers(request);
 		}
 
+		request.setAttribute("gubun_code", gubun_code);
+		request.setAttribute("dbFileList", dbFileList);
+		request.setAttribute("dbFiles", dbFileList);
+
+		return "210_data_list.html";
+	} 
+	
+	private DbFileList searchDbFileList(HttpServletRequest request, Timestamp search_date, Pageable pageable) {
+		var debug = true ; 
+		String gubun_code = request.getParameter("gubun_code");
+
+		if (isEmpty(gubun_code)) {
+			gubun_code = "Fault";
+		} 
+		
 		DbFileList dbFileList = null;
 		
 		if( null == search_date ) { 
-			dbFileList = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByUpDtDesc(gubun_code, false, pageable);
+			dbFileList = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByFileModDtDesc(gubun_code, false, pageable);
 		} else if( null != search_date ) {
 			if( debug ) {
 				log.info( "LINE" );
@@ -77,19 +104,11 @@ public class FaultDataController extends ComController {
 				log.info( "search_date new = " + search_date );
 				log.info( "LINE" );
 			}
-			dbFileList = this.dbFileRepository.findAllByGubunCodeAndUpDtLessThanEqualAndDeletedOrderByUpDtDesc(gubun_code, search_date, false, pageable);
+			dbFileList = this.dbFileRepository.findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDesc(gubun_code, search_date, false, pageable);
 		}
-
-		if (null != dbFileList) {
-			dbFileList.setRowNumbers(request);
-		}
-
-		request.setAttribute("gubun_code", gubun_code);
-		request.setAttribute("dbFileList", dbFileList);
-		request.setAttribute("dbFiles", dbFileList);
-
-		return "210_data_list.html";
-	} 
+		
+		return dbFileList; 
+	}
 
 	@GetMapping("/download/{file_no:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String file_no, HttpServletRequest request) throws Exception {

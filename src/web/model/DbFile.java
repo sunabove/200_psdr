@@ -1,5 +1,8 @@
 package web.model;
 
+import java.io.File;
+import java.sql.Timestamp;
+
 import javax.persistence.*;
 
 import lombok.Getter;
@@ -27,6 +30,8 @@ public class DbFile extends CommonEntity {
 	
 	@Column(length=1000)
 	@Getter @Setter public String filePath ;
+	
+	@Getter @Setter public Timestamp fileModDt ;
 
 	@Lob
 	//@Column( length = 1_000_000_000 )
@@ -36,5 +41,21 @@ public class DbFile extends CommonEntity {
 
 	public DbFile() {
 	} 
+	
+	public boolean isFileExist() {
+		String filePath = this.filePath ;
+		
+		if( isEmpty( filePath ) ) {
+			return false ; 
+		}
+		
+		var valid = false ; 
+		
+		File file = new File( filePath );
+		
+		valid = file.exists();
+		
+		return valid; 
+	}
 
 }
