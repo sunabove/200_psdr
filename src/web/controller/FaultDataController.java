@@ -1,9 +1,13 @@
 package web.controller;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
@@ -17,79 +21,101 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.log4j.Log4j;
+import web.model.DbFile;
 import web.model.DbFileList;
 
 @RequestMapping("/data")
 @Controller
+@Log4j
 public class FaultDataController extends ComController {
 
 	private static final long serialVersionUID = 3131679599458841886L;
 
-	public FaultDataController() { 
-		this.loginRequire = true ;
+	public FaultDataController() {
+		this.loginRequire = true;
 	}
 
-	@RequestMapping( value = { "index.html" , "main.html" , "down.html", "list.html" } )
-	public String dataList( HttpServletRequest request, @PageableDefault(size = 20) Pageable pageable ) { 
-		
-		var loginRequire = true ;
-		
-		String forward = this.processRequest( request , loginRequire ) ; 
-		
-		String user_id = request.getParameter( "user_id" );
-		
-		if( isValid( user_id ) || this.isValid( forward ) ) {
-			return forward ; 
-		} 
-		
+	@RequestMapping(value = { "index.html", "main.html", "down.html", "list.html" })
+	public String dataList(HttpServletRequest request, @PageableDefault(size = 20) Pageable pageable) {
+
+		var loginRequire = true;
+
+		String forward = this.processRequest(request, loginRequire);
+
+		String user_id = request.getParameter("user_id");
+
+		if (isValid(user_id) || this.isValid(forward)) {
+			return forward;
+		}
+
 		this.dbFileService.checkPsDrFileList(request);
-		
-		String gubun_code = request.getParameter( "gubun_code" );
-		
-		if( isEmpty( gubun_code ) ) {
-			gubun_code = "Fault" ;
-		}
-		
-		DbFileList dbFileList = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByUpDtDesc( gubun_code, false, pageable );
-		
-		if( null != dbFileList ) {
-			dbFileList.setRowNumbers( request );
-		}
-		
-		request.setAttribute( "gubun_code", gubun_code );
-		request.setAttribute( "dbFileList", dbFileList );
-		request.setAttribute( "dbFiles", dbFileList );
-		
-		return "210_data_list.html";
-	}
-	
-	@RequestMapping( value = "download.html" , produces = "application/octet-stream" )
-	public HttpEntity<byte[]> serverFile( HttpServletRequest request, HttpServletResponse response ) {
 
-		byte[] contents = null ;
+		String gubun_code = request.getParameter("gubun_code");
+
+		if (isEmpty(gubun_code)) {
+			gubun_code = "Fault";
+		}
+
+		DbFileList dbFileList = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByUpDtDesc(gubun_code, false,
+				pageable);
+
+		if (null != dbFileList) {
+			dbFileList.setRowNumbers(request);
+		}
+
+		request.setAttribute("gubun_code", gubun_code);
+		request.setAttribute("dbFileList", dbFileList);
+		request.setAttribute("dbFiles", dbFileList);
+
+		return "210_data_list.html";
+	} 
+
+	@GetMapping("/download/{file_no:.+}")
+	public ResponseEntity<Resource> downloadFile(@PathVariable String file_no, HttpServletRequest request) throws Exception {
+		var debug = true ; 
 		
-		if( null == contents ) {
-			contents = new byte[ 0 ];
-		} 
+		String filePath = null ; 
 		
-		String fileName = "" ; 
-		
-		String file_id = request.getParameter( "file_id" );
-		
-		if( this.isValid( file_id ) ) {
-			var dbFile = this.dbFileRepository.findByFileId(file_id);
-			if( null != dbFile ) {
-				contents = dbFile.content ; 
+		DbFile dbFile = null ; 
+
+		if (this.isValid( file_no )) {
+			dbFile = this.dbFileRepository.findByFileNo( file_no );
+			if (null != dbFile) {
+				filePath = dbFile.filePath ; 
 			}
 		}
+		
+		File file = new File( filePath ) ; 
+		
+		Resource resource = new UrlResource( file.toURI() );
 
-		HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	    response.setHeader("Content-Disposition", "attachment; filename=" + fileName );
+		// Try to determine file's content type
+		String contentType = null;
+		try {
+			contentType = request.getServletContext().getMimeType( resource.getFile().getAbsolutePath() );
+		} catch (Exception ex) {
+			log.info("Could not determine file type.");
+		}
 
-	    var entity = new HttpEntity<byte[]>( contents, headers); 
-	    
-		return entity ;
+		// Fallback to the default content type if type could not be determined
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
+		
+		var fileName = resource.getFilename() ; 
+		fileName = dbFile.fileName ; 
+		fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+		
+		if( debug ) { 
+			log.info( LINE );
+			log.info( "fileName = " + fileName ); 
+			log.info( LINE );
+		}
+
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+				.body(resource);
 	}
 
 }

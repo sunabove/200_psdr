@@ -52,9 +52,10 @@ public class DbFileService extends CommonService {
 				if( null == dbFile ) {
 					dbFile = new DbFile();
 					dbFile.fileId = fileId ; 
+					dbFile.fileNo = this.createUuid();
 				}
 				
-				dbFile.gubunCode = gubunCode ; 
+				dbFile.gubunCode = gubunCode ;  
 				dbFile.fileName = file.getName();
 				dbFile.filePath = filePath ; 
 				
