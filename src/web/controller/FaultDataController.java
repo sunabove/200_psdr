@@ -1,6 +1,7 @@
 package web.controller;
 
 import java.io.File;
+import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -37,8 +39,11 @@ public class FaultDataController extends ComController {
 	}
 
 	@RequestMapping(value = { "index.html", "main.html", "down.html", "list.html" })
-	public String dataList(HttpServletRequest request, @PageableDefault(size = 20) Pageable pageable) {
+	public String dataList(HttpServletRequest request, @PageableDefault(size = 20) Pageable pageable ,
+			@RequestParam( value="search_date" , required = false ) @DateTimeFormat(pattern="yyyy-MM-dd") Timestamp search_date 
+		) {
 
+		var debug = true ; 
 		var loginRequire = true;
 
 		String forward = this.processRequest(request, loginRequire);
@@ -57,8 +62,23 @@ public class FaultDataController extends ComController {
 			gubun_code = "Fault";
 		}
 
-		DbFileList dbFileList = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByUpDtDesc(gubun_code, false,
-				pageable);
+		DbFileList dbFileList = null;
+		
+		if( null == search_date ) { 
+			dbFileList = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByUpDtDesc(gubun_code, false, pageable);
+		} else if( null != search_date ) {
+			if( debug ) {
+				log.info( "LINE" );
+				log.info( "search_date org = " + search_date );
+				search_date = this.getDateAfterDays( search_date, 0, 0, 1 );
+				search_date.setHours( 0 );
+				search_date.setMinutes( 0 );
+				search_date.setSeconds( 0 );
+				log.info( "search_date new = " + search_date );
+				log.info( "LINE" );
+			}
+			dbFileList = this.dbFileRepository.findAllByGubunCodeAndUpDtLessThanEqualAndDeletedOrderByUpDtDesc(gubun_code, search_date, false, pageable);
+		}
 
 		if (null != dbFileList) {
 			dbFileList.setRowNumbers(request);
