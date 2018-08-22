@@ -37,6 +37,12 @@ public abstract class ComObject implements Serializable {
 		
 	}
 	
+	private static final SimpleDateFormat todayFormat = new SimpleDateFormat("yyyy-MM-dd");  
+	
+	public String getTodayText() {
+		return todayFormat.format( this.getNow() );
+	}
+
 	public Timestamp getNow() {
 		
 		return new Timestamp( System.currentTimeMillis() );

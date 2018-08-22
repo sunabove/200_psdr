@@ -34,4 +34,22 @@ public class Article extends CommonEntity {
 	public Article() {
 	}
 	
+	public String getTitleFormat( int maxSize ) {
+		String title = this.title ; 
+		
+		if( null == title ) {
+			return title; 
+		}
+		
+		var endIndex = maxSize - 4 ; 
+		
+		if( maxSize < title.length() && 0 < endIndex ) {
+			
+			title = title.substring( 0 , endIndex );
+			title += " ...";
+		}
+		
+		return title;
+	}
+	
 }

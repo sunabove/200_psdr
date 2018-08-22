@@ -364,16 +364,16 @@ public abstract class ComController extends WebObject {
 	}
 	// -- show binding errors
 
-	public Prop getConnUserNo() {
-		return this.getConnUserNo(false);
+	public Prop getTotConnUserNo() { 
+		Prop connUserNo = propService.getProp("CONN_USER_NO", "1"); 
+
+		return connUserNo;
 	}
-
-	public Prop getConnUserNo(boolean newConn) {
-		Prop connUserNo = propService.getProp("CONN_USER_NO", "1");
-
-		if (null != connUserNo && newConn) {
-			connUserNo.increaseBy(1);
-		}
+	
+	public Prop getTodayConnUserNo() { 
+		String propId = "CONN_USER_NO-" + this.getTodayText() ;
+		
+		Prop connUserNo = propService.getProp( propId, "1" ); 
 
 		return connUserNo;
 	}
@@ -423,7 +423,8 @@ public abstract class ComController extends WebObject {
 		Prop sysName_02 = propService.getProp("SYS_NAME_02", "성남 전력 지사");
 		Prop sysName_03 = propService.getProp("SYS_NAME_03", "154KV 중원변전소");
 
-		Prop connUserNo = this.getConnUserNo();
+		Prop totConnUserNo = this.getTotConnUserNo();
+		Prop todayConnUserNo = this.getTodayConnUserNo() ; 
 		Prop totDownNo = this.getTotDownNo();
 
 		request.setAttribute("controller", this);
@@ -433,7 +434,8 @@ public abstract class ComController extends WebObject {
 		request.setAttribute("sysName_02", sysName_02);
 		request.setAttribute("sysName_03", sysName_03);
 
-		request.setAttribute("connUserNo", connUserNo);
+		request.setAttribute("totConnUserNo", totConnUserNo);
+		request.setAttribute("todayConnUserNo", todayConnUserNo);
 		request.setAttribute("totDownNo", totDownNo);
 
 		if (true) {
@@ -458,14 +460,16 @@ public abstract class ComController extends WebObject {
 			session.setAttribute("sysName_02", sysName_02);
 			session.setAttribute("sysName_03", sysName_03);
 
-			session.setAttribute("connUserNo", connUserNo);
+			session.setAttribute("totConnUserNo", totConnUserNo);
+			session.setAttribute("todayConnUserNo", todayConnUserNo);
 			session.setAttribute("totDownNo", totDownNo);
 		}
 
 		var application = request.getServletContext();
 
 		if (null != application) {
-			application.setAttribute("connUserNo", connUserNo);
+			application.setAttribute("totConnUserNo", totConnUserNo);
+			application.setAttribute("todayConnUserNo", todayConnUserNo);
 			application.setAttribute("totDownNo", totDownNo);
 		}
 
@@ -481,10 +485,16 @@ public abstract class ComController extends WebObject {
 				if (null != loginUser) {
 					this.setLoginUser(request, loginUser);
 
-					if (null != connUserNo) {
-						connUserNo.increaseBy(1);
-
-						this.propService.saveProp(connUserNo);
+					// set total connection user number
+					if (null != totConnUserNo) {
+						totConnUserNo.increaseBy(1);
+						this.propService.saveProp(totConnUserNo);
+					}
+					
+					// set today connection user number
+					if (null != todayConnUserNo) {
+						todayConnUserNo.increaseBy(1);
+						this.propService.saveProp(todayConnUserNo);
 					}
 
 					forward = "redirect:" + this.getCurrUrlPath(request);
