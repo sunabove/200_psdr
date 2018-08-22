@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.log4j.Log4j;
 import web.model.DbFile;
 import web.model.DbFileList;
+import web.model.DbFileLog;
 
 @RequestMapping("/data")
 @Controller
@@ -158,6 +159,17 @@ public class FaultDataController extends ComController {
 		if (null != totDownNo) {
 			totDownNo.increaseBy(1);
 			this.propService.saveProp( totDownNo );
+		}
+		
+		DbFileLog todayDownNo = this.getTodayDownNo() ; 
+		if( null != todayDownNo ) {
+			if( null == todayDownNo.downloadCount ) {
+				todayDownNo.downloadCount = 0 ; 
+			}
+			
+			todayDownNo.downloadCount += 1;
+			
+			todayDownNo = this.dbFileLogRepository.save( todayDownNo );
 		}
 
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))

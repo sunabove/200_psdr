@@ -384,6 +384,22 @@ public abstract class ComController extends WebObject {
 
 		return totDownNo;
 	}
+	
+	public DbFileLog getTodayDownNo() { 
+		String fileLogId = "TOT_DOWN_NO-" + this.getTodayText() ;
+		
+		var dbFileLog = this.dbFileLogRepository.findByFileLogId(fileLogId);
+		
+		if( null == dbFileLog ) {
+			dbFileLog = new DbFileLog();
+			dbFileLog.fileLogId = fileLogId ;
+			dbFileLog.downloadCount = 0 ; 
+			
+			dbFileLog = this.dbFileLogRepository.save( dbFileLog );
+		}
+
+		return dbFileLog ;
+	}
 
 	public DbFile getSysBgImg_01(HttpServletRequest request) {
 		String fileId = "SYS_BG_IMG_01";
@@ -419,6 +435,7 @@ public abstract class ComController extends WebObject {
 		Prop totConnUserNo = this.getTotConnUserNo();
 		Prop todayConnUserNo = this.getTodayConnUserNo() ; 
 		Prop totDownNo = this.getTotDownNo();
+		DbFileLog todayDownNo = this.getTodayDownNo() ; 
 
 		request.setAttribute("controller", this);
 		request.setAttribute("cont", this);
@@ -430,6 +447,7 @@ public abstract class ComController extends WebObject {
 		request.setAttribute("totConnUserNo", totConnUserNo);
 		request.setAttribute("todayConnUserNo", todayConnUserNo);
 		request.setAttribute("totDownNo", totDownNo);
+		request.setAttribute("todayDownNo", todayDownNo);
 
 		if (true) {
 			var sysBgImg_01 = this.getSysBgImg_01(request);
@@ -456,6 +474,7 @@ public abstract class ComController extends WebObject {
 			session.setAttribute("totConnUserNo", totConnUserNo);
 			session.setAttribute("todayConnUserNo", todayConnUserNo);
 			session.setAttribute("totDownNo", totDownNo);
+			session.setAttribute("todayDownNo", todayDownNo);
 		}
 
 		var application = request.getServletContext();
@@ -464,6 +483,7 @@ public abstract class ComController extends WebObject {
 			application.setAttribute("totConnUserNo", totConnUserNo);
 			application.setAttribute("todayConnUserNo", todayConnUserNo);
 			application.setAttribute("totDownNo", totDownNo);
+			application.setAttribute("todayDownNo", todayDownNo);
 		}
 
 		// system name properties
