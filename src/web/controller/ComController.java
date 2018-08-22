@@ -46,6 +46,7 @@ public abstract class ComController extends WebObject {
 	@Autowired public CodeRepository codeRepository;
 	@Autowired public PropRepository propRepository;
 	@Autowired public DbFileRepository dbFileRepository;
+	@Autowired public DbFileLogRepository dbFileLogRepository;
 	
 	@Autowired public BoardRepository boardRepository; 
 	@Autowired public ArticleRepository articleRepository; 
@@ -378,16 +379,8 @@ public abstract class ComController extends WebObject {
 		return connUserNo;
 	}
 
-	public Prop getTotDownNo() {
-		return this.getTotDownNo(false);
-	}
-
-	public Prop getTotDownNo(boolean newDown) {
-		Prop totDownNo = propService.getProp("TOT_DOWN_NO", "0");
-
-		if (null != totDownNo && newDown) {
-			totDownNo.increaseBy(1);
-		}
+	public Prop getTotDownNo() { 
+		Prop totDownNo = propService.getProp("TOT_DOWN_NO", "0"); 
 
 		return totDownNo;
 	}

@@ -151,6 +151,14 @@ public class FaultDataController extends ComController {
 			log.info( "fileName = " + fileName ); 
 			log.info( LINE );
 		}
+		
+		var totDownNo = this.getTotDownNo() ; 
+		
+		// set today connection user number
+		if (null != totDownNo) {
+			totDownNo.increaseBy(1);
+			this.propService.saveProp( totDownNo );
+		}
 
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
