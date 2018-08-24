@@ -11,8 +11,9 @@ public class Article extends CommonEntity {
 
 	private static final long serialVersionUID = 7669363100960406954L;
 
-	@Id
-	@Getter @Setter public String articleId ;  
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) 
+	@Column( updatable = false, nullable = false)
+	@Getter @Setter public Long articleId ;
 	
 	@ManyToOne
     @JoinColumn( name="board_id" ) 

@@ -5,7 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface ArticleRepository extends PagingAndSortingRepository<Article, String> {
 	
-	Article findByArticleId(String articleId);  
+	Article findByArticleId(Long articleId);   
 	
 	Article findByNoticeAndDeletedOrderByUpDtDesc( Boolean notice , Boolean deleted );
 	

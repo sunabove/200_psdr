@@ -52,11 +52,19 @@ public class ArrayList<T extends CommonEntity> extends java.util.ArrayList<T>{
 	}
 	
 	public void setRowNumbers( HttpServletRequest request ) {
+		this.setRowNumbers(request, 10);
+	}
+	
+	public void setRowNumbers( HttpServletRequest request , Integer size ) {
 		Integer page = this.parseInt( request.getParameter( "page"), 0 );
+		
+		if( null == size ) {
+			size = this.parseInt( request.getParameter( "size"), 10 );
+		}
 		
 		int index = 1 ; 
 		for( CommonEntity entity : this ) {
-			entity.setRowNumer( page*10 + index );
+			entity.setRowNumer( page*size + index );
 			index ++ ; 
 		}
 	}
@@ -66,7 +74,7 @@ public class ArrayList<T extends CommonEntity> extends java.util.ArrayList<T>{
 		
 		page = page < 0 ? 0 : page ;
 		
-		int from = (page/10);
+		int from = (page/10)*10;
 		int to = from + 9 ; 
 		
 		int [] pages = new int[ to - from ] ;

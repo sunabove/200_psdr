@@ -222,6 +222,18 @@ public abstract class ComObject implements Serializable {
 		}
 	}
 	
+	public Long parseLong( String text ) {
+		return parseLong( text, null );
+	}
+	
+	public Long parseLong( String text, Long def ) {
+		try {
+			return Long.parseLong( text.trim() );
+		} catch ( Exception e) {
+			return def ; 
+		}
+	}
+	
 	public Integer parseInt( String text ) {
 		return this.parseInt( text, null );
 	}

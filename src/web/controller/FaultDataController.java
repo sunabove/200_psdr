@@ -40,7 +40,8 @@ public class FaultDataController extends ComController {
 	}
 
 	@RequestMapping(value = { "index.html", "main.html", "down.html", "list.html" })
-	public String dataList(HttpServletRequest request, @PageableDefault(size = 20) Pageable pageable ,
+	public String dataList(HttpServletRequest request, 
+			@PageableDefault(size = 20) Pageable pageable ,
 			@RequestParam( value="search_date" , required = false ) @DateTimeFormat(pattern="yyyy-MM-dd") Timestamp search_date 
 		) {
 
@@ -71,8 +72,15 @@ public class FaultDataController extends ComController {
 			dbFileList = this.searchDbFileList(request, search_date, pageable);
 		}
 		
-		if (null != dbFileList) {
-			dbFileList.setRowNumbers(request);
+		if (null != dbFileList) { 
+			Integer size = null ;
+			if( null != pageable ) {
+				size = pageable.getPageSize();
+			}
+			if( null == size ) {
+				size = 20 ; 
+			}
+			dbFileList.setRowNumbers(request, size);
 		}
 
 		request.setAttribute("gubun_code", gubun_code);

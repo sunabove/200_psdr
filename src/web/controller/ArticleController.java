@@ -54,10 +54,10 @@ public class ArticleController extends ComController {
 		
 		Article article = null ; 
 		
-		String article_id = request.getParameter( "article_id" );
+		Long article_id = this.parseLong( request.getParameter( "article_id" ) );
 		
 		if( isEmpty( article_id ) ) {
-			article_id = request.getParameter( "id" );
+			article_id = this.parseLong( request.getParameter( "id" ) );
 		}
 		
 		if( isValid( article_id ) ) {

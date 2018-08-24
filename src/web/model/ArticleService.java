@@ -27,7 +27,7 @@ public class ArticleService extends CommonService {
 	}
 	
 	public Article saveArticleCreateIfNotExist( Article article, HttpServletRequest request ) {
-		String article_id 		= request.getParameter( "article_id" );
+		Long article_id 		= this.parseLong( request.getParameter( "article_id" ) ); 
 		String article_notice 	= request.getParameter( "article_notice" );
 		String article_title 	= request.getParameter( "article_title" );
 		String article_content 	= request.getParameter( "article_content" );
@@ -41,14 +41,10 @@ public class ArticleService extends CommonService {
 		
 		if( null == article ) {
 			article = new Article();
-		}
-		
-		if( null == article.articleId ) {
-			article.articleId = this.createUuid();
-		}
+		} 
 		
 		if( null == article.board ) {
-			var board = this.getBoardCreateIfNotExist( "1", request );
+			var board = this.getBoardCreateIfNotExist( 0L , request );
 			
 			article.board = board ;
 		}
@@ -58,7 +54,9 @@ public class ArticleService extends CommonService {
 		}
 		
 		article.type = isEmpty( article_type ) ? "TXT" : article_type ;
+		
 		article.content = article_content ;
+		
 		if( isValid( article_notice ) ) { 
 			article.notice = "1".equalsIgnoreCase( article_notice );
 		}
@@ -71,7 +69,7 @@ public class ArticleService extends CommonService {
 	} 
 	
 	public Article deleteArticle( Article article, HttpServletRequest request ) {
-		String article_id 		= request.getParameter( "article_id" ); 
+		Long article_id = this.parseLong( request.getParameter( "article_id" ) ); 
 		
 		if( null == article && isValid( article_id ) ) {
 			article = this.articleRepository.findByArticleId( article_id ); 
@@ -95,9 +93,8 @@ public class ArticleService extends CommonService {
 		if( null == article ) {
 			article = new Article();
 			
-			article.articleId = this.createUuid();
 			article.notice = true ; 
-			article.board = this.getBoardCreateIfNotExist( "1", request );
+			article.board = this.getBoardCreateIfNotExist( 0L , request );
 			article.title = "PSDR FDW 홈페이지에 오신 것을 환영합니다." ;  
 			article.content = "PSDR FDW 홈페이지에 오신 것을 진심으로 환영합니다."; 
 			
@@ -111,9 +108,9 @@ public class ArticleService extends CommonService {
 		return article;
 	}
 	
-	public Board getBoardCreateIfNotExist( String boardId , HttpServletRequest request ) {
+	public Board getBoardCreateIfNotExist( Long boardId , HttpServletRequest request ) {
 		if( isEmpty( boardId ) ) {
-			boardId = "0";
+			boardId = 0L ; 
 		}
 		
 		var board = this.boardRepository.findByBoardId( boardId );
@@ -137,12 +134,10 @@ public class ArticleService extends CommonService {
 		log.info( "count = " + count );
 		
 		if( 200 > count ) {
-			Board board = this.getBoardCreateIfNotExist( "0" , request );
+			Board board = this.getBoardCreateIfNotExist( 0L , request );
 			
 			for( long i = 1 , iLen = 200 - count ; i < iLen ; i ++ ) {
-				Article article = new Article();
-				
-				article.articleId = this.createUuid();
+				Article article = new Article(); 
 				
 				article.notice = 0 == i ; 
 				if( 1 > i ) {
