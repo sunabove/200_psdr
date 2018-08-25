@@ -422,7 +422,7 @@ public abstract class ComController extends WebObject {
 		}
 		if (true) {
 
-			var sysBgImg_02 = this.getSysBgImg_01(request);
+			var sysBgImg_02 = this.getSysBgImg_02(request);
 			if (null != sysBgImg_02 && null != sysBgImg_02.content) {
 				request.setAttribute("sysBgImg_02", sysBgImg_02);
 			}

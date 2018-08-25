@@ -54,5 +54,9 @@ public class DbFile extends EntityCommon {
 		
 		return valid; 
 	}
+	
+	public String getSysFileUrl() {
+		return "/file/sys/" + fileId ; 
+	}
 
 }
