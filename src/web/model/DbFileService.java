@@ -19,7 +19,7 @@ import web.controller.ComController;
 @Transactional
 @Log4j
 
-public class DbFileService extends CommonService { 
+public class DbFileService extends ServicCommon { 
 
 	private static final long serialVersionUID = -1229350067174850078L;
 

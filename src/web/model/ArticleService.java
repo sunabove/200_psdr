@@ -11,7 +11,7 @@ import lombok.extern.log4j.Log4j;
 @Transactional
 @Log4j
 
-public class ArticleService extends CommonService { 
+public class ArticleService extends ServicCommon { 
 
 	private static final long serialVersionUID = -8906663530256522388L;
 

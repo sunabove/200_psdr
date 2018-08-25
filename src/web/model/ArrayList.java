@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ArrayList<T extends CommonEntity> extends java.util.ArrayList<T>{
+public class ArrayList<T extends EntityCommon> extends java.util.ArrayList<T>{
 
 	private static final long serialVersionUID = -2280116744144438187L;
 
@@ -63,7 +63,7 @@ public class ArrayList<T extends CommonEntity> extends java.util.ArrayList<T>{
 		}
 		
 		int index = 1 ; 
-		for( CommonEntity entity : this ) {
+		for( EntityCommon entity : this ) {
 			entity.setRowNumer( page*size + index );
 			index ++ ; 
 		}

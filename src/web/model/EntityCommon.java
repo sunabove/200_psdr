@@ -2,6 +2,7 @@ package web.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -16,10 +17,11 @@ import lombok.Setter;
 import web.WebObject; 
 
 @MappedSuperclass
-public abstract class CommonEntity extends WebObject {
+public abstract class EntityCommon extends WebObject {
 	
 	@OneToOne
 	@JoinColumn( name = "UP_USER_ID" )
+	@Column( length = 191 )
 	@Getter @Setter public User upUser ;
 	
 	@UpdateTimestamp
@@ -29,7 +31,7 @@ public abstract class CommonEntity extends WebObject {
 	
 	@Getter @Setter public transient int rowNumer = 0 ; 
 	
-	public CommonEntity() {
+	public EntityCommon() {
 	}
 	
 	@PreUpdate

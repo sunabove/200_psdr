@@ -10,7 +10,7 @@ import web.WebObject;
 
 @Log4j
 
-public abstract class CommonService extends WebObject { 
+public abstract class ServicCommon extends WebObject { 
 	
 	@Autowired public SysConfig sysConfig ;
 	
@@ -22,7 +22,7 @@ public abstract class CommonService extends WebObject {
 	@Autowired public BoardRepository   boardRepository;
 	@Autowired public ArticleRepository articleRepository;
 
-	public CommonService() {
+	public ServicCommon() {
 	}
 	
 	public User getDefaultSuperUser(HttpServletRequest request ) {

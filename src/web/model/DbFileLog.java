@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 @Table( name = "db_file_log_tbl" )
 
-public class DbFileLog extends CommonEntity {  
+public class DbFileLog extends EntityCommon {  
 
 	private static final long serialVersionUID = 4024002681670288781L;
 

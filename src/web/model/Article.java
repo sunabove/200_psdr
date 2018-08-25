@@ -8,7 +8,7 @@ import lombok.Setter;
 @Entity 
 @Table(name = "article_tbl")
 
-public class Article extends CommonEntity { 
+public class Article extends EntityCommon { 
 
 	private static final long serialVersionUID = 7669363100960406954L;
 
@@ -21,6 +21,7 @@ public class Article extends CommonEntity {
 	@Getter @Setter public Board board ;
 	
 	@OneToOne
+	@Column( length = 191 )
 	@Getter @Setter public User writer ;
 	
 	@Column( name="is_notice" )

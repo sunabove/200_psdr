@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "user_tbl")
 
-public class User extends CommonEntity { 
+public class User extends EntityCommon { 
 	
 	private static final long serialVersionUID = -6023492649132057963L;
 

@@ -13,7 +13,7 @@ import lombok.Setter;
  , indexes = { @Index(name = "file_no_idx", columnList = "file_no") }
 )
 
-public class DbFile extends CommonEntity { 
+public class DbFile extends EntityCommon { 
 	private static final long serialVersionUID = -8745797345335307150L;
 
 	@Id
