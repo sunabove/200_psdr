@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import web.model.*; 
 
@@ -44,11 +45,13 @@ public class ArticleController extends ComController {
 	}
 
 	@RequestMapping(value = { "view.html" })
-	public String articleView(HttpServletRequest request) {
+	public String articleView(HttpServletRequest request, RedirectAttributes ra ) {
 		var loginRequire = true;
 		String forward = this.processRequest(request, loginRequire);
 		
 		if( this.isValid( forward ) ) {
+			ra.addAttribute( "id", request.getParameter( "id") );
+			
 			return forward ; 
 		}
 		
@@ -70,7 +73,7 @@ public class ArticleController extends ComController {
 			article = this.articleService.saveArticleCreateIfNotExist(article, request);
 		} else if( "delete".equalsIgnoreCase( cmd ) ) {
 			article = this.articleService.deleteArticle(article, request);
-		} else {
+		} else if( null != article ) {
 			article.viewCount = null == article.viewCount ? 1 : article.viewCount + 1 ; 
 			
 			this.articleService.saveArticleOnly(article);

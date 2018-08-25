@@ -100,6 +100,10 @@ public class ArticleService extends CommonService {
 			
 			article.updateUpUser(request);
 			
+			if( null == article.upUser ) {
+				article.upUser = this.userRepository.findByUserId( "procom" );
+			}
+			
 			article = this.articleRepository.save( article );
 			
 			log.info( "save article = " + article );
@@ -114,6 +118,7 @@ public class ArticleService extends CommonService {
 		}
 		
 		var board = this.boardRepository.findByBoardId( boardId );
+		
 		if( null == board ) {
 			board = new Board();
 			board.boardId = boardId ;
@@ -128,6 +133,8 @@ public class ArticleService extends CommonService {
 	
 	public void createTestData( HttpServletRequest request ) {
 		log.info( "createTestData" );
+		
+		this.getNoticeArticleCreateIfNotExist( request );
 		
 		var count = this.articleRepository.count();
 		

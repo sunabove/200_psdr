@@ -1,5 +1,6 @@
 package web.model; 
 import javax.persistence.*;
+import javax.servlet.http.HttpServletRequest;
 
 import lombok.Getter;
 import lombok.Setter; 
@@ -33,6 +34,61 @@ public class Article extends CommonEntity {
 	@Getter @Setter public Integer viewCount = 0 ;
 	
 	public Article() {
+	}
+	
+	public boolean isReadonly( HttpServletRequest request ) {
+		return this.isReadOnly( request );
+	}
+	
+	public boolean isReadOnly( HttpServletRequest request ) {
+		return ! this.isUpdatable(request);
+	}
+	
+	public boolean isUpdatable( HttpServletRequest request ) {
+		if( null == this.articleId ) {
+			return true ; 
+		}
+		
+		User loginUser = this.getLoginUser(request);
+		
+		if( null == loginUser ) {
+			return false ; 
+		} else if( null != loginUser && loginUser.isAdmin() ) {
+			return true ; 
+		}
+		
+		User upUser = this.upUser ; 
+		
+		if( null == upUser ) {
+			return false ; 
+		} else if( upUser == loginUser || this.isEqualString( upUser.userId, loginUser.userId ) ) {
+			return true ; 
+		}
+		
+		return false ; 
+	}
+	
+	public boolean isCancellable( HttpServletRequest request ) {
+		if( null == this.articleId ) {
+			return false ; 
+		}
+		
+		return this.isUpdatable(request); 
+	}
+	
+	public boolean isDeletable( HttpServletRequest request ) {
+		if( null == this.articleId ) {
+			return false ; 
+		}
+		
+		return this.isUpdatable(request); 
+	}
+	
+	public String getUpUserId() {
+		if( null != this.upUser ) {
+			return this.upUser.userId ;
+		}
+		return null;
 	}
 	
 	public String getTitleFormat( int maxSize ) {

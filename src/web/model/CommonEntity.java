@@ -42,7 +42,11 @@ public abstract class CommonEntity extends JsonObject {
 	} 
 	
 	public void updateUpUser( HttpServletRequest request ) { 
-		this.upUser = ComController.getLoginUser( request );
+		this.upUser = this.getLoginUser(request);
+	}
+	
+	public User getLoginUser( HttpServletRequest request ) {
+		return ComController.getLoginUser( request ); 
 	}
 
 }
