@@ -6,20 +6,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.PreUpdate; 
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Getter;
-import lombok.Setter;
-import web.JsonObject;
-import web.controller.ComController;
+import lombok.Setter; 
+import web.WebObject; 
 
 @MappedSuperclass
-public abstract class CommonEntity extends JsonObject {
+public abstract class CommonEntity extends WebObject {
 	
 	@OneToOne
 	@JoinColumn( name = "UP_USER_ID" )
@@ -42,11 +39,7 @@ public abstract class CommonEntity extends JsonObject {
 	} 
 	
 	public void updateUpUser( HttpServletRequest request ) { 
-		this.upUser = this.getLoginUser(request);
-	}
-	
-	public User getLoginUser( HttpServletRequest request ) {
-		return ComController.getLoginUser( request ); 
-	}
+		this.upUser = this.getLoginUser(request); 
+	}	
 
 }

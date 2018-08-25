@@ -80,12 +80,12 @@ public class UserService extends CommonService {
 				Code userRoleAdmin  = this.getCode( "USER-ROLE-ADMIN", "관리자" , 0 );
 				Code userRoleNormal = this.getCode( "USER-ROLE-NORMAL", "사용자", 1 );
 				
-				User newUser = new User( "procom", "12345678" , userRoleAdmin ); 
+				User newUser = new User( sysConfig.defaultSupserUserId, sysConfig.defaultSupserUserPasswd , userRoleAdmin ); 
 				newUser.email = "procom@procom.co.kr";
 				
 				this.userRepository.save( newUser );
 	
-				rootUser = userRepository.findByUserId( "procom" );
+				rootUser = userRepository.findByUserId( sysConfig.defaultSupserUserId );
 			}
 		}
 		

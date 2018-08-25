@@ -20,8 +20,11 @@ public class Article extends CommonEntity {
     @JoinColumn( name="board_id" ) 
 	@Getter @Setter public Board board ;
 	
-	@Column(name = "is_notice")
-	@Getter @Setter public Boolean notice ;
+	@OneToOne
+	@Getter @Setter public User writer ;
+	
+	@Column( name="is_notice" )
+	@Getter @Setter public Boolean notice ; 
 	
 	@Getter @Setter public String title ;
 	
@@ -49,7 +52,7 @@ public class Article extends CommonEntity {
 			return true ; 
 		}
 		
-		User loginUser = this.getLoginUser(request);
+		User loginUser = this.getLoginUser(request); 
 		
 		if( null == loginUser ) {
 			return false ; 
@@ -84,9 +87,9 @@ public class Article extends CommonEntity {
 		return this.isUpdatable(request); 
 	}
 	
-	public String getUpUserId() {
-		if( null != this.upUser ) {
-			return this.upUser.userId ;
+	public String getWriterId() {
+		if( null != this.writer ) {
+			return this.writer.userId ;
 		}
 		return null;
 	}

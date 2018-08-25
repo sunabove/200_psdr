@@ -44,6 +44,7 @@ public class ArticleController extends ComController {
 		return "530_article_list.html";
 	}
 
+	// articleView
 	@RequestMapping(value = { "view.html" })
 	public String articleView(HttpServletRequest request, RedirectAttributes ra ) {
 		var loginRequire = true;
@@ -73,6 +74,9 @@ public class ArticleController extends ComController {
 			article = this.articleService.saveArticleCreateIfNotExist(article, request);
 		} else if( "delete".equalsIgnoreCase( cmd ) ) {
 			article = this.articleService.deleteArticle(article, request);
+			
+			forward = "redirect:/article/list.html";
+			
 		} else if( null != article ) {
 			article.viewCount = null == article.viewCount ? 1 : article.viewCount + 1 ; 
 			
@@ -84,13 +88,21 @@ public class ArticleController extends ComController {
 		} 
 		
 		if( null == article ) {
+			var loginUser = this.getLoginUser(request);
 			article = new Article();
 			article.updateUpUser( request );
+			article.writer = loginUser ; 
+			article.notice = null == loginUser ? false : loginUser.isAdmin() ; 
 		}
 		
-		request.setAttribute( "article", article );
+		if( isValid( forward ) ) {
+			return forward ; 
+		} else { 
+			request.setAttribute( "article", article );
 
-		return "540_article_view.html";
+			return "540_article_view.html";
+		}
 	}
+	// -- articleView
 
 }

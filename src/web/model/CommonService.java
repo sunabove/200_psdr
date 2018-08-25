@@ -5,11 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.extern.log4j.Log4j;
+import web.SysConfig;
 import web.WebObject;
 
 @Log4j
 
 public abstract class CommonService extends WebObject { 
+	
+	@Autowired public SysConfig sysConfig ;
 	
 	@Autowired public UserRepository userRepository;
 	@Autowired public CodeRepository codeRepository;
@@ -20,6 +23,11 @@ public abstract class CommonService extends WebObject {
 	@Autowired public ArticleRepository articleRepository;
 
 	public CommonService() {
+	}
+	
+	public User getDefaultSuperUser(HttpServletRequest request ) {
+		User user = this.userRepository.findByUserId( sysConfig.defaultSupserUserId );
+		return user ; 
 	}
 	
 	public Prop getProp( String propId , String def ) {

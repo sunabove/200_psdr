@@ -7,18 +7,57 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import lombok.extern.log4j.Log4j;
+import web.controller.ComController;
+import web.model.User;
+
+@Log4j
 
 public abstract class WebObject extends JsonObject {
 	
 	private static final long serialVersionUID = 7893770244926016334L;
 
 	protected static final String enc = java.nio.charset.StandardCharsets.UTF_8.toString() ;
-	
-	private static final Logger log = LoggerFactory.getLogger( WebObject.class );
+	protected static final String LOGIN_USER_ATTR_NAME = "loginUser";
 	
 	public WebObject () {
+	}
+	
+	protected HttpSession getSession(HttpServletRequest request) {
+		if (null == request) {
+			return null;
+		}
+		return request.getSession();
+	}
+	
+	public User getLoginUser( HttpServletRequest request ) {
+		if( null == request ) {
+			return null ; 
+		}
+
+		HttpSession httpSession = getSession(request);
+
+		if (null == httpSession) {
+			// if the session has been expired
+			String msg = "HTTP SESSION HAS EXPIRED!";
+
+			log.info(msg);
+
+			return null;
+			// -- if the session has been expired
+		} else {
+			// if the session is valid
+			User loginUser = (User) httpSession.getAttribute(LOGIN_USER_ATTR_NAME);
+
+			return loginUser;
+			// -- if the session is valid
+		}
 	}
 	
 	public String urlEncode( String text ) { 

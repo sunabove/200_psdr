@@ -32,8 +32,6 @@ public abstract class ComController extends WebObject {
 
 	private static final boolean debug = true;
 
-	private static final String LOGIN_USER_ATTR_NAME = "loginUser";
-
 	boolean loginRequire = false;
 
 	@Autowired public UserService userService;
@@ -110,40 +108,6 @@ public abstract class ComController extends WebObject {
 	public boolean isPostRequest(HttpServletRequest request) {
 		return request.getMethod().equalsIgnoreCase("POST");
 	}
-
-	protected static HttpSession getSession(HttpServletRequest request) {
-		if (null == request) {
-			return null;
-		}
-		return request.getSession();
-	}
-
-	public static User getLoginUser(HttpServletRequest request) {
-		
-		if( null == request ) {
-			return null ; 
-		}
-
-		HttpSession httpSession = getSession(request);
-
-		if (null == httpSession) {
-			// if the session has been expired
-			String msg = "HTTP SESSION HAS EXPIRED!";
-
-			log.info(msg);
-
-			return null;
-			// -- if the session has been expired
-		} else {
-			// if the session is valid
-			User loginUser = (User) httpSession.getAttribute(LOGIN_USER_ATTR_NAME);
-
-			return loginUser;
-			// -- if the session is valid
-		}
-
-	}
-	// getSessionLoginUser
 
 	public void setLoginUser(HttpServletRequest request, User user) {
 		this.getSession(request).setAttribute(LOGIN_USER_ATTR_NAME, user);
@@ -488,7 +452,7 @@ public abstract class ComController extends WebObject {
 
 		// system name properties
 
-		User loginUser = ComController.getLoginUser(request);
+		User loginUser = this.getLoginUser(request);
 
 		if (loginRequire) {
 
@@ -525,6 +489,8 @@ public abstract class ComController extends WebObject {
 		if (null != loginUser) {
 			request.setAttribute("loginUser", loginUser);
 			request.setAttribute("loginUser_id", loginUser.userId);
+			
+			request.setAttribute("isAdmin", loginUser.isAdmin() );
 		}
 		
 		request.setAttribute( "req", request );

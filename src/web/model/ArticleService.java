@@ -27,7 +27,7 @@ public class ArticleService extends CommonService {
 	}
 	
 	public Article saveArticleCreateIfNotExist( Article article, HttpServletRequest request ) {
-		Long article_id 		= this.parseLong( request.getParameter( "article_id" ) ); 
+		Long   article_id 		= this.parseLong( request.getParameter( "article_id" ) ); 
 		String article_notice 	= request.getParameter( "article_notice" );
 		String article_title 	= request.getParameter( "article_title" );
 		String article_content 	= request.getParameter( "article_content" );
@@ -58,7 +58,13 @@ public class ArticleService extends CommonService {
 		article.content = article_content ;
 		
 		if( isValid( article_notice ) ) { 
-			article.notice = "1".equalsIgnoreCase( article_notice );
+			article.notice = -1 < "1,on".indexOf( article_notice ) ; 
+		} else {
+			article.notice = false ; 
+		}
+		
+		if( null == article.writer ) {
+			article.writer = this.getLoginUser(request);
 		}
 		
 		article.updateUpUser(request);
@@ -88,20 +94,21 @@ public class ArticleService extends CommonService {
 	public Article getNoticeArticleCreateIfNotExist( HttpServletRequest request ) {
 		var notice = true ;
 		var deleted = false ; 
-		Article article = this.articleRepository.findByNoticeAndDeletedOrderByUpDtDesc( notice, deleted );
+		Article article = this.articleRepository.findFirstByNoticeAndDeletedOrderByUpDtDesc( notice, deleted );
 		
 		if( null == article ) {
 			article = new Article();
 			
 			article.notice = true ; 
-			article.board = this.getBoardCreateIfNotExist( 0L , request );
+			article.board = this.getBoardCreateIfNotExist( sysConfig.defaultBoardId , request );
 			article.title = "PSDR FDW 홈페이지에 오신 것을 환영합니다." ;  
 			article.content = "PSDR FDW 홈페이지에 오신 것을 진심으로 환영합니다."; 
+			article.writer = this.getDefaultSuperUser(request);
 			
 			article.updateUpUser(request);
 			
 			if( null == article.upUser ) {
-				article.upUser = this.userRepository.findByUserId( "procom" );
+				article.upUser = this.getDefaultSuperUser(request);
 			}
 			
 			article = this.articleRepository.save( article );
@@ -141,7 +148,7 @@ public class ArticleService extends CommonService {
 		log.info( "count = " + count );
 		
 		if( 200 > count ) {
-			Board board = this.getBoardCreateIfNotExist( 0L , request );
+			Board board = this.getBoardCreateIfNotExist( sysConfig.defaultBoardId , request );
 			
 			for( long i = 1 , iLen = 200 - count ; i < iLen ; i ++ ) {
 				Article article = new Article(); 
@@ -154,6 +161,7 @@ public class ArticleService extends CommonService {
 				}
 				article.content = "test_" + ( i < 10 ? "0" : "" )  + i + "conent" ; 
 				article.board = board ; 
+				article.writer = this.getDefaultSuperUser(request);
 				
 				article.updateUpUser(request);
 				
