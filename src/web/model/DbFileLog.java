@@ -16,7 +16,7 @@ public class DbFileLog extends EntityCommon {
 	private static final long serialVersionUID = 4024002681670288781L;
 
 	@Id
-	@Column(length=1000)
+	@Column(length=191)
 	@Getter @Setter public String fileLogId ;
 
 	@OneToOne 
@@ -25,7 +25,7 @@ public class DbFileLog extends EntityCommon {
 	@OneToOne 
 	@Getter @Setter public DbFile downloadFile ;  
 	
-	@Column(length=1000)
+	@Column(length=191)
 	@Getter @Setter public String filePath ;  
 	
 	@Getter @Setter public Integer fizeSize ;  

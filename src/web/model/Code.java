@@ -17,7 +17,6 @@ public class Code extends EntityCommon {
 	
 	@ManyToOne
     @JoinColumn( name="grp_code_id" ) 
-	@Column( length = 191 )
 	@Getter @Setter public Code grpCode ;
 	
 	@Getter @Setter public String textValue ;	

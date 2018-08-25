@@ -23,7 +23,6 @@ public class User extends EntityCommon {
 	
 	@OneToOne
 	@JoinColumn(name = "roleCode")
-	@Column( length = 191 )
 	@Getter @Setter public Code role ;
 	
 	@Getter @Setter public String name;

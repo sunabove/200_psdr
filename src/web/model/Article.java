@@ -21,7 +21,6 @@ public class Article extends EntityCommon {
 	@Getter @Setter public Board board ;
 	
 	@OneToOne
-	@Column( length = 191 )
 	@Getter @Setter public User writer ;
 	
 	@Column( name="is_notice" )

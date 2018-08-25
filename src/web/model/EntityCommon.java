@@ -21,7 +21,6 @@ public abstract class EntityCommon extends WebObject {
 	
 	@OneToOne
 	@JoinColumn( name = "UP_USER_ID" )
-	@Column( length = 191 )
 	@Getter @Setter public User upUser ;
 	
 	@UpdateTimestamp
