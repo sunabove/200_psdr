@@ -12,6 +12,7 @@ public class Prop extends CommonEntity {
 	private static final long serialVersionUID = -2672345814320804684L;
 
 	@Id
+	@Column( length = 191 )
 	@Getter @Setter public String propId ;  
 	
 	@Getter @Setter public String value ;	

@@ -15,6 +15,7 @@ public class User extends CommonEntity {
 	private static final long serialVersionUID = -6023492649132057963L;
 
 	@Id
+	@Column( length = 191 )
 	@Getter @Setter public String userId ;  
 	
 	@Getter @Setter public String passwd;	
@@ -22,6 +23,7 @@ public class User extends CommonEntity {
 	
 	@OneToOne
 	@JoinColumn(name = "roleCode")
+	@Column( length = 191 )
 	@Getter @Setter public Code role ;
 	
 	@Getter @Setter public String name;

@@ -12,10 +12,12 @@ public class Code extends CommonEntity {
 	private static final long serialVersionUID = -5392925777521538251L;
 
 	@Id
+	@Column( length = 191 )
 	@Getter @Setter public String codeId ;  
 	
 	@ManyToOne
     @JoinColumn( name="grp_code_id" ) 
+	@Column( length = 191 )
 	@Getter @Setter public Code grpCode ;
 	
 	@Getter @Setter public String textValue ;	

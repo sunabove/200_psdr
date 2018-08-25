@@ -17,7 +17,7 @@ public class DbFile extends CommonEntity {
 	private static final long serialVersionUID = -8745797345335307150L;
 
 	@Id
-	@Column(length=1000)
+	@Column( length = 191 )
 	@Getter @Setter public String fileId ;
 
 	@Getter @Setter public String gubunCode ;
