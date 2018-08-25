@@ -20,12 +20,13 @@ public class DbFile extends EntityCommon {
 	@Column( length = 191 )
 	@Getter @Setter public String fileId ;
 
+	@Column( length = 191 )
 	@Getter @Setter public String gubunCode ;
 	
-	@Column( name="file_no" )
+	@Column( name="file_no", length = 191 )
 	@Getter @Setter public String fileNo ;
 
-	@Column(length=255)
+	@Column(length=191)
 	@Getter @Setter public String fileName ;
 	
 	@Column(length=1000)
@@ -33,11 +34,7 @@ public class DbFile extends EntityCommon {
 	
 	@Getter @Setter public Timestamp fileModDt ;
 
-	@Lob
-	//@Column( length = 1_000_000_000 )
-	@Getter
-	@Setter
-	public byte [] content;
+	@Lob @Getter @Setter public byte [] content;
 
 	public DbFile() {
 	} 
