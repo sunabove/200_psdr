@@ -32,7 +32,7 @@ public class ArticleController extends ComController {
 			article_title_search = "";
 		}
 		
-		ArticleList articleList = this.articleRepository.findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDesc( article_title_search, false, pageable );
+		ArticleList articleList = this.articleRepository.findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDescArticleIdAsc( article_title_search, false, pageable );
 		
 		if( null != articleList ) {
 			articleList.setRowNumbers(request);
@@ -93,6 +93,14 @@ public class ArticleController extends ComController {
 			article.updateUpUser( request );
 			article.writer = loginUser ; 
 			article.notice = null == loginUser ? false : loginUser.isAdmin() ; 
+		} else {
+			var articleId = article.articleId;
+			var deleted = false ; 
+			Article articlePrev = this.articleRepository.findFirstByArticleIdLessThanAndDeletedOrderByArticleIdDesc(articleId, deleted);
+			Article articleNext = this.articleRepository.findFirstByArticleIdGreaterThanAndDeletedOrderByArticleIdAsc(articleId, deleted);
+			
+			request.setAttribute( "articlePrev", articlePrev );
+			request.setAttribute( "articleNext", articleNext );
 		}
 		
 		if( isValid( forward ) ) {
