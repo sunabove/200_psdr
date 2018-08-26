@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping("/main")
 @Controller
@@ -12,11 +13,11 @@ public class IndexController extends ComController {
 	private static final long serialVersionUID = -1215549637589312065L;
 
 	@RequestMapping( value = { "index.html" , "main.html" } )
-	public String index( HttpServletRequest request ) {
+	public String index( HttpServletRequest request, RedirectAttributes ra ) {
 		
 		var loginRequire = true ;
 		
-		String forward = this.processRequest( request, loginRequire ) ; 
+		String forward = this.processRequest( request, loginRequire, ra ) ; 
 		
 		String user_id = request.getParameter( "user_id" );
 		

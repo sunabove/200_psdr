@@ -26,11 +26,11 @@ public class SysController extends ComController {
 	}
 
 	@RequestMapping(value = { "index.html", "main.html", "monitor.html" })
-	public String monitor(HttpServletRequest request) {
+	public String monitor(HttpServletRequest request, RedirectAttributes ra) {
 		var loginRequire = this.loginRequire ;
 		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire, adminRequire );
+		String forward = this.processRequest(request, loginRequire, adminRequire, ra );
 
 		if (null != forward) {
 			return forward;
@@ -40,11 +40,11 @@ public class SysController extends ComController {
 	}
 
 	@RequestMapping("user_stat.html")
-	public String userStat(HttpServletRequest request) {
+	public String userStat(HttpServletRequest request, RedirectAttributes ra) {
 		var loginRequire = this.loginRequire ;
 		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire, adminRequire );
+		String forward = this.processRequest(request, loginRequire, adminRequire, ra );
 
 		if (null != forward) {
 			return forward;
@@ -57,7 +57,7 @@ public class SysController extends ComController {
 	public String settingByPost(HttpServletRequest request,
 			@RequestParam( value="sys_bg_img_01_file", required=false ) MultipartFile sys_bg_img_01_file,
 			@RequestParam( value="sys_bg_img_02_file", required=false ) MultipartFile sys_bg_img_02_file,
-			RedirectAttributes redirectAttributes ) {
+			RedirectAttributes ra ) {
 		var debug = true ;
 		if( debug ) {
 			log.info( "LINE" );
@@ -68,7 +68,7 @@ public class SysController extends ComController {
 		var loginRequire = this.loginRequire ;
 		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire, adminRequire );
+		String forward = this.processRequest(request, loginRequire, adminRequire, ra );
 		
 		if (null != forward) {
 			return forward;
@@ -108,12 +108,12 @@ public class SysController extends ComController {
 	}
 
 	@RequestMapping("setting.html")
-	public String settingByGet(HttpServletRequest request ) {
+	public String settingByGet(HttpServletRequest request, RedirectAttributes ra ) {
 		
 		var loginRequire = this.loginRequire ;
 		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire, adminRequire );
+		String forward = this.processRequest(request, loginRequire, adminRequire, ra );
 
 		if (null != forward) {
 			return forward;

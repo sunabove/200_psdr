@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import web.model.User;
 import web.model.UserList;
@@ -27,7 +28,16 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "index.html" , "main.html" , "regi.html" } )
-	public String userRegi( HttpServletRequest request ) { 
+	public String userRegi( HttpServletRequest request, RedirectAttributes ra ) { 
+		
+		var loginRequire = true ;
+		var adminRequire = false ; 
+		
+		String forward = this.processRequest( request , loginRequire, adminRequire, ra ) ;  
+		
+		if( this.isValid( forward ) ) {
+			return forward ; 
+		}
 		
 		String userId 	= request.getParameter( "user_id" );
 		String email 	= request.getParameter( "user_email" );
@@ -58,13 +68,13 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "manage_role.html", "manage.html" } )
-	public String manage( HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable ) { 
+	public String manage( HttpServletRequest request, RedirectAttributes ra, @PageableDefault(size = 10) Pageable pageable ) { 
 		var debug = this.debug; 
 		
 		var loginRequire = true ;
 		var adminRequire = true ; 
 		
-		String forward = this.processRequest( request , loginRequire, adminRequire ) ;  
+		String forward = this.processRequest( request , loginRequire, adminRequire, ra ) ;  
 		
 		if( this.isValid( forward ) ) {
 			return forward ; 
@@ -118,11 +128,16 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "find_id.html" } )
-	public String findId( HttpServletRequest request) { 
+	public String findId( HttpServletRequest request, RedirectAttributes ra) { 
 		
 		var loginRequire = true ;
+		var adminRequire = false ; 
 		
-		String forward = this.processRequest( request , loginRequire ) ; 
+		String forward = this.processRequest( request , loginRequire, adminRequire, ra ) ;  
+		
+		if( this.isValid( forward ) ) {
+			return forward ; 
+		}
 		
 		return "313_user_find_id.html";
 	}

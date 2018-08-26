@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -381,13 +382,24 @@ public abstract class ComController extends WebObject {
 
 		return dbFile;
 	} 
-
-	public String processRequest(HttpServletRequest request, boolean loginRequire) {
+	
+	public String processRequest(HttpServletRequest request, boolean loginRequire ) {
+		RedirectAttributes ra = null ; 
 		var adminRequire = false ; 
-		return this.processRequest(request, loginRequire, adminRequire);
+		return this.processRequest(request, loginRequire, adminRequire, ra);
+	}
+
+	public String processRequest(HttpServletRequest request, boolean loginRequire, RedirectAttributes ra ) {
+		var adminRequire = false ; 
+		return this.processRequest(request, loginRequire, adminRequire, ra );
 	}
 	
 	public String processRequest(HttpServletRequest request, boolean loginRequire, boolean adminRequire ) {
+		RedirectAttributes ra = null ; 
+		return this.processRequest(request, loginRequire, adminRequire, ra);
+	}
+	
+	public String processRequest(HttpServletRequest request, boolean loginRequire, boolean adminRequire, RedirectAttributes ra ) {
 
 		boolean debug = this.debug && true;
 
@@ -396,6 +408,24 @@ public abstract class ComController extends WebObject {
 		}
 
 		String forward = null;
+		
+		if( null != ra ) {
+			// redirect default parameter values
+			String [] paramNames = { "invalid_access" } ;
+			
+			for( String paramName : paramNames ) { 
+				Object paramValue = request.getParameter( paramName );
+				if( isEmpty( paramValue) ) { 
+					paramValue = request.getAttribute( paramName );
+				}
+				
+				if( isValid( paramValue ) ) {
+					ra.addFlashAttribute( paramName, paramValue );
+				}
+			}
+			
+			// -- redirect default parameter values
+		}
 
 		// system name properties
 		Prop sysName_01 = propService.getProp("SYS_NAME_01", "경기 지역 본부");
