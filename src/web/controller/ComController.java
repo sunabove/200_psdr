@@ -33,6 +33,7 @@ public abstract class ComController extends WebObject {
 	private static final boolean debug = true;
 
 	boolean loginRequire = false;
+	boolean adminRequire = false;
 
 	@Autowired public UserService userService;
 	@Autowired public PropService propService;
@@ -382,6 +383,11 @@ public abstract class ComController extends WebObject {
 	} 
 
 	public String processRequest(HttpServletRequest request, boolean loginRequire) {
+		var adminRequire = false ; 
+		return this.processRequest(request, loginRequire, adminRequire);
+	}
+	
+	public String processRequest(HttpServletRequest request, boolean loginRequire, boolean adminRequire ) {
 
 		boolean debug = this.debug && true;
 
@@ -481,9 +487,11 @@ public abstract class ComController extends WebObject {
 		
 		this.createTestData( request ) ; 
 
-		if (loginRequire && null == loginUser) {
+		if( loginRequire && null == loginUser ) {
 			forward = "312_user_login.html";
 			forward = "forward:/user/login.html";
+		} else if( adminRequire && ( null == loginUser || ! loginUser.isAdmin() ) ) { 
+			forward = "redirect:/main/index.html?invalid_access=1" ;  
 		}
 
 		if (null != loginUser) {
@@ -505,6 +513,7 @@ public abstract class ComController extends WebObject {
 
 		if (debug) {
 			log.info( LINE );
+			log.info( "adminRequire = " + adminRequire );
 			log.info( "forward = " + forward );
 			log.info( LINE );
 		}

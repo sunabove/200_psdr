@@ -21,14 +21,16 @@ public class SysController extends ComController {
 	private static final long serialVersionUID = 7435308736508795619L;
 
 	public SysController() {
-		this.loginRequire = true;
+		this.loginRequire = true ;
+		this.adminRequire = true ; 
 	}
 
 	@RequestMapping(value = { "index.html", "main.html", "monitor.html" })
 	public String monitor(HttpServletRequest request) {
-		var loginRequire = this.loginRequire;
+		var loginRequire = this.loginRequire ;
+		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire);
+		String forward = this.processRequest(request, loginRequire, adminRequire );
 
 		if (null != forward) {
 			return forward;
@@ -39,9 +41,10 @@ public class SysController extends ComController {
 
 	@RequestMapping("user_stat.html")
 	public String userStat(HttpServletRequest request) {
-		var loginRequire = this.loginRequire;
+		var loginRequire = this.loginRequire ;
+		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire);
+		String forward = this.processRequest(request, loginRequire, adminRequire );
 
 		if (null != forward) {
 			return forward;
@@ -61,10 +64,12 @@ public class SysController extends ComController {
 			log.info( "settingByPost(...)" );
 			log.info( "LINE" );
 		}
-		var loginRequire = this.loginRequire;
+		
+		var loginRequire = this.loginRequire ;
+		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire);
-
+		String forward = this.processRequest(request, loginRequire, adminRequire );
+		
 		if (null != forward) {
 			return forward;
 		}
@@ -105,9 +110,10 @@ public class SysController extends ComController {
 	@RequestMapping("setting.html")
 	public String settingByGet(HttpServletRequest request ) {
 		
-		var loginRequire = this.loginRequire;
+		var loginRequire = this.loginRequire ;
+		var adminRequire = true ; 
 
-		String forward = this.processRequest(request, loginRequire);
+		String forward = this.processRequest(request, loginRequire, adminRequire );
 
 		if (null != forward) {
 			return forward;

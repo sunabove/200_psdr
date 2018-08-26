@@ -62,8 +62,9 @@ public class UserController extends ComController {
 		var debug = this.debug; 
 		
 		var loginRequire = true ;
+		var adminRequire = true ; 
 		
-		String forward = this.processRequest( request , loginRequire ) ;  
+		String forward = this.processRequest( request , loginRequire, adminRequire ) ;  
 		
 		if( this.isValid( forward ) ) {
 			return forward ; 
