@@ -408,6 +408,7 @@ public abstract class ComController extends WebObject {
 		}
 
 		String forward = null;
+		String error_message = null;
 		
 		if( null != ra ) {
 			// redirect default parameter values
@@ -521,7 +522,8 @@ public abstract class ComController extends WebObject {
 			forward = "312_user_login.html";
 			forward = "forward:/user/login.html";
 		} else if( adminRequire && ( null == loginUser || ! loginUser.isAdmin() ) ) { 
-			forward = "redirect:/main/index.html?invalid_access=1" ;  
+			forward = "040_error_message.html" ;  
+			error_message = "관리자 권한이 필요한 페이지입니다.";
 		}
 
 		if (null != loginUser) {
@@ -530,6 +532,14 @@ public abstract class ComController extends WebObject {
 			
 			request.setAttribute("isAdmin", loginUser.isAdmin() );
 		}
+		
+		String referrer = request.getHeader("referer");
+		
+		log.info( "referrer = " + referrer );
+		
+		request.setAttribute( "referrer", referrer );
+		
+		request.setAttribute( "error_message", error_message );
 		
 		request.setAttribute( "req", request );
 		
