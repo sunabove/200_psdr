@@ -40,6 +40,7 @@ public abstract class ComController extends WebObject {
 	@Autowired public PropService propService;
 	@Autowired public CodeService codeService;
 	@Autowired public DbFileService dbFileService;
+	@Autowired public DbFileLogService dbFileLogService;
 	@Autowired public ArticleService articleService;
 
 	@Autowired public UserRepository userRepository;
@@ -346,25 +347,17 @@ public abstract class ComController extends WebObject {
 	}
 
 	public Prop getTotDownNo() { 
-		Prop totDownNo = propService.getProp("TOT_DOWN_NO", "0"); 
+		Prop totDownNo = propService.getProp( "TOT_DOWN_NO", "0" ); 
 
 		return totDownNo;
 	}
 	
-	public DbFileLog getTodayDownNo() { 
-		String fileLogId = "TOT_DOWN_NO-" + this.getTodayText() ;
-		
-		var dbFileLog = this.dbFileLogRepository.findByFileLogId(fileLogId);
-		
-		if( null == dbFileLog ) {
-			dbFileLog = new DbFileLog();
-			dbFileLog.fileLogId = fileLogId ;
-			dbFileLog.downloadCount = 0 ; 
-			
-			dbFileLog = this.dbFileLogRepository.save( dbFileLog );
-		}
-
-		return dbFileLog ;
+	public DbFileLog getTodayDownLog() { 
+		return this.dbFileLogService.getTodayDownLog();
+	}
+	
+	public DbFileLog getCurrHourDownLog() { 
+		return this.dbFileLogService.getCurrHourFileLog();
 	}
 
 	public DbFile getSysBgImg_01(HttpServletRequest request) {
@@ -436,7 +429,7 @@ public abstract class ComController extends WebObject {
 		Prop totConnUserNo = this.getTotConnUserNo();
 		Prop todayConnUserNo = this.getTodayConnUserNo() ; 
 		Prop totDownNo = this.getTotDownNo();
-		DbFileLog todayDownNo = this.getTodayDownNo() ; 
+		DbFileLog todayDownNo = this.getTodayDownLog() ; 
 
 		request.setAttribute("controller", this);
 		request.setAttribute("cont", this);

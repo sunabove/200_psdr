@@ -169,15 +169,26 @@ public class FaultDataController extends ComController {
 			this.propService.saveProp( totDownNo );
 		}
 		
-		DbFileLog todayDownNo = this.getTodayDownNo() ; 
-		if( null != todayDownNo ) {
-			if( null == todayDownNo.downloadCount ) {
-				todayDownNo.downloadCount = 0 ; 
+		DbFileLog todayDownLog = this.getTodayDownLog() ; 
+		if( null != todayDownLog ) {
+			if( null == todayDownLog.downloadCount ) {
+				todayDownLog.downloadCount = 0 ; 
 			}
 			
-			todayDownNo.downloadCount += 1;
+			todayDownLog.downloadCount += 1;
 			
-			todayDownNo = this.dbFileLogRepository.save( todayDownNo );
+			this.dbFileLogService.save( todayDownLog );
+		}
+		
+		DbFileLog currHour = this.getCurrHourDownLog();
+		if( null != currHour ) {
+			if( null == currHour.downloadCount ) {
+				currHour.downloadCount = 0 ; 
+			}
+			
+			currHour.downloadCount += 1;
+			
+			this.dbFileLogService.save( currHour );
 		}
 
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))

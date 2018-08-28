@@ -42,7 +42,13 @@ public class SysController extends ComController {
 			search_date = this.getTodayText();
 		}
 		
+		String gubun = "HOUR";
+		String fileLogId = "TOT_DOWN_NO-" + search_date ; 
 		
+		DbFileLogList dbFileLogList = this.dbFileLogRepository.findAllByGubunAndFileLogIdStartingWithOrderByFileLogIdAsc(gubun, fileLogId);
+		
+		request.setAttribute( "dbFileLogList", dbFileLogList );
+		request.setAttribute( "dbFileLogs", dbFileLogList );
 		
 		request.setAttribute( "search_date", search_date );
 
