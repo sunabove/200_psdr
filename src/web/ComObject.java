@@ -37,10 +37,16 @@ public abstract class ComObject implements Serializable {
 		
 	}
 	
-	private static final SimpleDateFormat todayFormat = new SimpleDateFormat("yyyy-MM-dd");  
+	private static final SimpleDateFormat todayFormat = new SimpleDateFormat("yyyy-MM-dd");
+	
+	private static final SimpleDateFormat currHourFormat = new SimpleDateFormat("yyyy-MM-dd HH");
 	
 	public String getTodayText() {
 		return todayFormat.format( this.getNow() );
+	}
+	
+	public String getCurrHourText() {
+		return currHourFormat.format( this.getNow() );
 	}
 
 	public Timestamp getNow() {

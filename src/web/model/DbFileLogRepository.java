@@ -11,4 +11,6 @@ public interface DbFileLogRepository extends PagingAndSortingRepository<DbFileLo
 	
 	DbFileLog findByDownloadFile( DbFile downloadFile ); 
 	
+	DbFileLogList findAllByGubunAndFileLogIdStartingWithOrderByFileLogIdAsc(String gubun, String fileLogId);
+	
 }

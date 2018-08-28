@@ -516,7 +516,10 @@ public abstract class ComController extends WebObject {
 			}
 		}
 		
-		this.createTestData( request ) ; 
+		var createTestData = false ;
+		if( createTestData ) { 
+			this.createTestData( request ) ; 
+		}
 
 		if( loginRequire && null == loginUser ) {
 			forward = "312_user_login.html";

@@ -26,7 +26,7 @@ public class SysController extends ComController {
 	}
 
 	@RequestMapping(value = { "index.html", "main.html", "monitor.html" })
-	public String monitor(HttpServletRequest request, RedirectAttributes ra) {
+	public String sysMonitor(HttpServletRequest request, RedirectAttributes ra) {
 		var loginRequire = this.loginRequire ;
 		var adminRequire = true ; 
 
@@ -35,6 +35,16 @@ public class SysController extends ComController {
 		if (null != forward) {
 			return forward;
 		}
+		
+		String search_date = request.getParameter( "search_date" );
+		
+		if( isEmpty( search_date) ) {
+			search_date = this.getTodayText();
+		}
+		
+		
+		
+		request.setAttribute( "search_date", search_date );
 
 		return "420_sys_monitor.html";
 	}

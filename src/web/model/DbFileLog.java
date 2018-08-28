@@ -26,6 +26,9 @@ public class DbFileLog extends EntityCommon {
 	@Getter @Setter public DbFile downloadFile ;  
 	
 	@Column(length=191)
+	@Getter @Setter public String gubun ;  
+	
+	@Column(length=191)
 	@Getter @Setter public String filePath ;  
 	
 	@Getter @Setter public Integer fizeSize ;  
@@ -34,6 +37,7 @@ public class DbFileLog extends EntityCommon {
 	
 	@Getter @Setter public Boolean dowloadResult ;  
 	
+	@Column(length=191)
 	@Getter @Setter public String ipAddr ;  
 	
 	public DbFileLog() {
