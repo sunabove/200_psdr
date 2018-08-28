@@ -42,5 +42,28 @@ public class DbFileLog extends EntityCommon {
 	
 	public DbFileLog() {
 	}  
+	
+	public String getHourIntervalDesc() {
+		String fileLogId = this.fileLogId ;
+		if( null == fileLogId ) {
+			return null; 
+		}
+		
+		String [] data = fileLogId.replaceAll( "TOT-DOWN-NO-", "" ).split( " " ); 
+		
+		if( null == data ) {
+			return null ;  
+		} if( 1 == data.length ) {
+			return data[ 0 ] ; 
+		}
+		
+		String desc = data[ data.length - 1 ] ;
+		
+		int hour = this.parseInt( desc , 0 );
+		
+		desc = desc + ":00" + " ~ " + ( 10 > hour ? "0" : "" ) + ( hour + 1 ) + ":00";
+		
+		return desc ; 
+	}
 
 }
