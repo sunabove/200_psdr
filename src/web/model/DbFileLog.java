@@ -33,7 +33,9 @@ public class DbFileLog extends EntityCommon {
 	
 	@Getter @Setter public Integer fizeSize ;  
 	
-	@Getter @Setter public Integer downloadCount = 0 ;  
+	@Getter @Setter public int accessCount = 0 ;  
+	
+	@Getter @Setter public int downloadCount = 0 ;  
 	
 	@Getter @Setter public Boolean dowloadResult ;  
 	
@@ -61,7 +63,9 @@ public class DbFileLog extends EntityCommon {
 		
 		int hour = this.parseInt( desc , 0 );
 		
-		desc = desc + ":00" + " ~ " + ( 10 > hour ? "0" : "" ) + ( hour + 1 ) + ":00";
+		int toHour = hour + 1 ;
+		
+		desc = desc + ":00" + " ~ " + ( 10 > toHour ? "0" : "" ) + toHour + ":00";
 		
 		return desc ; 
 	}

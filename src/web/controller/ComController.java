@@ -503,6 +503,13 @@ public abstract class ComController extends WebObject {
 						todayConnUserNo.increaseBy(1);
 						this.propService.saveProp(todayConnUserNo);
 					}
+					
+					// increase current access count
+					DbFileLog currHour = this.getCurrHourDownLog();
+					if( null != currHour ) { 
+						currHour.accessCount += 1;						
+						this.dbFileLogService.save( currHour );
+					}
 
 					forward = "redirect:" + this.getCurrUrlPath(request);
 				}

@@ -1,5 +1,7 @@
 package web.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,10 +44,33 @@ public class SysController extends ComController {
 			search_date = this.getTodayText();
 		}
 		
-		String gubun = "HOUR";
-		String fileLogId = "TOT_DOWN_NO-" + search_date ; 
+		final String gubun = "HOUR";
+		final String fileLogId = "TOT_DOWN_NO-" + search_date ; 
 		
-		DbFileLogList dbFileLogList = this.dbFileLogRepository.findAllByGubunAndFileLogIdStartingWithOrderByFileLogIdAsc(gubun, fileLogId);
+		DbFileLogList dbFileLogListOrg = this.dbFileLogRepository.findAllByGubunAndFileLogIdStartingWithOrderByFileLogIdAsc(gubun, fileLogId);
+		
+		HashMap<String, DbFileLog> hashMap = new HashMap<>();
+		for( DbFileLog dbFileLog : dbFileLogListOrg ) {
+			var fileLogIdTemp = dbFileLog.fileLogId ; 
+			if( null != fileLogIdTemp ) { 
+				hashMap.put( fileLogIdTemp, dbFileLog );
+			}
+		}
+		
+		DbFileLogList dbFileLogList = new DbFileLogList() ;
+		
+		for( int i = 0, iLen = 24 ; i < iLen ; i ++ ) {
+			String fileLogIdTemp = fileLogId + " %02d" ;
+			fileLogIdTemp = String.format( fileLogIdTemp, i );
+			
+			DbFileLog dbFileLog = hashMap.get( fileLogIdTemp );
+			if( null == dbFileLog ) {
+				dbFileLog = new DbFileLog();
+				dbFileLog.fileLogId = fileLogIdTemp ; 
+			} 
+			
+			dbFileLogList.add( dbFileLog );
+		}
 		
 		request.setAttribute( "dbFileLogList", dbFileLogList );
 		request.setAttribute( "dbFileLogs", dbFileLogList );

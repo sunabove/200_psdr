@@ -171,21 +171,13 @@ public class FaultDataController extends ComController {
 		
 		DbFileLog todayDownLog = this.getTodayDownLog() ; 
 		if( null != todayDownLog ) {
-			if( null == todayDownLog.downloadCount ) {
-				todayDownLog.downloadCount = 0 ; 
-			}
-			
 			todayDownLog.downloadCount += 1;
 			
 			this.dbFileLogService.save( todayDownLog );
 		}
 		
 		DbFileLog currHour = this.getCurrHourDownLog();
-		if( null != currHour ) {
-			if( null == currHour.downloadCount ) {
-				currHour.downloadCount = 0 ; 
-			}
-			
+		if( null != currHour ) { 
 			currHour.downloadCount += 1;
 			
 			this.dbFileLogService.save( currHour );

@@ -112,4 +112,22 @@ public class ArrayList<T extends EntityCommon> extends java.util.ArrayList<T>{
 		
 		return seq;
 	}
+	
+	public ArrayList<T> getListByOffsetSkip( int offset, int skip ) {
+		offset = 0 > offset ? 0 : offset ;
+		skip = 1 > skip ? 1 : skip ; 
+		
+		int i = offset ;
+		
+		ArrayList<T> list = new ArrayList<>();
+		
+		final int size = this.size() ; 
+
+		while( i < size ) {
+			list.add( this.get( i ) ) ; 
+			i += skip ; 
+		}
+		
+		return list ;  
+	}
 }
