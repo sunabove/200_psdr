@@ -15,6 +15,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -32,29 +34,31 @@ import javax.servlet.MultipartConfigElement;
 import javax.servlet.annotation.MultipartConfig;
 
 import java.nio.charset.Charset;
+import java.util.Properties;
 
 import lombok.extern.log4j.Log4j;
 
 @SpringBootApplication
 @Configuration
-@ComponentScan( basePackages = "web" )
+@ComponentScan(basePackages = "web")
 @EnableAutoConfiguration
 @EnableWebMvc
-@EnableJpaRepositories( "web" )
+@EnableJpaRepositories("web")
 @MultipartConfig
 
 @Log4j
 
 public class Application extends SpringBootServletInitializer implements WebMvcConfigurer {
-	
+
 	public static final String LINE = "#####################################################################################################################";
-	
-	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/" , "file:/opt/tomcat/template/" };
+
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
+			"file:/opt/tomcat/template/" };
 
 	public Application() {
-		log.info( LINE );
+		log.info(LINE);
 		log.info("Application");
-		log.info( LINE );
+		log.info(LINE);
 	}
 
 	@Override
@@ -64,35 +68,36 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		String funName = "addResourceHandlers(ResourceHandlerRegistry registry)" ; 
-		log.info( LINE );
-		log.info( funName );
-		log.info( LINE );
+		String funName = "addResourceHandlers(ResourceHandlerRegistry registry)";
+		log.info(LINE);
+		log.info(funName);
+		log.info(LINE);
 
-		boolean useWebJar = false ;
-		
-		if ( useWebJar && ! registry.hasMappingForPattern("/webjars/**")) {
-			registry.addResourceHandler("/webjars/**").addResourceLocations( "classpath:/META-INF/resources/webjars/" );
+		boolean useWebJar = false;
+
+		if (useWebJar && !registry.hasMappingForPattern("/webjars/**")) {
+			registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 		}
-		
+
 		// resource (css,js,img) resource location
-		if ( ! registry.hasMappingForPattern( "/rsc/**" ) ) {
-			registry.addResourceHandler( "/rsc/**" ).addResourceLocations( "file:/opt/tomcat/template/rsc/" );
+		if (!registry.hasMappingForPattern("/rsc/**")) {
+			registry.addResourceHandler("/rsc/**").addResourceLocations("file:/opt/tomcat/template/rsc/");
 		}
-		
+
 		// Comtrade resource location
-		if ( ! registry.hasMappingForPattern( "/PSDR-XU/Comtrade/**" ) ) {
-			registry.addResourceHandler( "/PSDR-XU/Comtrade/**" ).addResourceLocations( "file:/home/psdmts/PSDR-XU/Comtrade/" );
+		if (!registry.hasMappingForPattern("/PSDR-XU/Comtrade/**")) {
+			registry.addResourceHandler("/PSDR-XU/Comtrade/**")
+					.addResourceLocations("file:/home/psdmts/PSDR-XU/Comtrade/");
 		}
-		
+
 		// Fault resource location
-		if ( ! registry.hasMappingForPattern( "/PSDR-XU/Fault/**" ) ) {
-			registry.addResourceHandler( "/PSDR-XU/Fault/**" ).addResourceLocations( "file:/home/psdmts/PSDR-XU/Fault/" );
+		if (!registry.hasMappingForPattern("/PSDR-XU/Fault/**")) {
+			registry.addResourceHandler("/PSDR-XU/Fault/**").addResourceLocations("file:/home/psdmts/PSDR-XU/Fault/");
 		}
-		
-		log.info( LINE );
-		log.info( "Done. " + funName );
-		log.info( LINE );
+
+		log.info(LINE);
+		log.info("Done. " + funName);
+		log.info(LINE);
 	}
 
 	@Bean
@@ -101,39 +106,57 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 	}
 
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-    @Bean
+	@Bean
 	public Filter characterEncodingFilter() {
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
 		return characterEncodingFilter;
 	}
-	
+
 	@Bean
 	public MultipartConfigElement multipartConfigElement() {
-	    MultipartConfigFactory factory = new MultipartConfigFactory();
+		MultipartConfigFactory factory = new MultipartConfigFactory();
 
-	    int maxUploadFileSize = 1_000_000_000 ; 
-	    
-	    factory.setMaxFileSize( maxUploadFileSize );
-	    factory.setMaxRequestSize( maxUploadFileSize );
+		int maxUploadFileSize = 1_000_000_000;
 
-	    return factory.createMultipartConfig();
+		factory.setMaxFileSize(maxUploadFileSize);
+		factory.setMaxRequestSize(maxUploadFileSize);
+
+		return factory.createMultipartConfig();
 	}
-	
-	@Bean 
+
+	@Bean
 	public MultipartResolver multipartResolver() {
-		return new StandardServletMultipartResolver(); 
+		return new StandardServletMultipartResolver();
 	}
-	
+
 	/*
-	@Bean(name = "filterMultipartResolver")
-	public CommonsMultipartResolver multipartResolver() { 
-	    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-	    resolver.setDefaultEncoding("utf-8");
-	    resolver.setMaxUploadSize( 1_000_000_000 );
-	    return resolver;
-	}*/
+	 * @Bean(name = "filterMultipartResolver") public CommonsMultipartResolver
+	 * multipartResolver() { CommonsMultipartResolver resolver = new
+	 * CommonsMultipartResolver(); resolver.setDefaultEncoding("utf-8");
+	 * resolver.setMaxUploadSize( 1_000_000_000 ); return resolver; }
+	 */
+
+	/*
+	@Bean
+	public JavaMailSender getJavaMailSender() {
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		mailSender.setHost("wsmtp.ecounterp.com");
+		mailSender.setPort(587);
+
+		// mailSender.setUsername("***");
+		// mailSender.setPassword("***");
+
+		Properties props = mailSender.getJavaMailProperties();
+		props.put("mail.transport.protocol", "smtp");
+		props.put("mail.smtp.auth", "false");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.debug", "true");
+
+		return mailSender;
+	}
+	*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
