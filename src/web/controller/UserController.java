@@ -30,7 +30,7 @@ public class UserController extends ComController {
 	@RequestMapping( value = { "index.html" , "main.html" , "regi.html" } )
 	public String userRegi( HttpServletRequest request, RedirectAttributes ra ) { 
 		
-		var loginRequire = true ;
+		var loginRequire = false ;
 		var adminRequire = false ; 
 		
 		String forward = this.processRequest( request , loginRequire, adminRequire, ra ) ;  
