@@ -54,11 +54,11 @@ public class UserController extends ComController {
 				
 				if( null != user ) {
 					return "redirect:/main/index.html" ;
+				} else {
+					error = "잘못된 사용자 정보입니다." ;
 				}
 			}
-		} else {
-			error = "잘못된 사용자 정보입니다." ;
-		}
+		} 
 		
 		request.setAttribute( "login_error_msg", error );
 		request.setAttribute( "error_msg", error );
