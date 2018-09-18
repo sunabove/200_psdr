@@ -61,7 +61,7 @@ public class FaultDataController extends ComController {
 		String gubun_code = request.getParameter("gubun_code");
 
 		if (isEmpty(gubun_code)) {
-			gubun_code = "Fault";
+			gubun_code = "Comtrade";
 		} 
 		
 		DbFileList dbFileList = this.searchDbFileList(request, search_date, pageable);
@@ -95,7 +95,7 @@ public class FaultDataController extends ComController {
 		String gubun_code = request.getParameter("gubun_code");
 
 		if (isEmpty(gubun_code)) {
-			gubun_code = "Fault";
+			gubun_code = "Comtrade";
 		} 
 		
 		DbFileList dbFileList = null;
