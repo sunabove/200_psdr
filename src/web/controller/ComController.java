@@ -35,7 +35,7 @@ public abstract class ComController extends WebObject {
 
 	boolean loginRequire = false;
 	boolean adminRequire = false;
-
+	
 	@Autowired public UserService userService;
 	@Autowired public PropService propService;
 	@Autowired public CodeService codeService;
@@ -63,7 +63,7 @@ public abstract class ComController extends WebObject {
 		binder.registerCustomEditor(Date.class, new CustomTimestampEditor());
 		binder.registerCustomEditor(Timestamp.class, new CustomTimestampEditor());
 	}
-	// -- init binder
+	// -- init binder 
 
 	// getQueryParams
 	public String getQueryParams(HttpServletRequest request) {
@@ -551,13 +551,12 @@ public abstract class ComController extends WebObject {
 		
 		request.setAttribute( "noticeArticle", noticeArticle );
 		session.setAttribute( "noticeArticle", noticeArticle );
-		application.setAttribute( "noticeArticle", noticeArticle );
-		// -- notice article
+		application.setAttribute( "noticeArticle", noticeArticle ); 
 
 		if (debug) {
 			log.info( LINE );
 			log.info( "adminRequire = " + adminRequire );
-			log.info( "forward = " + forward );
+			log.info( "forward = " + forward ); 
 			log.info( LINE );
 		}
 

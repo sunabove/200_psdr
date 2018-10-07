@@ -52,9 +52,6 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 
 	public static final String LINE = "#####################################################################################################################";
 
-	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
-			"file:/opt/tomcat/template/" };
-
 	public Application() {
 		log.info(LINE);
 		log.info("Application");
@@ -73,12 +70,6 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 		log.info(funName);
 		log.info(LINE);
 
-		boolean useWebJar = false;
-
-		if (useWebJar && !registry.hasMappingForPattern("/webjars/**")) {
-			registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-		}
-
 		// resource (css,js,img) resource location
 		if (!registry.hasMappingForPattern("/rsc/**")) {
 			registry.addResourceHandler("/rsc/**").addResourceLocations("file:/opt/tomcat/template/rsc/");
@@ -89,11 +80,11 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 			registry.addResourceHandler("/PSDR-XU/Comtrade/**")
 					.addResourceLocations("file:/home/psdmts/PSDR-XU/Comtrade/");
 		}
-
+		
 		// Fault resource location
 		if (!registry.hasMappingForPattern("/PSDR-XU/Fault/**")) {
 			registry.addResourceHandler("/PSDR-XU/Fault/**").addResourceLocations("file:/home/psdmts/PSDR-XU/Fault/");
-		}
+		}				
 
 		log.info(LINE);
 		log.info("Done. " + funName);
@@ -129,34 +120,7 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 	@Bean
 	public MultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();
-	}
-
-	/*
-	 * @Bean(name = "filterMultipartResolver") public CommonsMultipartResolver
-	 * multipartResolver() { CommonsMultipartResolver resolver = new
-	 * CommonsMultipartResolver(); resolver.setDefaultEncoding("utf-8");
-	 * resolver.setMaxUploadSize( 1_000_000_000 ); return resolver; }
-	 */
-
-	/*
-	@Bean
-	public JavaMailSender getJavaMailSender() {
-		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("wsmtp.ecounterp.com");
-		mailSender.setPort(587);
-
-		// mailSender.setUsername("***");
-		// mailSender.setPassword("***");
-
-		Properties props = mailSender.getJavaMailProperties();
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.auth", "false");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.debug", "true");
-
-		return mailSender;
-	}
-	*/
+	} 
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

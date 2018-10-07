@@ -161,7 +161,7 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "logout.html" } )
-	public String logout( HttpServletRequest request ) {		
+	public String userLogOut( HttpServletRequest request ) {		
 		String id 		= request.getParameter( "user_id" );
 		String passwd 	= request.getParameter( "user_pass" ); 
 		

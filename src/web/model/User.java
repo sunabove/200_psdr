@@ -8,7 +8,13 @@ import lombok.Getter;
 import lombok.Setter; 
 
 @Entity
-@Table(name = "user_tbl")
+@Table(name = "user_tbl",
+		indexes = {
+				@Index(name = "user_tbl_idx_email",  columnList="email", unique = false),
+				@Index(name = "user_tbl_idx_name",  columnList="name", unique = false),
+				@Index(name = "user_tbl_idx_email_uuid", columnList="email_uuid", unique = false)
+			}
+		)
 
 public class User extends EntityCommon { 
 	
@@ -26,6 +32,9 @@ public class User extends EntityCommon {
 	@Getter @Setter public Code role ;
 	
 	@Getter @Setter public String name;
+	
+	@Column( length = 191, name="email_uuid"  )
+	@Getter @Setter public String emailUuid;
 	
 	@Getter @Setter public Timestamp lastLoginDt ;
 	@Getter @Setter public Timestamp lastLogOutDt ;
