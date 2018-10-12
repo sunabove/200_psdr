@@ -69,8 +69,10 @@ public class FaultDataController extends ComController {
 		
 		int deleteCount = this.dbFileService.deleteIfNotExist(request, dbFilePage);
 		
-		if( 0 < deleteCount ) {
+		while( 0 < deleteCount ) {
 			dbFilePage = this.searchDbFileList(request, search_date, pageable);
+			
+			deleteCount = this.dbFileService.deleteIfNotExist(request, dbFilePage);
 		}
 		
 		DbFileList dbFileList = new DbFileList( dbFilePage );
@@ -88,9 +90,10 @@ public class FaultDataController extends ComController {
 		}
 
 		request.setAttribute("gubun_code", gubun_code);
+		request.setAttribute("page", dbFilePage);
 		request.setAttribute("dbFilePage", dbFilePage);
 		request.setAttribute("dbFileList", dbFileList);
-		request.setAttribute("dbFiles", dbFileList);
+		request.setAttribute("dbFiles", dbFileList); 
 
 		return "210_data_list.html";
 	} 
@@ -106,7 +109,7 @@ public class FaultDataController extends ComController {
 		Page<DbFile> dbFilePage = null;
 		
 		if( null == search_date ) { 
-			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByFileModDtDesc(gubun_code, false, pageable);
+			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByFileModDtDescFileName(gubun_code, false, pageable);
 		} else if( null != search_date ) {
 			if( debug ) {
 				log.info( "LINE" );
@@ -118,7 +121,7 @@ public class FaultDataController extends ComController {
 				log.info( "search_date new = " + search_date );
 				log.info( "LINE" );
 			}
-			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDesc(gubun_code, search_date, false, pageable);
+			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDescFileName(gubun_code, search_date, false, pageable);
 		}
 		
 		return dbFilePage; 

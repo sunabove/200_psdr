@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Page;
+
 public class ArrayList<T extends EntityCommon> extends java.util.ArrayList<T>{
 
 	private static final long serialVersionUID = -2280116744144438187L;
@@ -69,13 +71,36 @@ public class ArrayList<T extends EntityCommon> extends java.util.ArrayList<T>{
 		}
 	}
 	
+	public int [] getPageList( Page page ) {
+		if( null == page ) {
+			return this.getPageList( 1, 1 );
+		} else {
+			return this.getPageList(page.getNumber(), page.getTotalPages() );
+		} 
+	}
+	
 	public int [] getPageList( String currPage ) {
 		Integer page = this.parseInt(currPage, 0) ; 
+		
+		return this.getPageList( page, null );
+	}
+	
+	public int [] getPageList( Integer page , Integer maxPage ) { 
+		
+		page = null == page ? 0 : page ; 
 		
 		page = page < 0 ? 0 : page ;
 		
 		int from = (page/10)*10;
 		int to = from + 9 ; 
+		
+		if( null != maxPage ) {
+			to = Math.min( to,  maxPage );
+		}
+		
+		if( to <= from ) {
+			to = from + 1 ; 
+		}
 		
 		int [] pages = new int[ to - from ] ;
 		

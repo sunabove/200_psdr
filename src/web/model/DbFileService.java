@@ -39,7 +39,8 @@ public class DbFileService extends ServicCommon {
 		
 		if( null != dbFileList ) { 
 			for( DbFile dbFile : dbFileList ) {
-				if( ! dbFile.isFileExist() ) {
+				var fileExist = dbFile.isFileExist() ; 
+				if( ! fileExist ) {
 					dbFile.deleted = true ; 
 					
 					dbFile.updateUpUser( request ); 
@@ -80,22 +81,55 @@ public class DbFileService extends ServicCommon {
 					dbFile = new DbFile();
 					dbFile.fileId = fileId ; 
 					dbFile.fileNo = this.createUuid();
+					
+
+					
+					dbFile.gubunCode = gubunCode ;  
+					dbFile.fileName = file.getName();
+					dbFile.filePath = filePath ; 
+					
+					dbFile.updateUpUser( request );
+					dbFile.fileModDt = new Timestamp( file.lastModified() );
+					
+					dbFile = this.dbFileRepository.save( dbFile );
+				} else if( dbFile.deleted ) {
+					dbFile.deleted = false ; 
+					
+					dbFile.updateUpUser( request );
+					dbFile.fileModDt = new Timestamp( file.lastModified() );
+					
+					dbFile = this.dbFileRepository.save( dbFile );
 				}
-				
-				dbFile.gubunCode = gubunCode ;  
-				dbFile.fileName = file.getName();
-				dbFile.filePath = filePath ; 
-				
-				dbFile.updateUpUser( request );
-				dbFile.fileModDt = new Timestamp( file.lastModified() );
-				
-				dbFile = this.dbFileRepository.save( dbFile );
 			}
 			
 		} 
 	}
 	
 	private File [] getFileListNotChecked( String gubunCode ) {
+		
+		File f = new File( "/home/psdmts/PSDR-XU/" + gubunCode );
+
+		File [] files = f.listFiles(); 
+
+		Arrays.sort( files, new Comparator<File>()
+		{
+		    public int compare(File o1, File o2) {
+
+		        if ( o1.lastModified() > o2.lastModified()) {
+		            return -1;
+		        } else if (o1.lastModified() < o2.lastModified()) {
+		            return +1;
+		        } else {
+		            return 0;
+		        }
+		    }
+
+		});
+		
+		return files ; 
+	}
+	
+	private File [] getFileListNotCheckedOld( String gubunCode ) {
 		
 		Date upDtLatest = null ; 
 		DbFile dbFileLatest = this.dbFileRepository.findFirstByGubunCodeOrderByUpDtDesc( gubunCode );
@@ -115,7 +149,7 @@ public class DbFileService extends ServicCommon {
 			for( File file : files ) {
 				if( lastModified < file.lastModified() ) {
 					filter.add( file );
-				}
+				} 
 			}
 			
 			files = new File[ filter.size() ] ;
@@ -139,7 +173,7 @@ public class DbFileService extends ServicCommon {
 		});
 		
 		return files ; 
-	}
+	} 
 	
 	public DbFile getSystemDbFileByFileId( String fileId , ComController controller , HttpServletRequest request ) {
 		DbFile dbFile = this.dbFileRepository.findByFileId( fileId ) ; 

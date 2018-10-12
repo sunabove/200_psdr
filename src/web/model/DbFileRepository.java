@@ -14,9 +14,9 @@ public interface DbFileRepository extends PagingAndSortingRepository<DbFile, Str
 	
 	DbFile findFirstByGubunCodeOrderByUpDtDesc( String gubunCode );
 	
-	Page<DbFile> findAllByGubunCodeAndDeletedOrderByFileModDtDesc( String gubunCode , boolean deleted, Pageable pageable );
+	Page<DbFile> findAllByGubunCodeAndDeletedOrderByFileModDtDescFileName( String gubunCode , boolean deleted, Pageable pageable );
 	
-	Page<DbFile> findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDesc( String gubunCode , Timestamp upDt, boolean deleted, Pageable pageable );
+	Page<DbFile> findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDescFileName( String gubunCode , Timestamp upDt, boolean deleted, Pageable pageable );
 	
 	//findByEndLessThanEqual 
 	
