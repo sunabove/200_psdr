@@ -3,6 +3,7 @@ package web.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -103,18 +104,21 @@ public class UserController extends ComController {
 		
 		String user_id_search = request.getParameter( "user_id_search" );
 		
-		UserList users = null;
+		Page<User> userPage = null ; 
 		
 		if( isEmpty( user_id_search ) ) { 
-			users = this.userRepository.findAllByOrderByUserIdAsc( pageable ); 
+			userPage = this.userRepository.findAllByOrderByUserIdAsc( pageable ); 
 		} else {
-			users = this.userRepository.findAllByUserIdContainingOrderByUserIdAsc( user_id_search, pageable );
+			userPage = this.userRepository.findAllByUserIdContainingOrderByUserIdAsc( user_id_search, pageable );
 		}
+		
+		UserList users = new UserList( userPage );
 		
 		if( null != users ) {
 			users.setRowNumbers( request );
 		}
 		
+		request.setAttribute( "page", userPage );
 		request.setAttribute( "users", users );
 		request.setAttribute( "user_id_search", user_id_search );
 		

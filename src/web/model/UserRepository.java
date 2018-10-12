@@ -1,5 +1,6 @@
 package web.model;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -11,8 +12,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
 	User findByEmailAndPasswd(String email, String passwd); 
 	
-	UserList findAllByOrderByUserIdAsc(Pageable pageable);
+	Page<User> findAllByOrderByUserIdAsc(Pageable pageable);
 	
-	UserList findAllByUserIdContainingOrderByUserIdAsc(String userId , Pageable pageable);
+	Page<User> findAllByUserIdContainingOrderByUserIdAsc(String userId , Pageable pageable);
 	
 }

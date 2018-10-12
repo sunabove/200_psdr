@@ -150,7 +150,7 @@ public class ArticleService extends ServicCommon {
 		if( 200 > count ) {
 			Board board = this.getBoardCreateIfNotExist( sysConfig.defaultBoardId , request );
 			
-			for( long i = 1 , iLen = 200 - count ; i < iLen ; i ++ ) {
+			for( long i = 1 , iLen = 180 - count ; i < iLen ; i ++ ) {
 				Article article = new Article(); 
 				
 				article.notice = 0 == i ; 

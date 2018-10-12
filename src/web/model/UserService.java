@@ -137,7 +137,7 @@ public class UserService extends ServicCommon {
 		if( 200 > count ) {
 			Code userRoleNormal = this.getCode( "USER-ROLE-NORMAL", "사용자", 1 );
 			
-			for( long i = 0 , iLen = 200 - count ; i < iLen ; i ++ ) {
+			for( long i = 0 , iLen = 170 - count ; i < iLen ; i ++ ) {
 				User user = new User(); 
 				user.userId = "test_" + ( i < 10 ? "0" : "" ) + i ;
 				user.email = "test_" + ( i < 10 ? "0" : "" )  + i + "@test.com" ;
