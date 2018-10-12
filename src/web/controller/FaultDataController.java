@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,13 +65,15 @@ public class FaultDataController extends ComController {
 			gubun_code = "Comtrade";
 		} 
 		
-		DbFileList dbFileList = this.searchDbFileList(request, search_date, pageable);
+		Page<DbFile> dbFilePage = this.searchDbFileList(request, search_date, pageable);
 		
-		int deleteCount = this.dbFileService.deleteIfNotExist(request, dbFileList);
+		int deleteCount = this.dbFileService.deleteIfNotExist(request, dbFilePage);
 		
 		if( 0 < deleteCount ) {
-			dbFileList = this.searchDbFileList(request, search_date, pageable);
+			dbFilePage = this.searchDbFileList(request, search_date, pageable);
 		}
+		
+		DbFileList dbFileList = new DbFileList( dbFilePage );
 		
 		if (null != dbFileList) { 
 			Integer size = null ;
@@ -79,18 +82,20 @@ public class FaultDataController extends ComController {
 			}
 			if( null == size ) {
 				size = 20 ; 
-			}
+			} 
+			
 			dbFileList.setRowNumbers(request, size);
 		}
 
 		request.setAttribute("gubun_code", gubun_code);
+		request.setAttribute("dbFilePage", dbFilePage);
 		request.setAttribute("dbFileList", dbFileList);
 		request.setAttribute("dbFiles", dbFileList);
 
 		return "210_data_list.html";
 	} 
 	
-	private DbFileList searchDbFileList(HttpServletRequest request, Timestamp search_date, Pageable pageable) {
+	private Page<DbFile> searchDbFileList(HttpServletRequest request, Timestamp search_date, Pageable pageable) {
 		var debug = true ; 
 		String gubun_code = request.getParameter("gubun_code");
 
@@ -98,10 +103,10 @@ public class FaultDataController extends ComController {
 			gubun_code = "Comtrade";
 		} 
 		
-		DbFileList dbFileList = null;
+		Page<DbFile> dbFilePage = null;
 		
 		if( null == search_date ) { 
-			dbFileList = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByFileModDtDesc(gubun_code, false, pageable);
+			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByFileModDtDesc(gubun_code, false, pageable);
 		} else if( null != search_date ) {
 			if( debug ) {
 				log.info( "LINE" );
@@ -113,10 +118,10 @@ public class FaultDataController extends ComController {
 				log.info( "search_date new = " + search_date );
 				log.info( "LINE" );
 			}
-			dbFileList = this.dbFileRepository.findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDesc(gubun_code, search_date, false, pageable);
+			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDesc(gubun_code, search_date, false, pageable);
 		}
 		
-		return dbFileList; 
+		return dbFilePage; 
 	}
 
 	@GetMapping("/download/{file_no:.+}")

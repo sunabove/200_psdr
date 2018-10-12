@@ -9,6 +9,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ public class DbFileService extends ServicCommon {
 	public DbFileService() {
 	} 
 	
-	public int deleteIfNotExist( HttpServletRequest request , DbFileList dbFileList ) {
+	public int deleteIfNotExist( HttpServletRequest request , Page<DbFile> dbFilePage ) {
 		var debug = true ; 
 		if( debug ) { 
 			log.info( "deleteIfNotExist" );
@@ -34,15 +35,19 @@ public class DbFileService extends ServicCommon {
 		
 		int count = 0 ; 
 		
-		for( DbFile dbFile : dbFileList ) {
-			if( ! dbFile.isFileExist() ) {
-				dbFile.deleted = true ; 
-				
-				dbFile.updateUpUser( request ); 
-				
-				dbFile = this.dbFileRepository.save( dbFile );
-				
-				count ++ ; 
+		java.util.List<DbFile> dbFileList = dbFilePage.getContent() ;
+		
+		if( null != dbFileList ) { 
+			for( DbFile dbFile : dbFileList ) {
+				if( ! dbFile.isFileExist() ) {
+					dbFile.deleted = true ; 
+					
+					dbFile.updateUpUser( request ); 
+					
+					dbFile = this.dbFileRepository.save( dbFile );
+					
+					count ++ ; 
+				}
 			}
 		}
 		

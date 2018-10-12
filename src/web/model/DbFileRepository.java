@@ -2,6 +2,7 @@ package web.model;
 
 import java.sql.Timestamp;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -13,9 +14,9 @@ public interface DbFileRepository extends PagingAndSortingRepository<DbFile, Str
 	
 	DbFile findFirstByGubunCodeOrderByUpDtDesc( String gubunCode );
 	
-	DbFileList findAllByGubunCodeAndDeletedOrderByFileModDtDesc( String gubunCode , boolean deleted, Pageable pageable );
+	Page<DbFile> findAllByGubunCodeAndDeletedOrderByFileModDtDesc( String gubunCode , boolean deleted, Pageable pageable );
 	
-	DbFileList findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDesc( String gubunCode , Timestamp upDt, boolean deleted, Pageable pageable );
+	Page<DbFile> findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDesc( String gubunCode , Timestamp upDt, boolean deleted, Pageable pageable );
 	
 	//findByEndLessThanEqual 
 	
