@@ -1,5 +1,6 @@
 package web.model;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -13,6 +14,6 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
 	
 	Article findFirstByNoticeAndDeletedOrderByUpDtDesc( Boolean notice , Boolean deleted );
 	
-	ArticleList findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDescArticleIdAsc(String title, Boolean deleted, Pageable pageable); 
+	Page<Article> findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDescArticleIdAsc(String title, Boolean deleted, Pageable pageable); 
 	
 }

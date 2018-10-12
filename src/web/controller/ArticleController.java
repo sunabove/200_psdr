@@ -2,6 +2,7 @@ package web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -32,12 +33,15 @@ public class ArticleController extends ComController {
 			article_title_search = "";
 		}
 		
-		ArticleList articleList = this.articleRepository.findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDescArticleIdAsc( article_title_search, false, pageable );
+		Page<Article> articlePage = this.articleRepository.findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDescArticleIdAsc( article_title_search, false, pageable );
+		
+		ArticleList articleList = new ArticleList( articlePage );
 		
 		if( null != articleList ) {
 			articleList.setRowNumbers(request);
 		}
 		
+		request.setAttribute( "page", articlePage );
 		request.setAttribute( "articleList", articleList );
 		request.setAttribute( "articles", articleList );
 
