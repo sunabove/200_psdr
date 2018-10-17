@@ -1,6 +1,9 @@
 package web.controller;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
@@ -161,7 +164,7 @@ public class FaultDataController extends ComController {
 		
 		var fileName = resource.getFilename() ; 
 		fileName = dbFile.fileName ; 
-		fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+		fileName = this.getEncodedDownLoadFileName(request, fileName);
 		
 		if( debug ) { 
 			log.info( LINE );

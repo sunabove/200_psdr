@@ -1,5 +1,8 @@
 package web.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -573,6 +576,74 @@ public abstract class ComController extends WebObject {
 		this.userService.createTestData( request );
 		
 		this.articleService.createTestData( request );
+	}
+	
+	public String getBrowserName(HttpServletRequest request) {
+
+		String header = request.getHeader("User-Agent");
+		
+		log.info( "header = " + header ); 
+
+		if (header.indexOf("Edge") > -1) {
+			return "Edge";
+		}else if (header.indexOf("MSIE") > -1) {
+			return "MSIE";
+		} else if (header.indexOf("Trident") > -1) {
+			return "Trident";
+		} else if (header.indexOf("Chrome") > -1) {
+			return "Chrome";
+		} else if (header.indexOf("Opera") > -1) {
+			return "Opera";
+		} else if (header.indexOf("Safari") > -1) {
+			return "Safari";
+		}
+
+		return "Firefox";
+	}
+	
+	protected String getEncodedDownLoadFileName( HttpServletRequest request, String fileName ) {
+		String encodedFileName = fileName ;
+		try {
+			encodedFileName = this.getEncodedDownLoadFileNameImpl( request, fileName );
+		} catch( Exception e ) {
+			try {
+				encodedFileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+			} catch (UnsupportedEncodingException e1) { 
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		return encodedFileName;
+	}
+	
+	protected String getEncodedDownLoadFileNameImpl( HttpServletRequest request, String fileName ) throws Exception {
+		String browser = this.getBrowserName(request);
+		String encodedFileName = null; 
+	      
+         if ( browser.equalsIgnoreCase("MSIE") || browser.equalsIgnoreCase("Edge")  ) {
+        	 encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+         } else if (browser.equalsIgnoreCase("Trident")) {       
+        	 // IE11 문자열 깨짐 방지
+        	 encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+         } else if (browser.equalsIgnoreCase("Firefox")) {
+        	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1") + "\"";
+        	 encodedFileName = URLDecoder.decode(encodedFileName);
+         } else if (browser.equalsIgnoreCase("Opera")) {
+        	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1") + "\"";
+         } else if (browser.equalsIgnoreCase("Chrome")) { 
+        	 encodedFileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+         } else if (browser.equalsIgnoreCase("Safari")){
+        	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1")+ "\"";
+        	 encodedFileName = URLDecoder.decode(encodedFileName);
+         } else {
+        	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1")+ "\"";
+         }
+         
+         log.info( "browser = " + browser );
+         log.info( "encodedFileName = " + encodedFileName );
+         
+         return encodedFileName ; 
 	}
 
 }
