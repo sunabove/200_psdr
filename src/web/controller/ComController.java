@@ -567,19 +567,7 @@ public abstract class ComController extends WebObject {
 	}
 	// -- processRequest
 	
-	private void createTestData( HttpServletRequest request ) {
-		var test = true ;
-		if( ! test ) {
-			return ; 
-		}
-		
-		this.userService.createTestData( request );
-		
-		this.articleService.createTestData( request );
-	}
-	
 	public String getBrowserName(HttpServletRequest request) {
-
 		String header = request.getHeader("User-Agent");
 		
 		log.info( "header = " + header ); 
@@ -624,7 +612,6 @@ public abstract class ComController extends WebObject {
          if ( browser.equalsIgnoreCase("MSIE") || browser.equalsIgnoreCase("Edge")  ) {
         	 encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
          } else if (browser.equalsIgnoreCase("Trident")) {       
-        	 // IE11 문자열 깨짐 방지
         	 encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
          } else if (browser.equalsIgnoreCase("Firefox")) {
         	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1") + "\"";
@@ -645,5 +632,16 @@ public abstract class ComController extends WebObject {
          
          return encodedFileName ; 
 	}
+	
+	private void createTestData( HttpServletRequest request ) {
+		var test = true ;
+		if( ! test ) {
+			return ; 
+		}
+		
+		this.userService.createTestData( request );
+		
+		this.articleService.createTestData( request );
+	}	
 
 }
