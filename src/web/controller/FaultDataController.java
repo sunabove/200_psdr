@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,9 +69,8 @@ public class FaultDataController extends ComController {
 			gubun_code = "Comtrade";
 		} 
 		
-		Page<DbFile> dbFilePage = this.searchDbFileList(request, search_date, pageable);
-		
-		int deleteCount = this.dbFileService.deleteIfNotExist(request, dbFilePage);
+		Page<DbFile> dbFilePage = null ;		
+		int deleteCount = 1 ;
 		
 		while( 0 < deleteCount ) {
 			dbFilePage = this.searchDbFileList(request, search_date, pageable);
@@ -111,8 +111,14 @@ public class FaultDataController extends ComController {
 		
 		Page<DbFile> dbFilePage = null;
 		
+		List<String> fileExts = new java.util.ArrayList<>();
+		fileExts.add( "DAT" );
+		fileExts.add( "TRGL" );
+		
+		boolean deleted = false ; 
+		
 		if( null == search_date ) { 
-			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndDeletedOrderByFileModDtDescFileName(gubun_code, false, pageable);
+			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndDeletedAndFileExtInOrderByFileModDtDescFileName(gubun_code, deleted, fileExts, pageable);
 		} else if( null != search_date ) {
 			if( debug ) {
 				log.info( "LINE" );
@@ -124,7 +130,7 @@ public class FaultDataController extends ComController {
 				log.info( "search_date new = " + search_date );
 				log.info( "LINE" );
 			}
-			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedOrderByFileModDtDescFileName(gubun_code, search_date, false, pageable);
+			dbFilePage = this.dbFileRepository.findAllByGubunCodeAndFileModDtLessThanEqualAndDeletedAndFileExtInOrderByFileModDtDescFileName(gubun_code, search_date, deleted, fileExts, pageable);
 		}
 		
 		return dbFilePage; 

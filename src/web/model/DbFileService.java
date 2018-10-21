@@ -79,14 +79,21 @@ public class DbFileService extends ServicCommon {
 				
 				if( null == dbFile ) {
 					dbFile = new DbFile();
+					String fileName = file.getName();
+					String fileExt = "";
+					
+					if( this.isValid( fileName ) ) {
+						fileExt = fileName.substring( fileName.lastIndexOf( "." ) + 1 ) ;
+						fileExt = fileExt.toUpperCase();
+					}
+					
 					dbFile.fileId = fileId ; 
 					dbFile.fileNo = this.createUuid();
 					
-
-					
 					dbFile.gubunCode = gubunCode ;  
-					dbFile.fileName = file.getName();
-					dbFile.filePath = filePath ; 
+					dbFile.fileName = fileName ;
+					dbFile.filePath = filePath ;
+					dbFile.fileExt  = fileExt ;
 					
 					dbFile.updateUpUser( request );
 					dbFile.fileModDt = new Timestamp( file.lastModified() );

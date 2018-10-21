@@ -10,7 +10,9 @@ import lombok.Setter;
 
 @Entity
 @Table( name = "db_file_tbl"
- , indexes = { @Index(name = "file_no_idx", columnList = "file_no") }
+ , indexes = { @Index(name = "file_no_idx", columnList = "file_no") ,
+		 @Index(name = "file_no_ext", columnList = "file_ext")
+ 		}
 )
 
 public class DbFile extends EntityCommon { 
@@ -31,6 +33,9 @@ public class DbFile extends EntityCommon {
 	
 	@Column(length=1000)
 	@Getter @Setter public String filePath ;
+	
+	@Column( name="file_ext", length=191)
+	@Getter @Setter public String fileExt ;
 	
 	@Getter @Setter public Timestamp fileModDt ;
 
