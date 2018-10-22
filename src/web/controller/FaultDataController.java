@@ -32,6 +32,7 @@ import lombok.extern.log4j.Log4j;
 import web.model.DbFile;
 import web.model.DbFileList;
 import web.model.DbFileLog;
+import web.model.DbFileRepository;
 
 @RequestMapping("/data")
 @Controller
@@ -69,6 +70,8 @@ public class FaultDataController extends ComController {
 			gubun_code = "Comtrade";
 		} 
 		
+		boolean isComtrade = "Comtrade".equalsIgnoreCase( gubun_code ) ; 
+		
 		Page<DbFile> dbFilePage = null ;		
 		int deleteCount = 1 ;
 		
@@ -90,6 +93,21 @@ public class FaultDataController extends ComController {
 			} 
 			
 			dbFileList.setRowNumbers(request, size);
+			
+			if( isComtrade ) {
+				for( DbFile dbFile : dbFileList ) {
+					DbFileRepository dbFileRepository = this.dbFileRepository ;
+					String pairFileId = dbFile.fileId ;
+					int index = pairFileId.lastIndexOf( "." );
+					if( -1 < index ) { 
+						pairFileId = pairFileId.substring( 0, index ) + ".cfg" ; 
+						DbFile pairDbFile = dbFileRepository.findByFileId( pairFileId ) ;
+						if( null != pairDbFile ) {
+							dbFile.setPairDbFile(pairDbFile); 
+						}
+					}			
+				}
+			}
 		}
 
 		request.setAttribute("gubun_code", gubun_code);

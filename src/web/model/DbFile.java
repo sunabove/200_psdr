@@ -40,9 +40,21 @@ public class DbFile extends EntityCommon {
 	@Getter @Setter public Timestamp fileModDt ;
 
 	@Lob @Getter @Setter public byte [] content;
+	
+	@Getter @Setter public transient DbFile pairDbFile ;
 
 	public DbFile() {
-	} 
+	}
+	
+	public String getPairFileNo() {
+		DbFile pairDbFile = this.pairDbFile ;
+		
+		if( null == pairDbFile ) {
+			return null ; 
+		} else {
+			return pairDbFile.getFileNo() ;
+		}
+	}
 	
 	public boolean isFileExist() {
 		String filePath = this.filePath ;
