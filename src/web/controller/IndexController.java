@@ -20,10 +20,11 @@ public class IndexController extends ComController {
 		String forward = this.processRequest( request, loginRequire, ra ) ; 
 		
 		String user_id = request.getParameter( "user_id" );
+		String user_pass = request.getParameter( "user_pass" );
 		
 		var loginUser = this.getLoginUser( request );
 		
-		if( this.isValid( user_id ) ) {
+		if( this.isValid( user_id ) || this.isValid( user_pass ) ) {
 			return "redirect:/data/index.html" ; 
 		} else if( null != forward ) {
 			return "110_main.html" ;  

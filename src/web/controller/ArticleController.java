@@ -9,10 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lombok.extern.log4j.Log4j;
 import web.model.*; 
 
 @RequestMapping("/article")
 @Controller
+@Log4j
+
 public class ArticleController extends ComController {
 
 	private static final long serialVersionUID = -5704084995590809168L;
@@ -33,7 +36,7 @@ public class ArticleController extends ComController {
 			article_title_search = "";
 		}
 		
-		Page<Article> articlePage = this.articleRepository.findAllByTitleContainingAndDeletedOrderByNoticeDescUpDtDescArticleIdAsc( article_title_search, false, pageable );
+		Page<Article> articlePage = this.articleRepository.findAllByTitleContainingAndDeletedOrderByNoticeDescSaveDtDescArticleIdAsc( article_title_search, false, pageable );
 		
 		ArticleList articleList = new ArticleList( articlePage );
 		
@@ -51,6 +54,7 @@ public class ArticleController extends ComController {
 	// articleView
 	@RequestMapping(value = { "view.html" })
 	public String articleView(HttpServletRequest request, RedirectAttributes ra ) {
+		var debug = true ;
 		var loginRequire = true;
 		String forward = this.processRequest(request, loginRequire);
 		
@@ -82,9 +86,17 @@ public class ArticleController extends ComController {
 			forward = "redirect:/article/list.html";
 			
 		} else if( null != article ) {
+			if( debug ) {
+				log.info( "prev article saveDt = " + article.saveDt );
+			}
+			
 			article.viewCount = null == article.viewCount ? 1 : article.viewCount + 1 ; 
 			
 			this.articleService.saveArticleOnly(article);
+			
+			if( debug ) {
+				log.info( "curr article saveDt = " + article.saveDt );
+			}
 		}
 		
 		if( null != article && article.deleted ) {

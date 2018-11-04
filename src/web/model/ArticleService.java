@@ -69,6 +69,8 @@ public class ArticleService extends ServicCommon {
 		
 		article.updateUpUser(request);
 		
+		article.saveDt = this.getNow();
+		
 		article = this.articleRepository.save( article );
 		
 		return article ;
@@ -94,7 +96,7 @@ public class ArticleService extends ServicCommon {
 	public Article getNoticeArticleCreateIfNotExist( HttpServletRequest request ) {
 		var notice = true ;
 		var deleted = false ; 
-		Article article = this.articleRepository.findFirstByNoticeAndDeletedOrderByUpDtDesc( notice, deleted );
+		Article article = this.articleRepository.findFirstByNoticeAndDeletedOrderBySaveDtDesc( notice, deleted );
 		
 		if( null == article ) {
 			article = new Article();

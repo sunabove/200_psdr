@@ -1,4 +1,6 @@
 package web.model; 
+import java.sql.Timestamp;
+
 import javax.persistence.*;
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +37,8 @@ public class Article extends EntityCommon {
 	@Getter @Setter public String type = "TXT" ;
 	
 	@Getter @Setter public Integer viewCount = 0 ;
+	
+	@Getter @Setter public Timestamp saveDt ;
 	
 	public Article() {
 	}

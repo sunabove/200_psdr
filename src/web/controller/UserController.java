@@ -126,10 +126,12 @@ public class UserController extends ComController {
 	}
 	
 	@RequestMapping( value = { "login.html" } )
-	public String userLogin( HttpServletRequest request ) {  
+	public String userLogin( HttpServletRequest request ) {
+		
+		request.setAttribute( "showLoginId", sysConfig.showLoginId );
 		
 		return "312_user_login.html";
-	}
+	} 
 	
 	@RequestMapping( value = { "find_id.html" } )
 	public String findId( HttpServletRequest request, RedirectAttributes ra) { 

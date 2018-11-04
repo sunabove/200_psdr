@@ -19,6 +19,8 @@ import web.WebObject;
 @MappedSuperclass
 public abstract class EntityCommon extends WebObject {
 	
+	private static final long serialVersionUID = 1965816637576317996L;
+
 	@OneToOne
 	@JoinColumn( name = "UP_USER_ID" )
 	@Getter @Setter public User upUser ;
@@ -36,7 +38,9 @@ public abstract class EntityCommon extends WebObject {
 	@PreUpdate
     @PrePersist
     protected void onUpdate() {
-		if ( this.upDt == null) { upDt = this.getNow() ; }
+		if ( null == this.upDt ) { 
+			upDt = this.getNow() ; 
+		}
 	} 
 	
 	public void updateUpUser( HttpServletRequest request ) { 

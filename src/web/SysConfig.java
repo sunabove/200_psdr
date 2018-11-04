@@ -16,6 +16,10 @@ public class SysConfig extends JsonObject {
 	
 	@Getter @Setter public Long defaultBoardId = 1L ;
 	
+	@Getter @Setter public boolean showLoginId = false ;
+	
+	@Getter @Setter public String defaultAdminId = "procom" ;
+	
 	public SysConfig() {
 	}
 

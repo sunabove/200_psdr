@@ -74,7 +74,7 @@ public class UserService extends ServicCommon {
 		var debug = true ; 
 		
 		if( true ) { 
-			User rootUser = userRepository.findByUserId( "procom" );
+			User rootUser = userRepository.findByUserId( sysConfig.defaultAdminId );
 			
 			if (null == rootUser) {
 				Code userRoleAdmin  = this.getCode( "USER-ROLE-ADMIN", "관리자" , 0 );
@@ -95,8 +95,13 @@ public class UserService extends ServicCommon {
 		User loginUser = null;
 		
 		if( this.isEmpty( id ) ) {
-			if( debug ) log.info( "loginUse id is empty." );
-		} else if( this.isEmpty( passwd ) ) {
+			if( debug ) { 
+				log.info( "loginUse id is empty. set is as a default admin id." );
+			}
+			id = sysConfig.defaultAdminId ;
+		} 
+		
+		if( this.isEmpty( passwd ) ) {
 			if( debug ) log.info( "loginUse password is empty." );
 		} else if( this.isValid( id ) && this.isValid( passwd ) ) { 
 			loginUser = userRepository.findByUserIdAndPasswd(id, passwd) ;

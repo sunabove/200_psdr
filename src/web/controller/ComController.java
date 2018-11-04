@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 
 import web.CustomTimestampEditor;
 import web.Html;
+import web.SysConfig;
 import web.WebObject;
 import web.gson.DateDeserializer;
 import web.gson.TimestampDeserializer;
@@ -38,6 +39,8 @@ public abstract class ComController extends WebObject {
 
 	boolean loginRequire = false;
 	boolean adminRequire = false;
+	
+	@Autowired public SysConfig sysConfig ;
 	
 	@Autowired public UserService userService;
 	@Autowired public PropService propService;
@@ -95,8 +98,7 @@ public abstract class ComController extends WebObject {
 						for (int i = 0, iLen = vals.length; i < iLen; i++) {
 							params += (idx > 0 ? "&" : "?") + key + "=" + vals[i];
 							idx++;
-							// logger.info( "key: " + key + " = " + vals[i] +
-							// ";" );
+							// logger.info( "key: " + key + " = " + vals[i] + ";" );
 						}
 					}
 				}
