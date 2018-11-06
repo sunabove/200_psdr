@@ -625,6 +625,9 @@ public abstract class ComController extends WebObject {
          } else if (browser.equalsIgnoreCase("Safari")){
         	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1")+ "\"";
         	 encodedFileName = URLDecoder.decode(encodedFileName);
+         } else if (browser.equalsIgnoreCase("Mozilla")){
+        	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "ISO-8859-1" )+ "\"";
+        	 encodedFileName = URLDecoder.decode(encodedFileName);
          } else {
         	 encodedFileName = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1")+ "\"";
          }
