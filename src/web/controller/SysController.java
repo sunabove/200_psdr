@@ -2,7 +2,6 @@ package web.controller;
 
 import java.util.HashMap;
 
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller; 

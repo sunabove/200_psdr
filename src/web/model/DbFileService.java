@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -135,52 +134,6 @@ public class DbFileService extends ServicCommon {
 		
 		return files ; 
 	}
-	
-	private File [] getFileListNotCheckedOld( String gubunCode ) {
-		
-		Date upDtLatest = null ; 
-		DbFile dbFileLatest = this.dbFileRepository.findFirstByGubunCodeOrderByUpDtDesc( gubunCode );
-		if( null != dbFileLatest ) {
-			upDtLatest = dbFileLatest.upDt ; 
-		}
-		
-		File f = new File( "/home/psdmts/PSDR-XU/" + gubunCode );
-
-		File [] files = f.listFiles();
-		
-		if( null != upDtLatest ) {
-			long lastModified = upDtLatest.getTime() ;
-			
-			java.util.ArrayList<File> filter = new java.util.ArrayList<>() ;
-			
-			for( File file : files ) {
-				if( lastModified < file.lastModified() ) {
-					filter.add( file );
-				} 
-			}
-			
-			files = new File[ filter.size() ] ;
-			
-			filter.toArray( files );
-		}
-
-		Arrays.sort( files, new Comparator<File>()
-		{
-		    public int compare(File o1, File o2) {
-
-		        if ( o1.lastModified() > o2.lastModified()) {
-		            return -1;
-		        } else if (o1.lastModified() < o2.lastModified()) {
-		            return +1;
-		        } else {
-		            return 0;
-		        }
-		    }
-
-		});
-		
-		return files ; 
-	} 
 	
 	public DbFile getSystemDbFileByFileId( String fileId , ComController controller , HttpServletRequest request ) {
 		DbFile dbFile = this.dbFileRepository.findByFileId( fileId ) ; 

@@ -1,8 +1,5 @@
 package web.model;
 
-import java.io.File;
-import java.sql.Timestamp;
-
 import javax.persistence.*;
 
 import lombok.Getter;

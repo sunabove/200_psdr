@@ -2,7 +2,6 @@ package web.model;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;

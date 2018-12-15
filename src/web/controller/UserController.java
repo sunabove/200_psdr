@@ -2,15 +2,11 @@ package web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import web.model.User;
@@ -70,8 +66,6 @@ public class UserController extends ComController {
 	
 	@RequestMapping( value = { "manage_role.html", "manage.html" } )
 	public String manage( HttpServletRequest request, RedirectAttributes ra, @PageableDefault(size = 10) Pageable pageable ) { 
-		var debug = this.debug; 
-		
 		var loginRequire = true ;
 		var adminRequire = true ; 
 		
@@ -181,8 +175,6 @@ public class UserController extends ComController {
 			this.processRequest(request, loginRequire );
 		}
 
-		User loginUser = this.getLoginUser( request ) ;
-		
 		return "redirect:/main/main.html";
 	}
 

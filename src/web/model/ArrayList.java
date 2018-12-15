@@ -71,7 +71,7 @@ public class ArrayList<T extends EntityCommon> extends java.util.ArrayList<T>{
 		}
 	}
 	
-	public int [] getPageList( Page page ) {
+	public int [] getPageList( Page<?> page ) {
 		if( null == page ) {
 			return this.getPageList( 1, 1 );
 		} else {

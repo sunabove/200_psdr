@@ -4,11 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.extern.log4j.Log4j;
 import web.SysConfig;
 import web.WebObject;
-
-@Log4j
 
 public abstract class ServicCommon extends WebObject { 
 	

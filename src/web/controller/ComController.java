@@ -214,7 +214,7 @@ public abstract class ComController extends WebObject {
 	// setCommonAttributes
 	public void setCommonAttributes(HttpServletRequest request, Html html) {
 
-		boolean debug = this.debug && true;
+		boolean debug = ComController.debug && true;
 
 		html = null == html ? new Html() : html;
 
@@ -399,7 +399,7 @@ public abstract class ComController extends WebObject {
 	
 	public String processRequest(HttpServletRequest request, boolean loginRequire, boolean adminRequire, RedirectAttributes ra ) {
 
-		boolean debug = this.debug && true;
+		boolean debug = ComController.debug && true;
 
 		if (debug) {
 			this.showRequestInfo(request);

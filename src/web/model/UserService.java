@@ -78,7 +78,7 @@ public class UserService extends ServicCommon {
 			
 			if (null == rootUser) {
 				Code userRoleAdmin  = this.getCode( "USER-ROLE-ADMIN", "관리자" , 0 );
-				Code userRoleNormal = this.getCode( "USER-ROLE-NORMAL", "사용자", 1 );
+				//Code userRoleNormal = this.getCode( "USER-ROLE-NORMAL", "사용자", 1 );
 				
 				User newUser = new User( sysConfig.defaultSupserUserId, sysConfig.defaultSupserUserPasswd , userRoleAdmin ); 
 				newUser.email = "procom@procom.co.kr";

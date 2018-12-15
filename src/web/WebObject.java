@@ -2,19 +2,12 @@ package web;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lombok.extern.log4j.Log4j;
-import web.controller.ComController;
 import web.model.User;
 
 @Log4j
@@ -249,22 +242,4 @@ public abstract class WebObject extends JsonObject {
 
 	} 
 	// -- debugList 
-	
-	// removeDuplicatedIntegers
-	private void removeDuplicatedIntegers( ) {
-		List<Integer> primes = new ArrayList<Integer>();
-		
-		primes.add(2); 
-		primes.add(7); 
-		primes.add(7);
-		primes.add(11);
-
-		Set<Integer> primesWithoutDuplicates = new LinkedHashSet<Integer>(primes);
-		
-		primes.clear();
-		
-		primes.addAll(primesWithoutDuplicates); 
-	}
-	// -- removeDuplicatedIntegers
-	
 }

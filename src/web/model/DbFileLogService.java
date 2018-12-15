@@ -1,23 +1,10 @@
 package web.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.extern.log4j.Log4j;
-import web.controller.ComController;
-
 @Service
 @Transactional
-@Log4j
 
 public class DbFileLogService extends ServicCommon {  
 
