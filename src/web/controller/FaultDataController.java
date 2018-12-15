@@ -1,8 +1,14 @@
 package web.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,11 +39,14 @@ import web.model.DbFileRepository;
 public class FaultDataController extends ComController {
 
 	private static final long serialVersionUID = 3131679599458841886L;
+	
+	private static int TEMP_FILE_ID = 1 ; 
 
 	public FaultDataController() {
 		this.loginRequire = true;
 	}
 
+	// dataList
 	@RequestMapping(value = { "index.html", "main.html", "down.html", "list.html" })
 	public String dataList(HttpServletRequest request, 
 			@PageableDefault(size = 20) Pageable pageable ,
@@ -109,7 +118,9 @@ public class FaultDataController extends ComController {
 
 		return "210_data_list.html";
 	} 
+	// -- dataList
 	
+	// searchDbFileList
 	private Page<DbFile> searchDbFileList(HttpServletRequest request, Timestamp search_date, Pageable pageable) {
 		var debug = true ; 
 		String gubun_code = request.getParameter("gubun_code");
@@ -144,7 +155,125 @@ public class FaultDataController extends ComController {
 		
 		return dbFilePage; 
 	}
+	// -- searchDbFileList
+	
+	// downloadZipFile
+	@GetMapping("/download_zip/{file_no:.+}")
+	public ResponseEntity<Resource> downloadZipFile(@PathVariable String file_no, HttpServletRequest request) throws Exception {
+		var debug = true ; 
+		
+		DbFile dbFile = null ; 
+		DbFile pairDbFile = null ; 
 
+		if (this.isValid( file_no )) {
+			dbFile = this.dbFileRepository.findByFileNo( file_no );
+			if (null != dbFile) {
+				String pairFileId = dbFile.fileId ;
+				int index = pairFileId.lastIndexOf( "." );
+				if( -1 < index ) {
+					pairFileId = pairFileId.substring( 0, index ) + ".cfg" ; 
+					
+					DbFileRepository dbFileRepository = this.dbFileRepository ;
+					
+					pairDbFile = dbFileRepository.findByFileId( pairFileId ) ;
+					if( null != pairDbFile ) {
+						dbFile.setPairDbFile(pairDbFile); 
+					}
+				}
+			}
+		}
+		
+		String zipFileName = null ; 
+		
+		if( null != dbFile ) {
+			var fileName = dbFile.fileName ; 
+			zipFileName = fileName.substring( 0, fileName.lastIndexOf( "." ) ) + ".zip" ; 
+		}
+		
+		File file = File.createTempFile( "" + ( 100 + TEMP_FILE_ID ++ ) , ".zip" );  
+		
+		ArrayList<String> srcFiles = new ArrayList<>();
+		
+		if( null != dbFile ) {
+			srcFiles.add( dbFile.fileId );
+		}
+		
+		if( null != pairDbFile ) {
+			srcFiles.add( pairDbFile.fileId );
+		}
+		
+        FileOutputStream fos = new FileOutputStream( file );
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
+        for (String srcFile : srcFiles) {
+            File fileToZip = new File(srcFile);
+            FileInputStream fis = new FileInputStream(fileToZip);
+            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            zipOut.putNextEntry(zipEntry);
+ 
+            byte[] bytes = new byte[1024];
+            int length;
+            while((length = fis.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+            fis.close();
+        }
+        
+        zipOut.close();
+        fos.close();
+		
+		Resource resource = new UrlResource( file.toURI() );
+
+		// Try to determine file's content type
+		String contentType = null;
+		try {
+			contentType = request.getServletContext().getMimeType( resource.getFile().getAbsolutePath() );
+		} catch (Exception ex) {
+			log.info("Could not determine file type.");
+		}
+
+		// Fallback to the default content type if type could not be determined
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
+		
+		var fileName = zipFileName ; 
+		fileName = this.getEncodedDownLoadFileName(request, fileName);
+		
+		if( debug ) { 
+			log.info( LINE );
+			log.info( "fileName = " + fileName ); 
+			log.info( LINE );
+		}
+		
+		var totDownNo = this.getTotDownNo() ; 
+		
+		// set today connection user number
+		if (null != totDownNo) {
+			totDownNo.increaseBy(1);
+			this.propService.saveProp( totDownNo );
+		}
+		
+		DbFileLog todayDownLog = this.getTodayDownLog() ; 
+		if( null != todayDownLog ) {
+			todayDownLog.downloadCount += 1;
+			
+			this.dbFileLogService.save( todayDownLog );
+		}
+		
+		DbFileLog currHour = this.getCurrHourDownLog();
+		if( null != currHour ) { 
+			currHour.downloadCount += 1;
+			
+			this.dbFileLogService.save( currHour );
+		}
+
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+				.body(resource);
+	}
+	// -- downloadZipFile
+
+	// downloadFile
 	@GetMapping("/download/{file_no:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String file_no, HttpServletRequest request) throws Exception {
 		var debug = true ; 
@@ -213,5 +342,6 @@ public class FaultDataController extends ComController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
 				.body(resource);
 	}
+	// -- downloadFile
 
 }
